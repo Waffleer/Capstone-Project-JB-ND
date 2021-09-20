@@ -1,0 +1,7 @@
+
+
+
+
+all html documents are stored in templates folder
+
+

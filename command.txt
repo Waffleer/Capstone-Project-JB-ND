@@ -1,0 +1,14 @@
+cd anonypous
+python3 manage.py runserver
+
+
+#Create an application
+
+python3 manage.py startapp _name_
+
+admin - password
+octopus - octo3.14
+
+
+python3 manage.py makemigrations
+python3 manage.py migrate
