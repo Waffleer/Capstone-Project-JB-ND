@@ -2,12 +2,13 @@
 
 
 {% block title%}
-Dashboard
+Student
 {% endblock title%}
 
 
 
 {% block content%}
+
 
 <br>
 <br>
@@ -17,15 +18,17 @@ Dashboard
     <form method="POST">
     {% csrf_token %}
     {{form.as_p}}
-        <button style="background-color:#F4EB16; color:blue" class="btn btn-outline-info" type="submit">Login</button>
+        <button style="background-color:#F4EB16; color:blue" class="btn btn-outline-info" type="submit">Register</button>
     </form>
-   
+
 </div>
 <br>
 <br>
 <br>
 <br>
 
+
+<p> User : {{ user.username }}</p><br>
 <p> Bio : {{ user.profile.bio }}{{ user.student.bio }}{{ user.teacher.bio }}</p><br>
 <p> Avatar : {{ user.profile.avatar }}{{ user.student.avatar }}{{ user.teacher.avatar }}</p><br>
 <p> Updated : {{ user.profile.updated }}{{ user.student.updated }}{{ user.teacher.updated }}</p><br>
@@ -37,4 +40,5 @@ Dashboard
 <a href="/app/createuser">Create User</a><br><br>
 
 <a href="/">Redirect</a><br>
+
 {% endblock content%}
