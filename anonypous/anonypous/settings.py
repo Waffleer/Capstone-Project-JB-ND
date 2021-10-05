@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
 from pathlib import Path
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -20,12 +21,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-^j6r)d%ecu*fya62hj&@@eh4=m$s(vo2-eq(=n**b5mg6*23s8'
+SECRET_KEY = 'django-insecure-x$sy-m2kf#l26-f9gbv(z469r7ca)k-r)s!0m*o1h+zgq-29^$'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['172.16.0.5', '172.0.0.1']
 
 
 # Application definition
@@ -34,17 +35,12 @@ INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
+    'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    #apps
-    'classes',
-    'profiles',
-    'dashboard',
-    'redirects',
-
-    #3rd party
-    'django.contrib.sessions',
+    #Apps
+    'main',
 ]
 
 MIDDLEWARE = [
@@ -94,7 +90,7 @@ DATABASES = {
 
 AUTH_PASSWORD_VALIDATORS = [
     #{
-     #   'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
+    #    'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
     #},
     {
         'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
@@ -126,11 +122,14 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
 STATIC_URL = '/static/'
+
+
+STATIC_ROOT = '/home/username/projects/site/assets/'
+
 STATICFILES_DIRS = [
     BASE_DIR / 'static'
 ]
 
-#Can change MEDIA_URL to what ever to change file path on website
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 

@@ -1,1 +1,0 @@
-source /Users/nicholas.doboszenski/.bash_profile.txt
