@@ -9,18 +9,17 @@ Dashboard
 
 {% block content%}
 
-<p> User : {{ user.username }}</p><br>
-<p> Bio : {{ user.profile.bio }}{{ user.student.bio }}{{ user.teacher.bio }}</p><br>
-<p> Avatar : </p><img src="{{MEDIA_URL}}{{user.profile.avatar}}"></img>
+{% if user.is_authenticated %}
+        <p> User : {{ user.username }}</p><br>
+        <p> Bio : {{ user.profile.bio }}</p><br>
+        <p> Avatar : </p> <img src="media/{{user.profile.avatar}}">
 
-<p> Updated : {{ user.profile.updated }}{{ user.student.updated }}{{ user.teacher.updated }}</p><br>
-<p> Created : {{ user.profile.created }}{{ user.student.created }}{{ user.teacher.created }}</p><br>
-<a href="/dashboard">Dashboard</a><br>
-<a href="/login">Login</a><br>
-<a href="/logout">Logout</a><br>
-<a href="/register">Register</a><br>
-<a href="/createuser">Create User</a><br><br>
+        <p> Updated : {{ user.profile.updated }}</p><br>
+        <p> Created : {{ user.profile.created }}</p><br>
+{% else %}
+    <br><br>
+{% endif %}
 
-<a href="/">Redirect</a><br>
+dashboard...
 
 {% endblock content%}

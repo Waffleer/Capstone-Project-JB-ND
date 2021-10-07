@@ -12,27 +12,17 @@ Register
 <br><br><br>
 
 <form action='/register' method='POST'>{% csrf_token %}
-    <input type='text' name='title' placeholder="Your Title"/>
-    <input type='submit' value='Save' />
+    <input type='text' name='username' placeholder="Username"/><br>
+    <input type='text' name='email' placeholder="Email"/><br>
+    <input type='text' name='password' placeholder="Password"/><br>
+    <input type='text' name='password2' placeholder="Confirm"/><br><br>
+    <input type='submit' value='Submit' />
 </form>
 
 
     
-<br><br><br>
 
-
-
-<p> User : {{ user.username }}</p><br>
-<p> Bio : {{ user.profile.bio }}{{ user.student.bio }}{{ user.teacher.bio }}</p><br>
-<p> Avatar : {{ user.profile.avatar }}{{ user.student.avatar }}{{ user.teacher.avatar }}</p><br>
-<p> Updated : {{ user.profile.updated }}{{ user.student.updated }}{{ user.teacher.updated }}</p><br>
-<p> Created : {{ user.profile.created }}{{ user.student.created }}{{ user.teacher.created }}</p><br>
-<a href="/dashboard">Dashboard</a><br>
-<a href="/login">Login</a><br>
-<a href="/logout">Logout</a><br>
-<a href="/register">Register</a><br>
-<a href="/createuser">Create User</a><br><br>
-
-<a href="/">Redirect</a><br>
+<br>
+register...
 
 {% endblock content%}

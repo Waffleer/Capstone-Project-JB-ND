@@ -3,5 +3,6 @@ from . models import *
 # Register your models here.
 
 admin.site.register(profile)
-admin.site.register(student)
-admin.site.register(teacher)
+admin.site.register(classes)
+admin.site.register(assignment)
+admin.site.register(doc)

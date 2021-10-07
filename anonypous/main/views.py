@@ -1,22 +1,22 @@
 from django.http.response import HttpResponse
 from django.shortcuts import render
 from django.shortcuts import render, redirect
-from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
-from django.contrib import messages
 from django.contrib.auth import login, logout, authenticate
 
-
-from . form import newUserForm, newStudentForm
 
 # Create your views here.
 def dashboard(request):
     return render(request, 'dashboard/dashboard.html', {})
 
+
 def logout_request(request):
     logout(request)
+    return redirect('/')
 
 #will this work i dont know
 
+def root(request):
+    return redirect('/login')
 
 def login_request(request):
     if request.method == "POST":
@@ -26,19 +26,19 @@ def login_request(request):
         username = username.strip(' ')
         password = password.strip(' ')
 
-        print(username)
-        print(password)
+        print(f'\nusername = {username}')
+        print(f'password = {password}')
 
         user = authenticate(username=username, password=password)
         if user is not None:
             login(request, user=user)
+            print(f'Login Successful\n')
             return redirect('/dashboard')
         else:
-            print("Invalid username or password.")
+            print("Invalid username or password.\n")
 
 
     return render(request, 'dashboard/login.html', context={})
-
 
 '''
 def login_request(request):
@@ -61,28 +61,20 @@ def login_request(request):
 '''
 
 def register(request):
-
+    logout(request)
     if request.method == "POST":
-        title = request.POST.get('title')
-        print(title)
+        username = request.POST.get('username')
+        email = request.POST.get('email')
+        password = request.POST.get('password')
+        password2 = request.POST.get('password2')
+
+        if password == password2:
+            print(f"\nusername = {username}")
+            print(f"email = {email}")
+            print(f"Password = {password}\n")
+        else:
+            print("\npassword did not match\n")
 
 
     return render(request, 'dashboard/register.html', context={})
-
-
-def studentRegister(request):
-    if request.method == 'POST':
-        form = newStudentForm(request=request, data=request.POST)
-        if form.is_valid():
-
-            return redirect('/')
-
-        else:
-            for msg in form.error_messages:
-                messages.error(request, f"{msg}: {form.error_messages[msg]}")
-    form = AuthenticationForm()
-    return render(request, 'dashboard/student.html', context={"form":form})
-
-def teacherRegister(request):
-    pass
 
