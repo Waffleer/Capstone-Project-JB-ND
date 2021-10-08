@@ -67,20 +67,51 @@ Dashboard
                 <h3>Goodbye</h3>
             </div>
         </div>
+
+                <!-- ONLY TEACHER CAN SEE THE FOLLOWING BLOCKS -->
+        <div class="classes-container">
+            <div class="class-block edit-block add">
+                <h1><i class="fas fa-plus-circle"></i></class>
+                <h3>Create a Class</h3>
+            </div>
+
+            <div class="class-block edit-block remove">
+                <h1><i class="fas fa-minus-circle"></i></class>
+                <h3>Remove a Class</h3>
+            </div>
+        </div>
+
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#createClass">
+    Launch demo modal
+    </button>
+
+        <!-- CREATE CLASS POPUP -->
+        <div class="modal fade" id="createClass" tabindex="-1" role="dialog" aria-labelledby="createClass" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                ...
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+            </div>
+        </div>
+        </div>
+
+        <script>
+            $('#myModal').on('shown.bs.modal', function () {
+            $('#myInput').trigger('focus')
+            })
+        </script>
     </body>
-
-    <!-- ONLY TEACHER CAN SEE THE FOLLOWING BLOCKS -->
-    <div class="classes-container">
-        <div class="class-block edit-block add">
-            <h1><i class="fas fa-plus-circle"></i></class>
-            <h3>Create a Class</h3>
-        </div>
-
-        <div class="class-block edit-block remove">
-            <h1><i class="fas fa-minus-circle"></i></class>
-            <h3>Remove a Class</h3>
-        </div>
-    </div>
 
 {% else %}
     <meta http-equiv="Refresh" content="0; url='/login'" />
