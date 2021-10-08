@@ -24,15 +24,14 @@ def dashboard(request):
 
     return render(request, 'dashboard/dashboard.html', {})
 
+def profiles(request):
+    return render(request, 'dashboard/profile.html')
 
-def createclass(request):
-    return render(request, 'dashboard/create-class.html', {})
 
 def logout_request(request):
     logout(request)
     return redirect('/')
 
-#will this work i dont know
 
 def root(request):
     return redirect('/login')
