@@ -9,11 +9,46 @@ Register
 
 {% block content%}
 
-<br><br><br>
+<br>
+
+{% if  error  == False%}
+<br>
+{% endif %}
+
+{% if  error1  == True%}
+Passwords did not match<br>
+{% endif %}
+
+{% if error2 == True%}
+Email is not valid <br>
+{% endif %}
+
+{% if error3 == True%}
+Please Choose a Account Type <br>
+{% endif %}
+
+{% if error4 == True%}
+There was no number in password <br>
+{% endif %}
+
+{% if error5 == True%}
+Make sure to have a Capital Letter in your password <br>
+{% endif %}
+
+{% if error6 == True%}
+The Password should be at least 8 characters <br>
+{% endif %}
+
+{% if error7 == True%}
+Email already Used <br>
+{% endif %}
+
+<br><br>
 
 <form action='/register' method='POST'>{% csrf_token %}
-    <input type='text' name='username' placeholder="Username"/><br>
-    <input type='text' name='email' placeholder="Email"/><br>
+    <input type='text' name='first' placeholder="First Name"/><br>
+    <input type='text' name='last' placeholder="Last Name"/><br>
+    <input type='email' name='email' placeholder="Email"/><br>
     <input type='password' name='password' placeholder="Password"/><br>
     <input type='password' name='password2' placeholder="Confirm"/><br>
     <input type="radio" id="teacher" name="account" value="1">

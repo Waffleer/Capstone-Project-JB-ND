@@ -2,12 +2,13 @@ from django.db import models
 from django.contrib.auth.models import User
 # Create your models here.
 
-from django.db.models.enums import Choices
-
 
 
 class profile(models.Model):
+    email = models.EmailField(default='')
     user = models.OneToOneField(User, on_delete=models.CASCADE)
+    firstname = models.CharField(max_length=30, default='')
+    lastname = models.CharField(max_length=30, default='')
     bio = models.TextField(default='no bio...')
 
     #true = teacher account, false = student account
@@ -18,7 +19,7 @@ class profile(models.Model):
     updated = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return f'''Profile - {self.user.username}'''
+        return f'''Profile - {self.email}'''
 
 class classes(models.Model):
     name = models.CharField(max_length=30)
@@ -26,7 +27,7 @@ class classes(models.Model):
     owner = models.OneToOneField(User, on_delete=models.CASCADE)
 
     discription = models.TextField(default='Description')
-    avatar = models.ImageField(upload_to='sessionicon', default='no_picture')
+    color = models.IntegerField(default=1)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
 

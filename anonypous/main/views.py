@@ -1,8 +1,10 @@
+
 from django.http.response import HttpResponse
 from django.shortcuts import render
 from django.shortcuts import render, redirect
-from django.contrib.auth import login, logout, authenticate
-
+from django.contrib.auth import login, logout, authenticate, get_user_model
+from django.contrib.auth.models import User
+from . models import profile
 
 # Create your views here.
 def dashboard(request):
@@ -40,52 +42,193 @@ def login_request(request):
 
     return render(request, 'dashboard/login.html', context={})
 
-'''
-def login_request(request):
-    if request.method == 'POST':
-        form = AuthenticationForm(request=request, data=request.POST)
-        if form.is_valid():
-            username = form.cleaned_data.get('username')
-            password = form.cleaned_data.get('password')
-            user = authenticate(username=username, password=password)
-            if user is not None:
-                login(request, user=user)
-                #messages.info(request, f"You are now logged in as {username}")
-                return redirect('/dashboard')
-            else:
-                messages.error(request, "Invalid username or password.")
-        else:
-            messages.error(request, "Invalid username or password.")
-    form = AuthenticationForm()
-    return render(request, 'dashboard/login.html', context={"form":form})
-'''
+
 
 def register(request):
     logout(request)
+
+    #gets a list of all register emails
+    email = profile.objects.all()
+    emaillist = []
+    for email in email:
+        email = email.email
+        emaillist.append(email)
+
+  
+
+    '''     This code is useless because we are not useing usernames
+    #changes list of users into userlist[]
+    User = get_user_model()
+    users = User.objects.all()
+    users = f'{users}'
+    users = users.strip('<QuerySet >')
+    users = users.strip('[]')
+    users = users.replace('<','')
+    users = users.replace('>','')
+    userlist_ = users.split(',')
+    userlist = []
+    for x in userlist_:
+        x = x.replace(' ','')
+        split = x.split(':')
+        current = split[1]
+        userlist.append(current)
+    '''
+
+    context = {
+            'error' : False,
+            'error1' : False,
+            'error2' : False,
+            'error3' : False,
+            'error4' : False,
+            'error5' : False,
+            'error6' : False,
+            'error7' : False,
+        }
     if request.method == "POST":
-        username = request.POST.get('username')
+
+        first = request.POST.get('first')
+        last = request.POST.get('first')
         email = request.POST.get('email')
         password = request.POST.get('password')
         password2 = request.POST.get('password2')
         account = request.POST.get('account')
 
+        #Password match check
         if password == password2:
-            print(f"\nusername = {username}")
-            print(f"email = {email}")
-            print(f"Password = {password}\n")
-            print(account)
-            print(type(account))
-            """
-            account = int(account)
-            if account == 1:
-                print(f"Teacher Account")
-            elif account == 0:
-                print("Student Account")
-            else:
-                print('error')
+            pass
         else:
-            print("\npassword did not match\n")
-            """
+            print(password)
+            print(password2)
+            print('Fail')
+            context = {
+                'error' : True,
+                'error1' : True,
+                'error2' : False,
+                'error3' : False,
+                'error4' : False,
+                'error5' : False,
+                'error6' : False,
+                'error7' : False,
+                }
+            return render(request, 'dashboard/register.html', context)\
 
-    return render(request, 'dashboard/register.html', context={})
+        
+        numbool = False
+        upperbool = False
+        length = len(password)
+        #password lenght check
+        if length < 8:
+            context = {
+                'error' : True,
+                'error1' : False,
+                'error2' : False,
+                'error3' : False,
+                'error4' : False,
+                'error5' : False,
+                'error6' : True,
+                'error7' : False,
+                }
+            return render(request, 'dashboard/register.html', context)
+
+        #Number and Capital letter check
+        numbers = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
+        for x in password:
+            if x in numbers:
+                numbool = True
+            if x.isupper() == True:
+                upperbool = True
+
+        if numbool == True:
+            pass
+        else:
+            context = {
+                'error' : True,
+                'error1' : False,
+                'error2' : False,
+                'error3' : False,
+                'error4' : True,
+                'error5' : False,
+                'error6' : False,
+                'error7' : False,
+                }
+            return render(request, 'dashboard/register.html', context)
+        if upperbool == True:
+            pass
+        else:
+            context = {
+                'error' : True,
+                'error1' : False,
+                'error2' : False,
+                'error3' : False,
+                'error4' : False,
+                'error5' : True,
+                'error6' : False,
+                'error7' : False,
+                }
+            return render(request, 'dashboard/register.html', context)
+
+
+        #Checks Email Validity
+        if '@' in email and '.' in email:
+            pass
+        else:
+            context = {
+                'error' : True,
+                'error1' : False,
+                'error2' : True,
+                'error3' : False,
+                'error4' : False,
+                'error5' : False,
+                'error6' : False,
+                'error7' : False,
+            }
+            return render(request, 'dashboard/register.html', context)
+
+        #Checks for matching email
+        if email in emaillist:
+            context = {
+                'error' : True,
+                'error1' : False,
+                'error2' : False,
+                'error3' : False,
+                'error4' : False,
+                'error5' : False,
+                'error6' : False,
+                'error7' : True,
+                } 
+            return render(request, 'dashboard/register.html', context)
+
+        #See if there was a account input
+        try:
+            account = account.strip(" ")
+            account = int(account)
+        except:
+            context = {
+                'error' : True,
+                'error1' : False,
+                'error2' : False,
+                'error3' : True,
+                'error4' : False,
+                'error5' : False,
+                'error6' : False,
+                'error7' : False,
+                } 
+            return render(request, 'dashboard/register.html', context)
+
+        #Checks what account type it is
+        if account == 1:
+            user = User.objects.create_user(username=email, password=password)
+            profile.objects.create(user=user, email=email, teacher=True, firstname=first, lastname=last)
+            return redirect('/dashboard')
+        elif account == 0:
+            user = User.objects.create_user(username=email, password=password)
+            profile.objects.create(user=user, email=email, teacher=False, firstname=first, lastname=last)
+            return redirect('/dashboard')
+
+        else:
+            print('This shouldnt be triggered')
+
+                
+
+    return render(request, 'dashboard/register.html', context)
 
