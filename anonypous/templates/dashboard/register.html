@@ -65,6 +65,7 @@ Login
             <div class="mb-3">
                 <label for="password" class="form-label">Password</label>
                 <input type="password" class="form-control" name="password" id="password" aria-describedby="passwordHelp" required>
+                <i class="far fa-eye" id="togglePassword" style="margin-left: -30px; cursor: pointer;"></i>
                 <div id="passwordHelp" class="form-text">Must contain at least 8 characters, a capital letter, a number, and a drop of human blood.</div>
             </div>
             {% if error4 == True%}
@@ -85,6 +86,7 @@ Login
             <div class="mb-3">
                 <label for="confirmPassword" class="form-label">Confirm Password</label>
                 <input type="password" class="form-control" name="password2" id="confirmPassword" required>
+    
             </div>
             {% if  error1  == True%}
                 <div class="alert alert-danger" role="alert">
@@ -110,3 +112,5 @@ Login
 </body>
 
 {% endblock content%}
+
+<script scr="{% static '/js/script.js'%}" type>
