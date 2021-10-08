@@ -14,8 +14,12 @@ Register
 <form action='/register' method='POST'>{% csrf_token %}
     <input type='text' name='username' placeholder="Username"/><br>
     <input type='text' name='email' placeholder="Email"/><br>
-    <input type='text' name='password' placeholder="Password"/><br>
-    <input type='text' name='password2' placeholder="Confirm"/><br><br>
+    <input type='password' name='password' placeholder="Password"/><br>
+    <input type='password' name='password2' placeholder="Confirm"/><br>
+    <input type="radio" id="teacher" name="account" value="1">
+    <label for="teacher">Teacher</label><br>
+    <input type="radio" id="student" name="account" value="0">
+    <label for="student">Student</label><br>
     <input type='submit' value='Submit' />
 </form>
 

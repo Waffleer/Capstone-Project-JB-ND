@@ -33,7 +33,7 @@ def login_request(request):
         if user is not None:
             login(request, user=user)
             print(f'Login Successful\n')
-            return redirect('/dashboard')
+            return redirect('/register/')
         else:
             print("Invalid username or password.\n")
 
@@ -67,14 +67,25 @@ def register(request):
         email = request.POST.get('email')
         password = request.POST.get('password')
         password2 = request.POST.get('password2')
+        account = request.POST.get('account')
 
         if password == password2:
             print(f"\nusername = {username}")
             print(f"email = {email}")
             print(f"Password = {password}\n")
+            print(account)
+            print(type(account))
+            """
+            account = int(account)
+            if account == 1:
+                print(f"Teacher Account")
+            elif account == 0:
+                print("Student Account")
+            else:
+                print('error')
         else:
             print("\npassword did not match\n")
-
+            """
 
     return render(request, 'dashboard/register.html', context={})
 
