@@ -41,6 +41,13 @@ Dashboard
             border: solid black 1px;
             border-radius: 25px;
             background-color: var(--default-bg);
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        a {
+            text-decoration: none;
         }
 
         .edit-block {
@@ -53,6 +60,23 @@ Dashboard
 
         .remove {
             background-color: var(--red);
+        }
+
+        .content-container {
+            width: 100%;
+            display: flex;
+            position: absolute;
+            left: 0;
+            right: 0;
+            z-index: -1;
+        }
+
+        .form-container {
+            width: 500px;
+            border: solid black 1px;
+            padding: 30px;
+            border-radius: 15px;
+            background-color: white;
         }
     </style>
     
@@ -70,16 +94,117 @@ Dashboard
 
                 <!-- ONLY TEACHER CAN SEE THE FOLLOWING BLOCKS -->
         <div class="classes-container">
-            <div class="class-block edit-block add">
-                <h1><i class="fas fa-plus-circle"></i></class>
-                <h3>Create a Class</h3>
-            </div>
+            <a data-bs-toggle="modal" data-bs-target="#createClass">
+                <div class="class-block edit-block add">
+                    <h1><i class="fas fa-plus-circle"></i></class>
+                    <h3>Create a Class</h3>
+                </div>
+            </a>
+            <a data-bs-toggle="modal" data-bs-target="#removeClass">
+                <div class="class-block edit-block remove">
+                    <h1><i class="fas fa-minus-circle"></i></class>
+                    <h3>Remove a Class</h3>
+                </div>
+            </a>
+        </div>
 
-            <div class="class-block edit-block remove">
-                <h1><i class="fas fa-minus-circle"></i></class>
-                <h3>Remove a Class</h3>
+        <!-- Modal -->
+        <div class="modal fade" id="removeClass" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Create a Class</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form action='/login' method='POST'>{% csrf_token %}
+                    <div class="mb-3">
+                        <label for="classIcon" class="form-label">Class to Remove</label>
+                        <select id="classIcon" class="form-select" required>
+                            <option selected disabled="disabled" value="">– Select Class to Remove –</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <button type="submit" class="btn btn-primary" style="width:100%;border-radius:25px">Remove Class</button>
+                    </div>
+                </form>
+            </div>
             </div>
         </div>
+        </div>
+
+        <!-- Modal -->
+        <div class="modal fade" id="createClass" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Create a Class</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form action='/login' method='POST'>{% csrf_token %}
+                    <div class="mb-3">
+                        <label for="className" class="form-label">Class Name</label>
+                        <input type="text" name="className" class="form-control" id="className" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="classColor" class="form-label">Class Color</label>
+                        <select id="classColor" class="form-select" required>
+                            <option selected value="gray">Gray</option>
+                            <option value="red">Red</option>
+                            <option value="orange">Orange</option>
+                            <option value="yellow">Yellow</option>
+                            <option value="green">Green</option>
+                            <option value="mint">Mint</option>
+                            <option value="turquoise">Turquoise</option>
+                            <option value="blue">Blue</option>
+                            <option value="purple">Purple</option>
+                            <option value="lavendar">Lavendar</option>
+                            <option value="pink">Pink</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="classIcon" class="form-label">Subject</label>
+                        <select id="classIcon" class="form-select" required>
+                            <option selected disabled="disabled" value="">– Select Subject –</option>
+                            <option value="paint-brush">Art</option>
+                            <option value="briefcase">Business</option>
+                            <option value="laptop-code">Computer Science</option>
+                            <option value="theater-masks">Drama</option>
+                            <option value="car-side">Driver's Ed</option>
+                            <option value="cogs">Engineering</option>
+                            <option value="book">English/Literature/Language Arts</option>
+                            <option value="heartbeat">Health</option>
+                            <option value="landmark">History/Social Studies</option>
+                            <option value="calculator">Math</option>
+                            <option value="music">Music/Band</option>
+                            <option value="football-ball">Physical Education</option>
+                            <option value="dna">Science (Biology)</option>
+                            <option value="flask">Science (Chemistry)</option>
+                            <option value="atom">Science (Physics)</option>
+                            <option value="microscope">Science (Generic)</option>
+                            <option value="cross">Theology</option>
+                            <option value="flag">World Language</option>
+                            <option value="fab-octopus-deploy">Other</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <button type="submit" class="btn btn-primary" style="width:100%;border-radius:25px">Create Class</button>
+                    </div>
+                </form>
+            </div>
+            </div>
+        </div>
+        </div>
+
+        <script>
+            var myModal = document.getElementById('myModal')
+            var myInput = document.getElementById('myInput')
+
+            myModal.addEventListener('shown.bs.modal', function () {
+            myInput.focus()
+            })
+        </script>
     </body>
 
 {% else %}
