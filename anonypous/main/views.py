@@ -11,7 +11,8 @@ def dashboard(request):
     return render(request, 'dashboard/dashboard.html', {})
 
 
-
+def createclass(request):
+    return render(request, 'dashboard/create-class.html', {})
 
 def logout_request(request):
     logout(request)
@@ -231,4 +232,3 @@ def register(request):
                 
 
     return render(request, 'dashboard/register.html', context)
-
