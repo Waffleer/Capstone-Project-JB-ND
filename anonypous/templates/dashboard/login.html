@@ -32,7 +32,7 @@ Login
 <body>
     <div class="content-container d-flex justify-content-center align-items-center">
         <div class="form-container">
-            <form>
+            <form action='/login' method='POST'>{% csrf_token %}
             <div class="mb-3">
                 <label for="email" class="form-label">Email</label>
                 <input type="email" name="email" class="form-control" id="email" aria-describedby="emailHelp" required>
