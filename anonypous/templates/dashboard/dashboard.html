@@ -30,7 +30,7 @@ Dashboard
             justify-content: flex-start;
         }
 
-        .class-block {
+        .block {
             display: flex;
             flex-flow: column;
             justify-content: center;
@@ -44,22 +44,55 @@ Dashboard
             color: black;
             text-decoration: none;
             cursor: pointer;
+            font-family: Open Sans;
+        }
+
+        .red {
+            background-color: var(--red);
+        }
+
+        .orange {
+            background-color: var(--orange);
+        }
+
+        .yellow {
+            background-color: var(--yellow);
+        }
+
+        .green {
+            background-color: var(--green);
+        }
+
+        .mint {
+            backgroud-color: var(--mint);
+        }
+
+        .turquoise {
+            background-color: var(--turquoise);
+        }
+
+        .blue {
+            background-color: var(--blue);
+        }
+
+        .purple {
+            background-color: var(--purple);
+        }
+
+        .lavendar {
+            background-color: var(--lavendar);
+        }
+
+        .pink {
+            background-color: var(--pink);
         }
 
         a {
             text-decoration: none;
         }
 
-        .edit-block {
+        .edit {
             border: dashed black 1px;
-        }
-
-        .add {
-            background-color: var(--green);
-        }
-
-        .remove {
-            background-color: var(--red);
         }
 
         .content-container {
@@ -82,26 +115,26 @@ Dashboard
     
     <body>
         <div class="classes-container">
-            <div class="class-block">
-                <h1><i class="fas fa-plane"></i></h1>
-                <h3>Hello</h3>
-            </div>
-            <div class="class-block">
-                <h1><i class="fas fa-plane"></i></h1>
-                <h3>Goodbye</h3>
-            </div>
+            <a href="">
+                <div class="block [color]">
+                    <h1><i class="fas fa-icons"></i></h1>
+                    <h3>[CLASS NAME]</h3>
+                </div>
+            </a>
         </div>
 
-                <!-- ONLY TEACHER CAN SEE THE FOLLOWING BLOCKS -->
+        <hr>
+
+        <!-- ONLY TEACHER CAN SEE THE FOLLOWING BLOCKS -->
         <div class="classes-container">
             <a data-bs-toggle="modal" data-bs-target="#createClass">
-                <div class="class-block edit-block add">
+                <div class="block edit green">
                     <h1><i class="fas fa-plus-circle"></i></class>
                     <h3>Create a Class</h3>
                 </div>
             </a>
             <a data-bs-toggle="modal" data-bs-target="#removeClass">
-                <div class="class-block edit-block remove">
+                <div class="block edit red">
                     <h1><i class="fas fa-minus-circle"></i></class>
                     <h3>Remove a Class</h3>
                 </div>
@@ -113,7 +146,7 @@ Dashboard
         <div class="modal-dialog">
             <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Create a Class</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Remove a Class</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -190,6 +223,40 @@ Dashboard
                     </div>
                     <div class="mb-3">
                         <button type="submit" class="btn btn-primary" style="width:100%;border-radius:25px">Create Class</button>
+                    </div>
+                </form>
+            </div>
+            </div>
+        </div>
+        </div>
+
+        <!-- ONLY STUDENT CAN SEE BELOW BLOCK -->
+
+        <div class="classes-container">
+            <a data-bs-toggle="modal" data-bs-target="#joinClass">
+                <div class="block edit blue">
+                    <h1><i class="fas fa-search"></i></class>
+                    <h3>Join a Class</h3>
+                </div>
+            </a>
+        </div>
+
+        <!-- Modal -->
+        <div class="modal fade" id="joinClass" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Join a Class</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form action='/login' method='POST'>{% csrf_token %}
+                    <div class="mb-3">
+                        <label for="classCode" class="form-label">Enter Class Code</label>
+                        <input type="text" name="classCode" class="form-control" id="classCode" required>
+                    </div>
+                    <div class="mb-3">
+                        <button type="submit" class="btn btn-primary" style="width:100%;border-radius:25px">Join Class</button>
                     </div>
                 </form>
             </div>
