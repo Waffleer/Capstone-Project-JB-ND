@@ -2,66 +2,81 @@
 
 
 {% block title%}
-Register
+Login
 {% endblock title%}
 
 
 
 {% block content%}
 
-<br>
+<style>
+    body {
+        background-color: pink;
+    }
 
-{% if  error  == False%}
-<br>
-{% endif %}
+    .content-container {
+        width: 100%;
+        display: flex;
+        position: absolute;
+        left: 0;
+        right: 0;
+        z-index: -1;
+    }
 
-{% if  error1  == True%}
-Passwords did not match<br>
-{% endif %}
+    .form-container {
+        width: 500px;
+        border: solid black 1px;
+        padding: 30px;
+        border-radius: 15px;
+        background-color: white;
+    }
+</style>
 
-{% if error2 == True%}
-Email is not valid <br>
-{% endif %}
-
-{% if error3 == True%}
-Please Choose a Account Type <br>
-{% endif %}
-
-{% if error4 == True%}
-There was no number in password <br>
-{% endif %}
-
-{% if error5 == True%}
-Make sure to have a Capital Letter in your password <br>
-{% endif %}
-
-{% if error6 == True%}
-The Password should be at least 8 characters <br>
-{% endif %}
-
-{% if error7 == True%}
-Email already Used <br>
-{% endif %}
-
-<br><br>
-
-<form action='/register' method='POST'>{% csrf_token %}
-    <input type='text' name='first' placeholder="First Name"/><br>
-    <input type='text' name='last' placeholder="Last Name"/><br>
-    <input type='email' name='email' placeholder="Email"/><br>
-    <input type='password' name='password' placeholder="Password"/><br>
-    <input type='password' name='password2' placeholder="Confirm"/><br>
-    <input type="radio" id="teacher" name="account" value="1">
-    <label for="teacher">Teacher</label><br>
-    <input type="radio" id="student" name="account" value="0">
-    <label for="student">Student</label><br>
-    <input type='submit' value='Submit' />
-</form>
-
-
-    
-
-<br>
-register...
+<body>
+    <div class="content-container d-flex justify-content-center align-items-center">
+        <div class="form-container">
+            <form>
+            <div class="mb-3">
+                <label for="firstName" class="form-label">First Name</label>
+                <input type="text" class="form-control" id="firstName" aria-describedby="fnameHelp" required>
+            </div>
+            <div class="mb-3">
+                <label for="lastName" class="form-label">Last Name</label>
+                <input type="text" class="form-control" id="lastName" aria-describedby="lnameHelp" required>
+            </div>
+            <div class="mb-3">
+                <label for="email" class="form-label">Email</label>
+                <input type="email" class="form-control" id="email" aria-describedby="emailHelp" required>
+            </div>
+            <div class="mb-3">
+                <label for="confirmEmail" class="form-label">Confirm Email</label>
+                <input type="email" class="form-control" id="confirmEmail" aria-describedby="confemailHelp" required>
+            </div>
+            <div class="mb-3">
+                <label for="password" class="form-label">Password</label>
+                <input type="password" class="form-control" id="password" aria-describedby="passwordHelp" required>
+                <div id="passwordHelp" class="form-text">Must contain at least 8 characters, a capital letter, a number, and a drop of human blood.</div>
+            </div>
+            <div class="mb-3">
+                <label for="confirmPassword" class="form-label">Confirm Password</label>
+                <input type="password" class="form-control" id="confirmPassword" required>
+            </div>
+            <div class="mb-3">
+                <label for="roleSelect" class="form-label">Role</label>
+                <select id="roleSelect" class="form-select" required>
+                    <option selected disabled="disabled" value="">– Select Role –</option>
+                    <option value="student">Student</option>
+                    <option value="teacher">Teacher</option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <button type="submit" class="btn btn-primary" style="width:100%;border-radius:25px">Sign In</button>
+            </div>
+            </form>
+            <hr>
+            <button type="submit" class="btn btn-danger" style="width:100%;border-radius:25px" disabled>Sign up with Google</button>
+        </div>
+    </div>
+</body>
 
 {% endblock content%}

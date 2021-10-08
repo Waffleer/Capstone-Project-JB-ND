@@ -22,7 +22,7 @@ def root(request):
 
 def login_request(request):
     if request.method == "POST":
-        username = request.POST.get('username')
+        username = request.POST.get('email')
         password = request.POST.get('password')
 
         username = username.strip(' ')
@@ -41,8 +41,6 @@ def login_request(request):
 
 
     return render(request, 'dashboard/login.html', context={})
-
-
 
 def register(request):
     logout(request)

@@ -1,0 +1,34 @@
+
+
+
+{% extends 'base.html' %}
+
+
+{% block title%}
+Profile
+{% endblock title%}
+
+
+
+{% block content%}
+
+
+
+<a href="/app/register/teacher">Teacher</a><br>
+<a href="/app/register/student">Student</a><br>
+<br><br><br><br><br>
+
+{% if user.is_authenticated %}
+        <p> User : {{ user.username }}</p><br>
+        <p> Bio : {{ user.profile.bio }}{{ user.student.bio }}{{ user.teacher.bio }}</p><br>
+        <p> Avatar : </p><img src="{{MEDIA_URL}}{{user.profile.avatar}}"></img>
+
+        <p> Updated : {{ user.profile.updated }}{{ user.student.updated }}{{ user.teacher.updated }}</p><br>
+        <p> Created : {{ user.profile.created }}{{ user.student.created }}{{ user.teacher.created }}</p><br>
+{% else %}
+    <br><br>
+{% endif %}
+
+profile...
+
+{% endblock content%}

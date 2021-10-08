@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+
+{% block title%}
+Dashboard
+{% endblock title%}
+
+
+
+{% block content%}
+
+{% if user.is_authenticated %}
+        <p> User : {{ user.username }}</p><br>
+        <p> Bio : {{ user.profile.bio }}</p><br>
+        <p> Avatar : </p> <img src="media/{{user.profile.avatar}}">
+
+        <p> Updated : {{ user.profile.updated }}</p><br>
+        <p> Created : {{ user.profile.created }}</p><br>
+{% else %}
+    <br><br>
+{% endif %}
+
+dashboard...
+
+{% endblock content%}

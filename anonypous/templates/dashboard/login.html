@@ -2,38 +2,54 @@
 
 
 {% block title%}
-Dashboard
+Login
 {% endblock title%}
 
-
-
 {% block content%}
+<style>
+    body {
+        background-color: pink;
+    }
 
-<br>
-<br>
-<br>
-<br>
+    .content-container {
+        width: 100%;
+        display: flex;
+        position: absolute;
+        left: 0;
+        right: 0;
+        z-index: -1;
+    }
 
-<form action='/login' method='POST'>{% csrf_token %}
-    <input type='text' name='username' placeholder="Username"/><br>
-    <input type='text' name='password' placeholder="Password"/><br><br>
-    <input type='submit' value='Login'/>
-</form>
+    .form-container {
+        width: 500px;
+        border: solid black 1px;
+        padding: 30px;
+        border-radius: 15px;
+        background-color: white;
+    }
+</style>
 
-
-<br>
-<br>
-
-{% if user.is_authenticated %}
-        <p> User : {{ user.username }}</p><br>
-        <p> Bio : {{ user.profile.bio }}{{ user.student.bio }}{{ user.teacher.bio }}</p><br>
-        <p> Avatar : </p><img src="{{MEDIA_URL}}{{user.profile.avatar}}"></img>
-        <p> Updated : {{ user.profile.updated }}{{ user.student.updated }}{{ user.teacher.updated }}</p><br>
-        <p> Created : {{ user.profile.created }}{{ user.student.created }}{{ user.teacher.created }}</p><br>
-{% else %}
-    <br><br>
-{% endif %}
-
-login...
+<body>
+    <div class="content-container d-flex justify-content-center align-items-center">
+        <div class="form-container">
+            <form>
+            <div class="mb-3">
+                <label for="email" class="form-label">Email</label>
+                <input type="email" name="email" class="form-control" id="email" aria-describedby="emailHelp" required>
+            </div>
+            <div class="mb-3">
+                <label for="password" class="form-label">Password</label>
+                <input type="password" name="password" class="form-control" id="password" required>
+            </div>
+            <div class="mb-3">
+                <button type="submit" class="btn btn-primary" style="width:100%;border-radius:25px">Sign In</button>
+            </div>
+            </form>
+            <hr>
+            <button type="submit" class="btn btn-danger" style="width:100%;border-radius:25px;margin-bottom:15px" disabled>Sign in with Google</button>
+            <a href="register"><button type="submit" class="btn btn-primary" style="width:100%;border-radius:25px">Register</button></a>
+        </div>
+    </div>
+</body>
 
 {% endblock content%}
