@@ -54,12 +54,9 @@ Login
                 <input type="email" class="form-control" name="email" id="email" aria-describedby="emailHelp" required>
             </div>
             {% if error7 == True%}
-                <div class="alert alert-warning" role="alert">
-                    <div class="alert alert-danger" role="alert">
-                        <strong>Holy guacamole!</strong> That email is so great somebody else already used it.
-                    </div>
+                <div class="alert alert-danger" role="alert">
+                    <strong>Holy guacamole!</strong> That email is so great somebody else already used it.
                 </div>
-            Email already Used <br>
             {% endif %}
             <div class="mb-3">
                 <label for="confirmEmail" class="form-label">Confirm Email</label>
@@ -71,24 +68,18 @@ Login
                 <div id="passwordHelp" class="form-text">Must contain at least 8 characters, a capital letter, a number, and a drop of human blood.</div>
             </div>
             {% if error4 == True%}
-                <div class="alert alert-warning" role="alert">
-                    <div class="alert alert-danger" role="alert">
-                        <strong>Hold on a second!</strong> You need a number in your password, silly.
-                    </div>
+                <div class="alert alert-danger" role="alert">
+                    <strong>Hold on a second!</strong> You need a number in your password, silly.
                 </div>
             {% endif %}
             {% if error5 == True%}
-                <div class="alert alert-warning" role="alert">
-                    <div class="alert alert-danger" role="alert">
-                        <strong>Hold your horses!</strong> Make sure you have a capital letter in that password, and don't forget the drop of human blood.
-                    </div>
+                <div class="alert alert-danger" role="alert">
+                    <strong>Hold your horses!</strong> Make sure you have a capital letter in that password, and don't forget the drop of human blood.
                 </div>
             {% endif %}
             {% if error6 == True%}
-                <div class="alert alert-warning" role="alert">
-                    <div class="alert alert-danger" role="alert">
-                        <strong>Yeah... no</strong> You're going to need to have 8 characters in that password if you want the access.
-                    </div>
+                <div class="alert alert-danger" role="alert">
+                    <strong>Yeah... no</strong> You're going to need to have 8 characters in that password if you want the access.
                 </div>
             {% endif %}
             <div class="mb-3">
@@ -96,10 +87,8 @@ Login
                 <input type="password" class="form-control" name="password2" id="confirmPassword" required>
             </div>
             {% if  error1  == True%}
-                <div class="alert alert-warning" role="alert">
-                    <div class="alert alert-danger" role="alert">
-                        <strong>Hey buster!</strong> You should make sure those passwords match.
-                    </div>
+                <div class="alert alert-danger" role="alert">
+                    <strong>Hey buster!</strong> You should make sure those passwords match.
                 </div>
             {% endif %}
             <div class="mb-3">
