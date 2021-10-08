@@ -6,6 +6,9 @@ Login
 {% endblock title%}
 
 {% block content%}
+{% if user.is_authenticated %}
+<meta http-equiv="Refresh" content="0; url='/dashboard'" />
+{% else %}
 <style>
     body {
         background-color: pink;
@@ -51,5 +54,6 @@ Login
         </div>
     </div>
 </body>
+{% endif %}
 
 {% endblock content%}
