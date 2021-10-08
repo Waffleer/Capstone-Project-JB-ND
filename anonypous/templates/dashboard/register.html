@@ -40,19 +40,18 @@ Login
 
     <div class="content-container d-flex justify-content-center align-items-center">
         <div class="form-container">
-
-            <form>
+            <form action='/register' method='POST'>{% csrf_token %}
             <div class="mb-3">
                 <label for="firstName" class="form-label">First Name</label>
-                <input type="text" class="form-control" id="firstName" aria-describedby="fnameHelp" required>
+                <input type="text" class="form-control" name="first" id="firstName" aria-describedby="fnameHelp" required>
             </div>
             <div class="mb-3">
                 <label for="lastName" class="form-label">Last Name</label>
-                <input type="text" class="form-control" id="lastName" aria-describedby="lnameHelp" required>
+                <input type="text" class="form-control" name="last" id="lastName" aria-describedby="lnameHelp" required>
             </div>
             <div class="mb-3">
                 <label for="email" class="form-label">Email</label>
-                <input type="email" class="form-control" id="email" aria-describedby="emailHelp" required>
+                <input type="email" class="form-control" name="email" id="email" aria-describedby="emailHelp" required>
             </div>
             {% if error7 == True%}
                 <div class="alert alert-warning" role="alert">
@@ -64,11 +63,11 @@ Login
             {% endif %}
             <div class="mb-3">
                 <label for="confirmEmail" class="form-label">Confirm Email</label>
-                <input type="email" class="form-control" id="confirmEmail" aria-describedby="confemailHelp" required>
+                <input type="email" class="form-control" name="email2" id="confirmEmail" aria-describedby="confemailHelp" required>
             </div>
             <div class="mb-3">
                 <label for="password" class="form-label">Password</label>
-                <input type="password" class="form-control" id="password" aria-describedby="passwordHelp" required>
+                <input type="password" class="form-control" name="password" id="password" aria-describedby="passwordHelp" required>
                 <div id="passwordHelp" class="form-text">Must contain at least 8 characters, a capital letter, a number, and a drop of human blood.</div>
             </div>
             {% if error4 == True%}
@@ -94,7 +93,7 @@ Login
             {% endif %}
             <div class="mb-3">
                 <label for="confirmPassword" class="form-label">Confirm Password</label>
-                <input type="password" class="form-control" id="confirmPassword" required>
+                <input type="password" class="form-control" name="password2" id="confirmPassword" required>
             </div>
             {% if  error1  == True%}
                 <div class="alert alert-warning" role="alert">
@@ -107,8 +106,8 @@ Login
                 <label for="roleSelect" class="form-label">Role</label>
                 <select id="roleSelect" class="form-select" required>
                     <option selected disabled="disabled" value="">– Select Role –</option>
-                    <option value="student">Student</option>
-                    <option value="teacher">Teacher</option>
+                    <option value="1">Teacher</option>
+                    <option value="0">Student</option>
                 </select>
             </div>
             <div class="mb-3">

@@ -11,6 +11,8 @@ def dashboard(request):
     return render(request, 'dashboard/dashboard.html', {})
 
 
+
+
 def logout_request(request):
     logout(request)
     return redirect('/')
@@ -35,7 +37,7 @@ def login_request(request):
         if user is not None:
             login(request, user=user)
             print(f'Login Successful\n')
-            return redirect('/register/')
+            return redirect('/dashboard')
         else:
             print("Invalid username or password.\n")
 
