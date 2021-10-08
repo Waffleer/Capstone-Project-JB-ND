@@ -8,6 +8,20 @@ from . models import profile
 
 # Create your views here.
 def dashboard(request):
+
+    if request.method == 'POST':
+        if 'create_class' in request.POST:
+            pass
+            #will deal with the create form post
+        elif 'remove_class' in request.POST:
+            pass
+            #will deal with the remove form post
+        elif 'join_class' in request.POST:
+            pass
+            #will deal with the remove form post
+
+
+
     return render(request, 'dashboard/dashboard.html', {})
 
 
@@ -87,19 +101,22 @@ def register(request):
     if request.method == "POST":
 
         first = request.POST.get('first')
-        last = request.POST.get('first')
+        last = request.POST.get('last')
         email = request.POST.get('email')
         password = request.POST.get('password')
         password2 = request.POST.get('password2')
         account = request.POST.get('account')
+        print(account)
 
         #Password match check
         if password == password2:
             pass
         else:
+            print('\n\n')
             print(password)
             print(password2)
             print('Fail')
+            print('\n\n')
             context = {
                 'error' : True,
                 'error1' : True,
@@ -199,15 +216,17 @@ def register(request):
             return render(request, 'dashboard/register.html', context)
 
         #See if there was a account input
+
         try:
             account = account.strip(" ")
             account = int(account)
+            print('valid')
         except:
+            print('failed')
             context = {
                 'error' : True,
                 'error1' : False,
                 'error2' : False,
-                'error3' : True,
                 'error4' : False,
                 'error5' : False,
                 'error6' : False,
@@ -217,10 +236,12 @@ def register(request):
 
         #Checks what account type it is
         if account == 1:
+            print('1')
             user = User.objects.create_user(username=email, password=password)
             profile.objects.create(user=user, email=email, teacher=True, firstname=first, lastname=last)
             return redirect('/dashboard')
         elif account == 0:
+            print('1')
             user = User.objects.create_user(username=email, password=password)
             profile.objects.create(user=user, email=email, teacher=False, firstname=first, lastname=last)
             return redirect('/dashboard')

@@ -14,7 +14,6 @@ class profile(models.Model):
     #true = teacher account, false = student account
     teacher = models.BooleanField(default=False)
 
-    avatar = models.ImageField(upload_to='avatars', default='no_picture')
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
 
