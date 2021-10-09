@@ -13,4 +13,7 @@ urlpatterns = [
     path('logout', views.logout_request, name='logout'),
     path('register', views.register, name='register'),
     path('profile', views.profiles, name='profile'),
+    path('class', views.classpage, name='class'),
+    path('assignment/student', views.studentassignment, name="studentassignment"),
+    path('assignment/teacher', views.teacherassignment, name="teacherassignment")
 ]

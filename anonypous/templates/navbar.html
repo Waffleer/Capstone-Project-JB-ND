@@ -1,11 +1,5 @@
 {% load static %}
 
-<style>
-.dropdown-right {
-    margin-right: 75px;
-}
-</style>
-
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
   <div class="container-fluid">
     <a class="navbar-brand" href="/"><i class="fab fa-octopus-deploy" style="color:tomato;"></i>&nbsp;&nbsp;Anonypous</a>
@@ -17,9 +11,6 @@
         <li class="nav-item">
           <a class="nav-link active" aria-current="page" href="/">Home</a>
         </li>
-      </ul>
-      <div class="d-flex">
-        <ul class="navbar-nav ms-auto mb-2 mb-lg-0 dropdown-right">
             <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                 <i class="fas fa-user-circle"></i>
@@ -29,10 +20,8 @@
                 <li><a class="dropdown-item" href="/profile">Profile</a></li>
                 <li><hr class="dropdown-divider"></li>
                 <li><a class="dropdown-item" href="/logout">Logout</a></li>
-            </ul>
             </li>
         </ul>
-      </div>
     </div>
   </div>
 </nav>
