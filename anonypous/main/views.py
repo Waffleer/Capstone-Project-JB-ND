@@ -46,6 +46,9 @@ def root(request):
     return redirect('/login')
 
 def login_request(request):
+    context = {
+        'authfail' : False,
+    }
     if request.method == "POST":
         username = request.POST.get('email')
         password = request.POST.get('password')
@@ -63,6 +66,10 @@ def login_request(request):
             return redirect('/dashboard')
         else:
             print("Invalid username or password.\n")
+            context = {
+                'authfail' : True,
+            }
+            return render(request, 'dashboard/login.html', context)
 
 
     return render(request, 'dashboard/login.html', context={})
@@ -246,12 +253,18 @@ def register(request):
         #Checks what account type it is
         if account == 1:
             print('1')
-            user = User.objects.create_user(username=email, password=password)
+            user = User.objects.create_user(username=email, email=email, password=password)
+            user.first_name = first
+            user.last_name = last
+            user.save()
             profile.objects.create(user=user, email=email, teacher=True, firstname=first, lastname=last)
             return redirect('/dashboard')
         elif account == 0:
             print('1')
-            user = User.objects.create_user(username=email, password=password)
+            user = User.objects.create_user(username=email, email=email, password=password)
+            user.first_name = first
+            user.last_name = last
+            user.save()
             profile.objects.create(user=user, email=email, teacher=False, firstname=first, lastname=last)
             return redirect('/dashboard')
 

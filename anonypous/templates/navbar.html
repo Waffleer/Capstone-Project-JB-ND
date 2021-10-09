@@ -13,13 +13,24 @@
         </li>
             <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                <i class="fas fa-user-circle"></i>&nbsp;&nbsp;{{ user.username }}
+                <i class="fas fa-user-circle"></i>
+                {% if user.is_authenticated %}
+                  &nbsp;{{ user.first_name }}
+                {% else %}
+                  &nbsp;Login
+                {% endif %}
             </a>
             <ul class="dropdown-menu" aria-labelledby="navbarDropdown" style="max-width:100px;width:100px;">
+              {% if user.is_authenticated %}
+                <li><a class="dropdown-item" href="/profile"><strong>{{ user.first_name }} {{ user.last_name }}</strong></a></li>
                 <li><a class="dropdown-item" href="/dashboard">Dashboard</a></li>
-                <li><a class="dropdown-item" href="/profile">Profile</a></li>
                 <li><hr class="dropdown-divider"></li>
                 <li><a class="dropdown-item" href="/logout">Logout</a></li>
+              {% else %}
+                <li><a class="dropdown-item" href="/login">Login</a></li>
+                <li><hr class="dropdown-divider"></li>
+                <li><a class="dropdown-item" href="/register">Register</a></li>
+              {% endif %}
             </li>
         </ul>
     </div>
