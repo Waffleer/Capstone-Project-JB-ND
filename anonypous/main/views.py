@@ -24,6 +24,9 @@ def dashboard(request):
 
     return render(request, 'dashboard/dashboard.html', {})
 
+def submission(request):
+    return render(request, 'dashboard/submission.html', {})
+
 def assignment(request):
     return render(request, 'dashboard/assignment.html', {})
 

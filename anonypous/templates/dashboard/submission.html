@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+
+{% block title%}
+Root
+{% endblock title%}
+
+
+
+{% block content%}
+
+{% if user.is_authenticated %}
+    {% if user.profile.teacher == True %}
+        Root...
+    {% else %}
+        <meta http-equiv="Refresh" content="0; url='/assignment'" />
+    {% endif %}
+{% else %}
+    <meta http-equiv="Refresh" content="0; url='/login'" />
+{% endif %}
+{% endblock content%}

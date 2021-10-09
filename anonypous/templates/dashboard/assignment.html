@@ -17,11 +17,15 @@ Assignment
             <p class="card-body"><strong>[POINT VALUE] Points</strong></p>
             <p class="card-body">Assignment Instructions</p>
             {% if user.profile.teacher == True %}
-                <!-- ONLY IF ALL SUBMISSIONS ARE GRADED -->
+                <!-- IF NOT ALL SUBMISSIONS ARE GRADED -->
+                <button type="button" class="btn btn-primary" disabled>Commit to Grades</button>
+                <!-- IF ALL SUBMISSIONS ARE GRADED -->
                 <button type="button" class="btn btn-primary">Commit to Grades</button>
             {% else %}
-                <!-- ENABLED ONLY IF NOT SUBMITTED -->
+                <!-- IF ALREADY SUBMITTED -->
                 <button type="button" class="btn btn-primary" disabled>Submit</button>
+                <!-- IF NOT SUBMITTED -->
+                <button type="button" class="btn btn-primary">Submit</button>
             {% endif %}
         </div>
         </div>
@@ -83,14 +87,14 @@ Assignment
                     <div class="date"><strong>Submission Date</strong></div>
                     <div class="status"><strong>Status</strong></div>
                 </div>
-                <a href="submission">
+                <a href="assignment/submission">
                     <div class="submission active">
                         <div class="id">a1b2c3-d4e5f6-g7h8i9</div>
                         <div class="date">October 31, 2021 - 21:00</div>
                         <div class="status">Graded</div>
                     </div>
                 </a>
-                <a href="submission">
+                <a href="assignment/submission">
                     <div class="submission active">
                         <div class="id">j7i0p8-f8s6g8-b7e9b7</div>
                         <div class="date">October 31, 2021 - 22:00</div>
