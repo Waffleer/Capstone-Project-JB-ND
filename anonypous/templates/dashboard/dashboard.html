@@ -124,7 +124,7 @@ Dashboard
         </div>
 
         <hr>
-
+        {% if user.profile.teacher == True %}
         <!-- ONLY TEACHER CAN SEE THE FOLLOWING BLOCKS -->
         <div class="classes-container">
             <a data-bs-toggle="modal" data-bs-target="#createClass">
@@ -229,7 +229,7 @@ Dashboard
             </div>
         </div>
         </div>
-
+        {% elif user.profile.teacher == False %}   
         <!-- ONLY STUDENT CAN SEE BELOW BLOCK -->
 
         <div class="classes-container">
@@ -263,6 +263,7 @@ Dashboard
             </div>
         </div>
         </div>
+        {% endif %}
 
         <script>
             var myModal = document.getElementById('myModal')

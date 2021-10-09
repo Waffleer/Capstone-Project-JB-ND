@@ -61,13 +61,14 @@ Class
 
     <body>
 
+        {% if user.profile.teacher == False %}
         <!-- ONLY STUDENTS SEE -->
         <div class="card" style="width:100%;">
         <div class="card-body">
             <h5 class="card-title">Class Title</h5>
         </div>
         </div>
-        
+        {% elif user.profile.teacher == True %}
         <!-- ONLY TEACHERS SEE -->
         <div class="card" style="width:100%;">
         <div class="card-body">
@@ -168,6 +169,7 @@ Class
             </div>
         </div>
         </div>
+        {% endif %}
 
         <div class="assignments-container">
             <div class="assignment header">
