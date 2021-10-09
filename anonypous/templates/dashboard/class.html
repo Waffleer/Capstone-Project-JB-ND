@@ -60,6 +60,115 @@ Class
     </style>
 
     <body>
+
+        <!-- ONLY STUDENTS SEE -->
+        <div class="card" style="width:100%;">
+        <div class="card-body">
+            <h5 class="card-title">Class Title</h5>
+        </div>
+        </div>
+        
+        <!-- ONLY TEACHERS SEE -->
+        <div class="card" style="width:100%;">
+        <div class="card-body">
+            <h5 class="card-title">Class Title</h5>
+            <h6 class="card-subtitle mb-2 text-muted"><strong>Class Code:</strong> [CLASS CODE]</h6>
+            <a data-bs-toggle="modal" data-bs-target="#addAssignment"><button type="button" class="btn btn-success"><i class="fas fa-plus-circle" ></i>&nbsp;&nbsp;Add Assignment</button></a>
+            <a data-bs-toggle="modal" data-bs-target="#removeAssignment"><button type="button" class="btn btn-danger"><i class="fas fa-minus-circle" data-bs-toggle="modal" data-bs-target="#removeAssignment"></i>&nbsp;&nbsp;Remove Assignment</button></a>
+            <a data-bs-toggle="modal" data-bs-target="#classRoster"><button type="button" class="btn btn-warning"><i class="fas fa-users" data-bs-toggle="modal" data-bs-target="#classRoster"></i>&nbsp;&nbsp;Class Roster</button></a>
+        </div>
+        </div>
+
+        <!-- Add Assignment -->
+        <div class="modal fade" id="addAssignment" tabindex="-1" aria-labelledby="addAssignment" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Add Assignment</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="mb-3">
+                        <label for="assignmentName" class="form-label">Assignment Name</label>
+                        <input type="text" name="assignmentName" class="form-control" id="assignmentName" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="pointValue" class="form-label">Point Value</label>
+                        <input type="number" name="pointValue" class="form-control" id="pointValue" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="dueDate" class="form-label">Due Date</label>
+                        <input type="date" name="dueDate" class="form-control" id="dueDate" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="postDate" class="form-label">Post Date</label>
+                        <input type="date" name="postDate" class="form-control" id="postDate">
+                    </div>
+                    <div class="mb-3">
+                        <label for="minimumWords" class="form-label">Minimum Word Count</label>
+                        <input type="number" name="minimumWords" class="form-control" id="minimumWords">
+                    </div>
+                    <div class="mb-3">
+                        <label for="maximumWords" class="form-label">Maximum Word Count</label>
+                        <input type="number" name="maximumWords" class="form-control" id="maximumWords">
+                    </div>
+                    <div class="mb-3">
+                        <label for="instructions" class="form-label">Instructions:</label>
+                        <textarea name="instructions" class="form-control" id="instructions" required></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <button type="submit" class="btn btn-primary" style="width:100%;border-radius:25px">Publish Assignment</button>
+                    </div>
+                </form>
+            </div>
+            </div>
+        </div>
+        </div>
+
+        <!-- Remove Assignment -->
+        <div class="modal fade" id="removeAssignment" tabindex="-1" aria-labelledby="removeAssignment" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Remove Assignent</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="mb-3">
+                        <label for="classIcon" class="form-label">Assignment to Remove</label>
+                        <select id="classIcon" class="form-select" required>
+                            <option selected disabled="disabled" value="">– Select Assignment to Remove –</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <button type="submit" class="btn btn-primary" style="width:100%;border-radius:25px">Remove Assignment</button>
+                    </div>
+                </form>
+            </div>
+            </div>
+        </div>
+        </div>
+
+        <!-- Class Roster -->
+        <div class="modal fade" id="classRoster" tabindex="-1" aria-labelledby="classRoster" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Class Roster</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <ul>
+                    <li>Student Name</li>
+                    <li>Student Name</li>
+                </ul>
+            </div>
+            </div>
+        </div>
+        </div>
+
         <div class="assignments-container">
             <div class="assignment header">
                 <div class="title"><strong>Assignment Name</strong></div>
@@ -87,6 +196,15 @@ Class
                     <div class="status">To-Do</div>
                 </div>
             </a>
+
+        <script>
+            var myModal = document.getElementById('myModal')
+            var myInput = document.getElementById('myInput')
+
+            myModal.addEventListener('shown.bs.modal', function () {
+            myInput.focus()
+            })
+        </script>
     </body>
 {% else %}
     <meta http-equiv="Refresh" content="0; url='/login'" />
