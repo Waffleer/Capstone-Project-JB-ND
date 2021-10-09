@@ -1,6 +1,3 @@
-
-
-
 {% extends 'base.html' %}
 
 
@@ -12,25 +9,11 @@ Profile
 
 {% block content%}
 
-
-
-<br><br><br><br><br>
-
-{% if user.profile.teacher == True %}
-    teacher<br>
+{% if user.is_authenticated %}
+    <br><br>
 {% else %}
-    not teacher<br>
+    <meta http-equiv="Refresh" content="0; url='/login'" />
 {% endif %}
 
-
-<p> User : {{ user.username }}</p><br>
-<p> Bio : {{ user.profile.bio }}</p><br>
-<p> Teacher? : {{ user.profile.teacher }}</p><br>
-<p> Updated : {{ user.profile.updated }}</p><br>
-<p> Created : {{ user.profile.created }}</p><br><br>
-
-
-
-profile...
-
+Root ...
 {% endblock content%}
