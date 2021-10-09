@@ -24,11 +24,8 @@ def dashboard(request):
 
     return render(request, 'dashboard/dashboard.html', {})
 
-def studentassignment(request):
-    return render(request, 'dashboard/assignment-student.html', {})
-
-def teacherassignment(request):
-    return render(request, 'dashboard/assignment-teacher.html', {})
+def assignment(request):
+    return render(request, 'dashboard/assignment.html', {})
 
 def classpage(request):
     return render(request, 'dashboard/class.html', {})
