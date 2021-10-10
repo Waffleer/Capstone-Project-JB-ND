@@ -11,7 +11,25 @@ Root
 
 {% if user.is_authenticated %}
     {% if user.profile.teacher == True %}
-        Root...
+        <div class="card" style="width:100%;">
+        <div class="card-body">
+            <h5 class="card-title">Submission ID</h5>
+            <p class="card-body">Submission Date</p>
+            <p class="card-body">Assignment Instructions</p>
+            <form>
+                <div class="mb-3">
+                    <input type="number" class="form-control" placeholder="Score out of [POINTS] points" style="width:250px;" required>
+                </div>
+                <div class="mb-3">
+                    <button type="submit" class="btn btn-primary" style="width:250px;">Submit Grade</button>
+                </div>
+            </form>
+        </div>
+        </div>
+        <br>
+        <form>
+            <textarea class="form-control" style="min-height:250px;cursor:not-allowed" disabled></textarea>
+        </form>
     {% else %}
         <meta http-equiv="Refresh" content="0; url='/assignment'" />
     {% endif %}
