@@ -10,10 +10,93 @@ Profile
 {% block content%}
 
 {% if user.is_authenticated %}
-    <br><br>
+    <div class="card" style="width:100%;">
+        <div class="card-header">
+            <h5>Profile</h5>
+        </div>
+        <div class="card-body">
+            <button type="button" class="btn btn-primary form-control" data-bs-toggle="modal" data-bs-target="#editProfile"><i class="fas fa-edit"></i> Edit Profile</button>
+            <br><br>
+            <button type="button" class="btn btn-primary form-control" data-bs-toggle="modal" data-bs-target="#changePassword"><i class="fas fa-lock"></i> Change Password</button>
+            <hr>
+            <p><strong>Name:</strong> {{ user.profile.firstname }} {{ user.profile.lastname }}</p>
+            <p><strong>Email:</strong> {{ user.profile.email }}</p>
+            <p><strong>Account Type:</strong> {% if user.profile.teacher == True %}Teacher{% else %}Student{% endif %}</p>
+            <hr>
+            <p><strong>Account Created:</strong> {{ user.profile.created }}</p>
+        </div>
+    </div>
+
+    <!-- Edit Profile -->
+    <div class="modal fade" id="editProfile" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Edit Profile</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <form action='/login' method='POST'>{% csrf_token %}
+                <div class="mb-3">
+                    <label for="firstName" class="form-label">First Name</label>
+                    <input type="text" name="firstName" class="form-control" id="firstName" value={{ user.profile.firstname }}>
+                </div>
+                <div class="mb-3">
+                    <label for="lastName" class="form-label">Last Name</label>
+                    <input type="text" name="lastName" class="form-control" id="lastName" value={{ user.profile.lastname }}>
+                </div>
+                <div class="mb-3">
+                    <label for="email" class="form-label">Email</label>
+                    <input type="email" name="email" class="form-control" id="email" value={{ user.profile.email }}>
+                </div>
+                <div class="mb-3">
+                    <label for="type" class="form-label">Account Type</label>
+                    <select id="type" name="type" class="form-select" style="cursor:not-allowed" disabled>
+                        <option selected="disabled" value="">{% if user.profile.teacher == True %}Teacher{% else %}Student{% endif %}</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <button type="submit" class="btn btn-primary" style="width:100%;border-radius:25px">Update Account</button>
+                </div>
+            </form>
+        </div>
+        </div>
+    </div>
+    </div>
+
+    <!-- Change Password  -->
+    <div class="modal fade" id="changePassword" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Change Password</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <form action='/login' method='POST'>{% csrf_token %}
+                <div class="mb-3">
+                    <label for="oldpass" class="form-label">Current Password</label>
+                    <input type="password" name="oldpass" class="form-control" id="oldpass">
+                </div>
+                <hr>
+                <div class="mb-3">
+                    <label for="newpass" class="form-label">New Password</label>
+                    <input type="password" name="newpass" class="form-control" id="newpass">
+                </div>
+                <div class="mb-3">
+                    <label for="confirm" class="form-label">Confirm New Password</label>
+                    <input type="password" name="confirm" class="form-control" id="confirm">
+                </div>
+                <div class="mb-3">
+                    <button type="submit" class="btn btn-primary" style="width:100%;border-radius:25px">Change Password</button>
+                </div>
+            </form>
+        </div>
+        </div>
+    </div>
+    </div>
 {% else %}
     <meta http-equiv="Refresh" content="0; url='/login'" />
 {% endif %}
 
-Root ...
 {% endblock content%}
