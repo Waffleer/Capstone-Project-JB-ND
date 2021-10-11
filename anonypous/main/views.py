@@ -4,20 +4,96 @@ from django.shortcuts import render
 from django.shortcuts import render, redirect
 from django.contrib.auth import login, logout, authenticate, get_user_model
 from django.contrib.auth.models import User
-from . models import profile
+from . models import profile, classes, classcode
+import string
+import random
+
+def genCode6():
+    letters = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
+    y = 0
+    code = []
+    while y < 6:
+        num = random.randrange(0, 35)
+        code.append(letters[num])
+        y += 1
+    y = 0
+    code = ''.join(code)
+    return code
+
+def codecheck(code, codelist):
+    if code in codelist:
+        return code
+    else:
+        codes = classcode.objects.all()
+        codelist = []
+        for x in codes:
+            code = x.code
+            codelist.append(code)
+        code = genCode6()
+        codecheck(code, codelist)
+
 
 # Create your views here.
 def dashboard(request):
 
     if request.method == 'POST':
-        if 'create_class' in request.POST:
-            pass
+        print('\ntest\n')
+        print(f'{request.POST}\n')
+        if 'cc_className' in request.POST:
+            classname = request.POST.get('cc_className')
+            color = request.POST.get('classcolor')
+            subject = request.POST.get('subject')
+            discription = request.POST.get('discription')
+
+
+
+            print(f'{request.POST}\n')
+            print(f'{classname}\n')
+            print(f'{color}\n')
+            print(f'{subject}\n')
+
+            #classcode.objects.create(code=code)
+
+            codes = classcode.objects.all()
+            codelist = []
+            for x in codes:
+                code = x.code
+                codelist.append(code)
+
+            #makes new code
+            code = genCode6()
+
+
+            #checks if code has been used
+
+
+
+            '''
+            name = models.CharField(max_length=30)
+
+            owner = models.OneToOneField(User, on_delete=models.PROTECT, default='')
+            discription = models.TextField(default='Description')
+            code = models.OneToOneField(classcode, on_delete=CASCADE, default='')
+
+            students = models.ForeignKey(profile, on_delete=PROTECT, default='')
+            assignments = models.ForeignKey(assignment, on_delete=PROTECT, default='')
+
+            color = models.IntegerField(default=-1)
+            created = models.DateTimeField(auto_now_add=True)
+            updated = models.DateTimeField(auto_now=True)
+            '''
+
+            discription=''
+            color = -1
+
+            #classes.objects.create(name=classname, owner='Current Teacher User', discription=discription, code=code, color=color )
+
             #will deal with the create form post
-        elif 'remove_class' in request.POST:
-            pass
+        elif 'rc_class' in request.POST:
+            print('\nremove \n')
             #will deal with the remove form post
-        elif 'join_class' in request.POST:
-            pass
+        elif 'jc_classCode' in request.POST:
+            print('\njoin \n') 
             #will deal with the remove form post
 
 
