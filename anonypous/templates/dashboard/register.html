@@ -6,6 +6,18 @@ Register
 {% endblock title%}
 
 
+ <!-- Need to add -->
+<!-- 
+    
+    error2 = emails did not match
+
+
+
+-->
+
+
+
+
 
 {% block content%}
 
@@ -38,6 +50,8 @@ Register
 
 <body>
 
+
+
     <div class="content-container d-flex justify-content-center align-items-center">
         <div class="form-container">
             <form action='/register' method='POST'>{% csrf_token %}
@@ -53,7 +67,7 @@ Register
                 <label for="email" class="form-label">Email</label>
                 <input type="email" class="form-control" name="email" id="email" aria-describedby="emailHelp" required>
             </div>
-            {% if error7 == True%}
+            {% if error7 == True %}
                 <div class="alert alert-danger" role="alert">
                     <strong>Holy guacamole!</strong> That email is so great somebody else already used it.
                 </div>
@@ -62,6 +76,11 @@ Register
                 <label for="confirmEmail" class="form-label">Confirm Email</label>
                 <input type="email" class="form-control" name="email2" id="confirmEmail" aria-describedby="confemailHelp" required>
             </div>
+            {% if error2 == True %}
+                <div class="alert alert-danger" role="alert">
+                    <strong>Uh oh, spaghetti-o!</strong> Those emails don't match, buster.
+                </div>
+            {% endif %}
             <div class="mb-3">
                 <label for="password" class="form-label">Password</label>
                 <input type="password" class="form-control" name="password" id="password" aria-describedby="passwordHelp" required>

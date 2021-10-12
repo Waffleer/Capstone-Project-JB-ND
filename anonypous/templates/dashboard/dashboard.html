@@ -150,11 +150,17 @@ Dashboard
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form action='/login' method='POST'>{% csrf_token %}
+
+
+
+                <form action='/dashboard' method='POST'>{% csrf_token %}
+
+
+
                     <div class="mb-3">
                         <label for="classIcon" class="form-label">Class to Remove</label>
                         <select id="classIcon" class="form-select" required>
-                            <option selected disabled="disabled" value="">– Select Class to Remove –</option>
+                            <option selected disabled="disabled" name="rc_class" value="">– Select Class to Remove –</option>
                         </select>
                     </div>
                     <div class="mb-3">
@@ -175,14 +181,22 @@ Dashboard
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form action='/login' method='POST'>{% csrf_token %}
+
+
+
+
+                <form action='/dashboard' name="create" method='POST'>{% csrf_token %}
+
+
+
+
                     <div class="mb-3">
                         <label for="className" class="form-label">Class Name</label>
-                        <input type="text" name="className" class="form-control" id="className" required>
+                        <input type="text" name="cc_className" class="form-control" id="className" required>
                     </div>
                     <div class="mb-3">
                         <label for="classColor" class="form-label">Class Color</label>
-                        <select id="classColor" class="form-select" required>
+                        <select id="classColor" name="classcolor" class="form-select" required>
                             <option selected value="gray">Gray</option>
                             <option value="red">Red</option>
                             <option value="orange">Orange</option>
@@ -198,7 +212,7 @@ Dashboard
                     </div>
                     <div class="mb-3">
                         <label for="classIcon" class="form-label">Subject</label>
-                        <select id="classIcon" class="form-select" required>
+                        <select id="classIcon" name="subject" class="form-select" required>
                             <option selected disabled="disabled" value="">– Select Subject –</option>
                             <option value="paint-brush">Art</option>
                             <option value="briefcase">Business</option>
@@ -250,10 +264,17 @@ Dashboard
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form action='/login' method='POST'>{% csrf_token %}
+
+
+
+                <form action='/dashboard' method='POST'>{% csrf_token %}
+
+
+
+
                     <div class="mb-3">
                         <label for="classCode" class="form-label">Enter Class Code</label>
-                        <input type="text" name="classCode" class="form-control" id="classCode" required>
+                        <input type="text" name="jc_classCode" class="form-control" id="classCode" required>
                     </div>
                     <div class="mb-3">
                         <button type="submit" class="btn btn-primary" style="width:100%;border-radius:25px">Join Class</button>

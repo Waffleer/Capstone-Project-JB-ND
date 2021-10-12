@@ -1,5 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.db.models.deletion import CASCADE, PROTECT
+from django.db.models.fields import CharField
 # Create your models here.
 
 
@@ -20,25 +22,30 @@ class profile(models.Model):
     def __str__(self):
         return f'''Profile - {self.email}'''
 
-class classes(models.Model):
+class documentcode(models.Model):
+    code = models.CharField(max_length=16)
+
+    def __str__(self):
+        return f'''{self.code}'''
+
+class doc(models.Model):
     name = models.CharField(max_length=30)
+    owner = models.OneToOneField(User, on_delete=PROTECT, default='')
+    code = models.OneToOneField(documentcode, on_delete=CASCADE, default='')
 
-    owner = models.OneToOneField(User, on_delete=models.CASCADE)
+    text = models.TextField(default='File Text')
 
-    discription = models.TextField(default='Description')
-    color = models.IntegerField(default=1)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return f'''Session Name - {self.name}'''
 
+
 class assignment(models.Model):
     name = models.CharField(max_length=30)
 
-    owner = models.OneToOneField(User, on_delete=models.CASCADE)
-    classes = models.OneToOneField(classes, on_delete=models.CASCADE)
-
+    owner = models.OneToOneField(User, on_delete=models.PROTECT, default='')
     text = models.TextField(default='Description')
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
@@ -46,17 +53,27 @@ class assignment(models.Model):
     def __str__(self):
         return f'''Session Name - {self.name}'''
 
+class classcode(models.Model):
+    code = models.CharField(max_length=6)
 
-class doc(models.Model):
+    def __str__(self):
+        return f'''{self.code}'''
+
+class classes(models.Model):
     name = models.CharField(max_length=30)
 
-    owner = models.OneToOneField(User, on_delete=models.CASCADE)
-    classes = models.OneToOneField(classes, on_delete=models.CASCADE)
-    assignment = models.OneToOneField(assignment, on_delete=models.CASCADE)
+    owner = models.ForeignKey(User, on_delete=models.PROTECT)
+    discription = models.TextField(default='Description')
+    code = models.OneToOneField(classcode, on_delete=CASCADE)
+    codestr = models.CharField(max_length=6, default='')
 
-    text = models.TextField(default='Description')
+    students = models.ManyToManyField(profile, blank=True)
+    assignments = models.ManyToManyField(assignment, blank=True)
+
+    color = models.CharField(default='', max_length=15)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return f'''Session Name - {self.name}'''
+        return f'''{self.code}'''
+
