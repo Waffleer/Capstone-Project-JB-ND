@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.db.models.deletion import CASCADE, PROTECT
+from django.db.models.fields import CharField
 # Create your models here.
 
 
@@ -61,17 +62,18 @@ class classcode(models.Model):
 class classes(models.Model):
     name = models.CharField(max_length=30)
 
-    owner = models.OneToOneField(User, on_delete=models.PROTECT, default='')
+    owner = models.ForeignKey(User, on_delete=models.PROTECT)
     discription = models.TextField(default='Description')
-    code = models.OneToOneField(classcode, on_delete=CASCADE, default='')
+    code = models.OneToOneField(classcode, on_delete=CASCADE)
+    codestr = models.CharField(max_length=6, default='')
 
-    students = models.ForeignKey(profile, on_delete=PROTECT, default='')
-    assignments = models.ForeignKey(assignment, on_delete=PROTECT, default='')
+    students = models.ManyToManyField(profile, blank=True)
+    assignments = models.ManyToManyField(assignment, blank=True)
 
-    color = models.IntegerField(default=-1)
+    color = models.CharField(default='', max_length=15)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return f'''Session Name - {self.name}'''
+        return f'''{self.code}'''
 

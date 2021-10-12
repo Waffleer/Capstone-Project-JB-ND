@@ -22,8 +22,6 @@ def genCode6():
 
 def codecheck(code, codelist):
     if code in codelist:
-        return code
-    else:
         codes = classcode.objects.all()
         codelist = []
         for x in codes:
@@ -31,6 +29,10 @@ def codecheck(code, codelist):
             codelist.append(code)
         code = genCode6()
         codecheck(code, codelist)
+        print('found code')
+    else:
+        return code
+
 
 
 # Create your views here.
@@ -47,12 +49,10 @@ def dashboard(request):
 
 
 
-            print(f'{request.POST}\n')
             print(f'{classname}\n')
             print(f'{color}\n')
             print(f'{subject}\n')
 
-            #classcode.objects.create(code=code)
 
             codes = classcode.objects.all()
             codelist = []
@@ -62,9 +62,11 @@ def dashboard(request):
 
             #makes new code
             code = genCode6()
+            #checks if code has been used, if not it makes new code and checks again
+            code = codecheck(code, codelist)
+            code = classcode.objects.create(code=code)
 
 
-            #checks if code has been used
 
 
 
@@ -83,17 +85,36 @@ def dashboard(request):
             updated = models.DateTimeField(auto_now=True)
             '''
 
-            discription=''
-            color = -1
-
-            #classes.objects.create(name=classname, owner='Current Teacher User', discription=discription, code=code, color=color )
+            currentclass = classes.objects.create(codestr=f'{code}',name=classname, owner=request.user, discription='', code=code, color=color )
 
             #will deal with the create form post
         elif 'rc_class' in request.POST:
             print('\nremove \n')
             #will deal with the remove form post
         elif 'jc_classCode' in request.POST:
-            print('\njoin \n') 
+
+            currentcode = request.POST.get('jc_classCode')
+            currentcode = f'{currentcode}'
+
+
+            try:
+                classs = classes.objects.get(codestr=currentcode)
+                print(classs)
+                print(type(classs))
+                try:
+                    classs.students.add(request.user.profile)
+                    print(f'Added {request.user} to - {classs.name}')
+                    print(classs.students.all())
+                except:
+                    print("Failed Add to Class - this shouldn't be called")
+            except:
+                print('class does not exist')
+
+
+
+
+           
+            print(f'\njoin') 
             #will deal with the remove form post
 
 
