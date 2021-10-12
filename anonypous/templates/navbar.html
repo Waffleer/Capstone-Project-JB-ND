@@ -22,7 +22,7 @@
             </a>
             <ul class="dropdown-menu" aria-labelledby="navbarDropdown" style="max-width:100px;width:100px;">
               {% if user.is_authenticated %}
-                <li><a class="dropdown-item" href="/profile"><strong>{{ user.first_name }} {{ user.last_name }}</strong></a></li>
+                <li><a class="dropdown-item" href="/profile"><strong>{{ user.profile.first }} {{ user.profile.lastname }}</strong></a></li>
                 <li><a class="dropdown-item" href="/dashboard">Dashboard</a></li>
                 <li><hr class="dropdown-divider"></li>
                 <li><a class="dropdown-item" href="/logout">Logout</a></li>
