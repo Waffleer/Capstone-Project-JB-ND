@@ -141,7 +141,7 @@ Dashboard
             </a>
         </div>
 
-        <!-- Modal -->
+        <!-- Remove Class -->
         <div class="modal fade" id="removeClass" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -161,8 +161,12 @@ Dashboard
                         <label for="classIcon" class="form-label">Class to Remove</label>
                         <select id="classIcon" class="form-select" required>
                             <option selected disabled="disabled" name="rc_class" value="">– Select Class to Remove –</option>
+                             <option name="rc_class" value="test" > Test </option>
                         </select>
                     </div>
+
+
+
                     <div class="mb-3">
                         <button type="submit" class="btn btn-primary" style="width:100%;border-radius:25px">Remove Class</button>
                     </div>
