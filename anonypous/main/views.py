@@ -89,6 +89,23 @@ def dashboard(request):
 
             #will deal with the create form post
         elif 'rc_class' in request.POST:
+
+                
+            teacherClasses = classes.object.all(owner=request)
+            print(teacherClasses)
+
+
+
+
+
+
+
+
+
+
+
+
+
             print('\nremove \n')
             #will deal with the remove form post
         elif 'jc_classCode' in request.POST:
@@ -109,9 +126,6 @@ def dashboard(request):
                     print("Failed Add to Class - this shouldn't be called")
             except:
                 print('class does not exist')
-
-
-
 
            
             print(f'\njoin') 
@@ -151,16 +165,11 @@ def login_request(request):
         username = username.strip(' ')
         password = password.strip(' ')
 
-        print(f'\nusername = {username}')
-        print(f'password = {password}')
-
         user = authenticate(username=username, password=password)
         if user is not None:
             login(request, user=user)
-            print(f'Login Successful\n')
             return redirect('/dashboard')
         else:
-            print("Invalid username or password.\n")
             context = {
                 'authfail' : True,
             }
