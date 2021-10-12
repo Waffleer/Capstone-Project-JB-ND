@@ -85,13 +85,13 @@ def dashboard(request):
             updated = models.DateTimeField(auto_now=True)
             '''
 
-            currentclass = classes.objects.create(codestr=f'{code}',name=classname, owner=request.user, discription='', code=code, color=color )
+            currentclass = classes.objects.create(codestr=f'{code}',name=classname, owner=request.user, ownerstr=f'{request.user}', discription='', code=code, color=color )
 
             #will deal with the create form post
         elif 'rc_class' in request.POST:
 
-                
-            teacherClasses = classes.object.all(owner=request)
+            
+            teacherClasses = classes.objects.filter(ownerstr=f'{request.user}')
             print(teacherClasses)
 
 
@@ -145,6 +145,56 @@ def classpage(request):
     return render(request, 'dashboard/class.html', {})
 
 def profiles(request):
+
+    if request.method == "POST":
+        first = request.POST.get('firstName')
+        last = request.POST.get('lastName')
+        email = request.POST.get('email')
+
+        user = request.user
+            
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        user.profile.first = first
+        user.profile.last = last
+        user.profile.email = email
+        user.save()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     return render(request, 'dashboard/profile.html')
 
 def logout_request(request):
