@@ -20,7 +20,7 @@ class profile(models.Model):
     updated = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return f'''Profile - {self.email}'''
+        return f'''{self.email}'''
 
 class documentcode(models.Model):
     code = models.CharField(max_length=16)
