@@ -37,7 +37,8 @@ def codecheck(code, codelist):
     else:
         return code
 
-
+def invalid(request):
+    return render(request, 'dashboard/invalid.html')
 
 # Create your views here.
 def dashboard(request):
@@ -183,7 +184,7 @@ def classpage(request, classCode):
     except:
         print('not a valid class')
         #return render(request, 'dashboard/class.html', context)
-        #return redirect('/invalid')
+        return redirect('/invalid')
 
 
     '''    
