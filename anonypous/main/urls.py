@@ -13,8 +13,12 @@ urlpatterns = [
     path('logout', views.logout_request, name='logout'),
     path('register', views.register, name='register'),
     path('profile', views.profiles, name='profile'),
-    path('class', views.classpage, name='class'),
-    path('class/assignment', views.assignment, name="assignment"),
-    path('class/assignment/submission', views.submission, name='submission'),
+
+    path('class/<classCode>', views.classpage, name='class'),
+    path('class/<classCode>/<assignmentCode>', views.assignment, name="assignment"),
+    path('class/<classCode>/<assignmentCode>/<docCode>', views.submission, name='submission'),
+
+    path('test', views.test, name='test'),
+
 
 ]

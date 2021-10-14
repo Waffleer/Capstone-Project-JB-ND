@@ -1,12 +1,15 @@
 
 from django.http.response import HttpResponse
 from django.shortcuts import render
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import login, logout, authenticate, get_user_model
 from django.contrib.auth.models import User
 from . models import profile, classes, classcode
 import string
 import random
+
+
+
 
 def genCode6():
     letters = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
@@ -37,6 +40,11 @@ def codecheck(code, codelist):
 
 # Create your views here.
 def dashboard(request):
+
+    user = request.user
+
+
+
 
     if request.method == 'POST':
         print('\ntest\n')
@@ -96,16 +104,6 @@ def dashboard(request):
 
 
 
-
-
-
-
-
-
-
-
-
-
             print('\nremove \n')
             #will deal with the remove form post
         elif 'jc_classCode' in request.POST:
@@ -135,13 +133,22 @@ def dashboard(request):
 
     return render(request, 'dashboard/dashboard.html', {})
 
-def submission(request):
+def submission(request, classCode, assignmentCode, docCode):
+    print(request)
+    print(classCode)
+    print(assignmentCode)
+    print(docCode)
     return render(request, 'dashboard/submission.html', {})
 
-def assignment(request):
+def assignment(request, classCode, assignmentCode):
+    print(request)
+    print(classCode)
+    print(assignmentCode)
     return render(request, 'dashboard/assignment.html', {})
 
-def classpage(request):
+def classpage(request, classCode):
+    print(request)
+    print(classCode)
     return render(request, 'dashboard/class.html', {})
 
 def profiles(request):
@@ -152,47 +159,12 @@ def profiles(request):
         email = request.POST.get('email')
 
         user = request.user
-            
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+        
 
         user.profile.first = first
         user.profile.last = last
         user.profile.email = email
         user.save()
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
     return render(request, 'dashboard/profile.html')
@@ -203,6 +175,20 @@ def logout_request(request):
 
 def root(request):
     return redirect('/login')
+
+def test(request):
+    context = {
+        'classlist': ['dsahte', 'iisake', 'dksake'],
+
+    }
+
+    return render(request, 'dashboard/test.html', context)
+
+
+
+
+
+
 
 def login_request(request):
     context = {
