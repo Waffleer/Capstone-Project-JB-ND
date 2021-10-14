@@ -9,7 +9,8 @@ import string
 import random
 
 
-
+def classfail(request):
+    return render(request, 'dashboard/class-fail.html')
 
 def genCode6():
     letters = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
@@ -198,6 +199,9 @@ def classpage(request, classCode):
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
     '''
+
+
+
 
 
 def profiles(request):

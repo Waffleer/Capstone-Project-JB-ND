@@ -141,6 +141,11 @@ Class
                         <label for="classIcon" class="form-label">Assignment to Remove</label>
                         <select id="classIcon" class="form-select" required>
                             <option selected disabled="disabled" value="">– Select Assignment to Remove –</option>
+                            {% for i in assignments %}
+                                <option value={{i}}>{{i}}</option>
+                            {% empty %}
+                                <option disabled>No Assignments Yet</option>
+                            {% endfor %}
                         </select>
                     </div>
                     <div class="mb-3">
@@ -162,8 +167,11 @@ Class
             </div>
             <div class="modal-body">
                 <ul>
-                    <li>Student Name</li>
-                    <li>Student Name</li>
+                    {% for i in students %}
+                        <li>{{ i }}</li>
+                    {% empty %}
+                        <p>No students have joined yet :(</p>
+                    {% endfor %}
                 </ul>
             </div>
             </div>
@@ -177,27 +185,19 @@ Class
                 <div class="duedate"><strong>Due Date</strong></div>
                 <div class="status"><strong>Status</strong></div>
             </div>
-            <a href="class/assignment">
-                <div class="assignment active">
-                    <div class="title">Halloween Report</div>
-                    <div class="duedate">October 31, 2021</div>
-                    <div class="status">Graded</div>
+            {% for i in assignments %}
+                <a href="">
+                    <div class="assignment active">
+                        <div class="title">{{i}}</div>
+                        <div class="duedate">{{i}}</div>
+                        <div class="status">{{i}}</div>
+                    </div>
+                </a>
+            {% empty %}
+                <div class="assignment">
+                    <div class="title">Looks like you don't have any assignments yet. Enjoy it while it lasts :)</div>
                 </div>
-            </a>
-            <a href="class/assignment">
-                <div class="assignment active">
-                    <div class="title">Christmas Report</div>
-                    <div class="duedate">December 25, 2021</div>
-                    <div class="status">Submitted</div>
-                </div>
-            </a>
-            <a href="class/assignment">
-                <div class="assignment active">
-                    <div class="title">Valentine's Day Report</div>
-                    <div class="duedate">February 14, 2022</div>
-                    <div class="status">To-Do</div>
-                </div>
-            </a>
+            {% endfor %}
 
         <script>
             var myModal = document.getElementById('myModal')
