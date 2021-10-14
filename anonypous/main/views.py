@@ -1,12 +1,15 @@
 
 from django.http.response import HttpResponse
 from django.shortcuts import render
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import login, logout, authenticate, get_user_model
 from django.contrib.auth.models import User
 from . models import profile, classes, classcode
 import string
 import random
+
+
+
 
 def genCode6():
     letters = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
@@ -37,6 +40,11 @@ def codecheck(code, codelist):
 
 # Create your views here.
 def dashboard(request):
+
+    user = request.user
+
+
+
 
     if request.method == 'POST':
         print('\ntest\n')
@@ -85,24 +93,14 @@ def dashboard(request):
             updated = models.DateTimeField(auto_now=True)
             '''
 
-            currentclass = classes.objects.create(codestr=f'{code}',name=classname, owner=request.user, discription='', code=code, color=color )
+            currentclass = classes.objects.create(codestr=f'{code}',name=classname, owner=request.user, ownerstr=f'{request.user}', discription='', code=code, color=color )
 
             #will deal with the create form post
         elif 'rc_class' in request.POST:
 
-                
-            teacherClasses = classes.object.all(owner=request)
+            
+            teacherClasses = classes.objects.filter(ownerstr=f'{request.user}')
             print(teacherClasses)
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -135,16 +133,64 @@ def dashboard(request):
 
     return render(request, 'dashboard/dashboard.html', {})
 
-def submission(request):
+def submission(request, classCode, assignmentCode, docCode):
+
     return render(request, 'dashboard/submission.html', {})
 
-def assignment(request):
+def assignment(request, classCode, assignmentCode):
+
     return render(request, 'dashboard/assignment.html', {})
 
-def classpage(request):
-    return render(request, 'dashboard/class.html', {})
+def classpage(request, classCode):
+
+    print(f'code - {classCode}')
+    classCode = str(classCode)
+    classs = classes.objects.filter(codestr=classCode)
+    
+    '''    
+    name = models.CharField(max_length=30)
+    owner = models.ForeignKey(User, on_delete=models.PROTECT)
+    ownerstr = models.CharField(max_length=30, default='')
+    discription = models.TextField(default='Description')
+    code = models.OneToOneField(classcode, on_delete=CASCADE)
+    codestr = models.CharField(max_length=6, default='')
+    students = models.ManyToManyField(profile, blank=True)
+    assignments = models.ManyToManyField(assignment, blank=True)
+    color = models.CharField(default='', max_length=15)
+    created = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)'''
+
+
+    name = classs.name
+    code = classs.code
+    owner = classs.owner
+    discription = classs.discription
+    students = classs.students
+    assignments = classs.assignments
+
+
+    context = {
+
+
+    }
+    return render(request, 'dashboard/class.html', context)
 
 def profiles(request):
+
+    if request.method == "POST":
+        first = request.POST.get('firstName')
+        last = request.POST.get('lastName')
+        email = request.POST.get('email')
+
+        user = request.user
+        
+
+        user.profile.first = first
+        user.profile.last = last
+        user.profile.email = email
+        user.save()
+
+
     return render(request, 'dashboard/profile.html')
 
 def logout_request(request):
@@ -153,6 +199,20 @@ def logout_request(request):
 
 def root(request):
     return redirect('/login')
+
+def test(request):
+    context = {
+        'classlist': ['dsahte', 'iisake', 'dksake'],
+
+    }
+
+    return render(request, 'dashboard/test.html', context)
+
+
+
+
+
+
 
 def login_request(request):
     context = {
