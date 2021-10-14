@@ -14,9 +14,9 @@ urlpatterns = [
     path('register', views.register, name='register'),
     path('profile', views.profiles, name='profile'),
 
-    path('class/<str:classCode>', views.classpage, name='class'),
-    path('class/<classCode>/<assignmentCode>', views.assignment, name="assignment"),
-    path('class/<classCode>/<assignmentCode>/<docCode>', views.submission, name='submission'),
+    path('class/<str:classCode>/', views.classpage, name='class'),
+    path('class/<classCode>/<str:assignmentCode>/', views.assignment, name="assignment"),
+    path('class/<classCode>/<assignmentCode>/<str:docCode>/', views.submission, name='submission'),
 
     path('test', views.test, name='test'),
 

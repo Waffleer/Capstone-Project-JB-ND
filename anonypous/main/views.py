@@ -120,6 +120,7 @@ def dashboard(request):
                     classs.students.add(request.user.profile)
                     print(f'Added {request.user} to - {classs.name}')
                     print(classs.students.all())
+                    classs.save()
                 except:
                     print("Failed Add to Class - this shouldn't be called")
             except:
@@ -141,12 +142,49 @@ def assignment(request, classCode, assignmentCode):
 
     return render(request, 'dashboard/assignment.html', {})
 
+
 def classpage(request, classCode):
 
-    print(f'code - {classCode}')
+    print(f'code - [{classCode}]')
     classCode = str(classCode)
-    classs = classes.objects.filter(codestr=classCode)
+    try:
+        classs = classes.objects.get(codestr=classCode)    
+        print(classs)
+        print(type(classs))
+
     
+        name = classs.name
+
+        code = classs.code
+        owner = classs.owner
+        discription = classs.discription
+        students = classs.students.all()
+        assignments = classs.assignments.all()
+        print('\n\n')
+        print(f'name-{name}')
+        print(f'code-{code}')
+        print(f'owner-{owner}')
+        print(f'discription-{discription}')
+        print(f'students-{students}')
+        print(f'assignments-{assignments}')
+        print('\n\n')
+
+        context = {
+        'className': name,
+        'classCode': code,
+        'discription': discription,
+        'students': students,
+
+
+        }
+        print(context)
+        return render(request, 'dashboard/class.html', context)
+    except:
+        print('not a valid class')
+        #return render(request, 'dashboard/class.html', context)
+        #return redirect('/invalid')
+
+
     '''    
     name = models.CharField(max_length=30)
     owner = models.ForeignKey(User, on_delete=models.PROTECT)
@@ -158,22 +196,9 @@ def classpage(request, classCode):
     assignments = models.ManyToManyField(assignment, blank=True)
     color = models.CharField(default='', max_length=15)
     created = models.DateTimeField(auto_now_add=True)
-    updated = models.DateTimeField(auto_now=True)'''
+    updated = models.DateTimeField(auto_now=True)
+    '''
 
-
-    name = classs.name
-    code = classs.code
-    owner = classs.owner
-    discription = classs.discription
-    students = classs.students
-    assignments = classs.assignments
-
-
-    context = {
-
-
-    }
-    return render(request, 'dashboard/class.html', context)
 
 def profiles(request):
 
@@ -207,12 +232,6 @@ def test(request):
     }
 
     return render(request, 'dashboard/test.html', context)
-
-
-
-
-
-
 
 def login_request(request):
     context = {
