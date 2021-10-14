@@ -134,22 +134,46 @@ def dashboard(request):
     return render(request, 'dashboard/dashboard.html', {})
 
 def submission(request, classCode, assignmentCode, docCode):
-    print(request)
-    print(classCode)
-    print(assignmentCode)
-    print(docCode)
+
     return render(request, 'dashboard/submission.html', {})
 
 def assignment(request, classCode, assignmentCode):
-    print(request)
-    print(classCode)
-    print(assignmentCode)
+
     return render(request, 'dashboard/assignment.html', {})
 
 def classpage(request, classCode):
-    print(request)
-    print(classCode)
-    return render(request, 'dashboard/class.html', {})
+
+    print(f'code - {classCode}')
+    classCode = str(classCode)
+    classs = classes.objects.filter(codestr=classCode)
+    
+    '''    
+    name = models.CharField(max_length=30)
+    owner = models.ForeignKey(User, on_delete=models.PROTECT)
+    ownerstr = models.CharField(max_length=30, default='')
+    discription = models.TextField(default='Description')
+    code = models.OneToOneField(classcode, on_delete=CASCADE)
+    codestr = models.CharField(max_length=6, default='')
+    students = models.ManyToManyField(profile, blank=True)
+    assignments = models.ManyToManyField(assignment, blank=True)
+    color = models.CharField(default='', max_length=15)
+    created = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)'''
+
+
+    name = classs.name
+    code = classs.code
+    owner = classs.owner
+    discription = classs.discription
+    students = classs.students
+    assignments = classs.assignments
+
+
+    context = {
+
+
+    }
+    return render(request, 'dashboard/class.html', context)
 
 def profiles(request):
 
