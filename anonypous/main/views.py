@@ -103,9 +103,8 @@ def dashboard(request):
             code = codecheck(code, codelist)
             code = classcode.objects.create(code=code)
             discription = 'tbd'
-
             currentclass = classes.objects.create(codestr=f'{code}',name=classname, owner=request.user, ownerstr=f'{request.user}', discription=discription, code=code, color=color, subject=f'{subject}' )
-
+            return redirect(f'class/{code}/')
             #will deal with the create form post
         elif 'rc_class' in request.POST:
 
