@@ -70,7 +70,7 @@ class classes(models.Model):
 
     students = models.ManyToManyField(profile, blank=True)
     assignments = models.ManyToManyField(assignment, blank=True)
-
+    subject = models.CharField(max_length=10, default='')
     color = models.CharField(default='', max_length=15)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)

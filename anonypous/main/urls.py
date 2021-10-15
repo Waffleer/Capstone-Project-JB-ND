@@ -19,6 +19,5 @@ urlpatterns = [
     path('class/<classCode>/<assignmentCode>/<str:docCode>/', views.submission, name='submission'),
 
     path('test', views.test, name='test'),
-    path('classfail', views.classfail, name="classfail"),
 
 ]
