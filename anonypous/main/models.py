@@ -64,7 +64,7 @@ class classes(models.Model):
 
     owner = models.ForeignKey(User, on_delete=models.PROTECT)
     ownerstr = models.CharField(max_length=30, default='')
-    discription = models.TextField(default='Description')
+    description = models.TextField(default='Description')
     code = models.OneToOneField(classcode, on_delete=CASCADE)
     codestr = models.CharField(max_length=6, default='')
 

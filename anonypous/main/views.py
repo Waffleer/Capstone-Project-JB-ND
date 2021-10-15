@@ -41,35 +41,35 @@ def invalid(request):
 
 # Create your views here.
 def dashboard(request):
-
     user = request.user
-    if user.profile.teacher == True:
-        #teacher render classes
-        classs = classes.objects.filter(ownerstr=user)
-        classlist = []
-        for x in classs:
-            currentlist = []
-            name = x.name
-            code = x.codestr
-            color = x.color
-            subject = x.subject
+    try:
+        if user.profile.teacher == True:
+            #teacher render classes
+            classs = classes.objects.filter(ownerstr=user)
+            classlist = []
+            for x in classs:
+                currentlist = []
+                name = x.name
+                code = x.codestr
+                color = x.color
+                subject = x.subject
+                currentlist.append(name)
+                currentlist.append(code)
+                currentlist.append(color)
+                currentlist.append(subject)
+                classlist.append(currentlist)
+        else:
+            #student class render
+            classs = classes.objects.all()
 
-            currentlist.append(name)
-            currentlist.append(code)
-            currentlist.append(color)
-            currentlist.append(subject)
+            print2(classs)
+            pass
+        context = {
+            'classList': classlist,
+        }
 
-            classlist.append(currentlist)
-    else:
-        #student class render
-        classs = classes.objects.filter(students=user)
-        print2(classs)
-        pass
-
-    context = {
-        'classList': classlist,
-
-    }
+    except:
+        return redirect('login')
 
 
 
@@ -82,7 +82,7 @@ def dashboard(request):
             classname = request.POST.get('cc_className')
             color = request.POST.get('classcolor')
             subject = request.POST.get('subject')
-            discription = request.POST.get('discription')
+            description = request.POST.get('description')
 
 
 
@@ -102,8 +102,8 @@ def dashboard(request):
             #checks if code has been used, if not it makes new code and checks again
             code = codecheck(code, codelist)
             code = classcode.objects.create(code=code)
-            discription = 'tbd'
-            currentclass = classes.objects.create(codestr=f'{code}',name=classname, owner=request.user, ownerstr=f'{request.user}', discription=discription, code=code, color=color, subject=f'{subject}' )
+            description = 'tbd'
+            currentclass = classes.objects.create(codestr=f'{code}',name=classname, owner=request.user, ownerstr=f'{request.user}', description=description, code=code, color=color, subject=f'{subject}' )
             return redirect(f'class/{code}/')
             #will deal with the create form post
         elif 'rc_class' in request.POST:
@@ -166,14 +166,14 @@ def classpage(request, classCode):
 
         code = classs.code
         owner = classs.owner
-        discription = classs.discription
+        description = classs.description
         students = classs.students.all()
         assignments = classs.assignments.all()
         print('\n\n')
         print(f'name-{name}')
         print(f'code-{code}')
         print(f'owner-{owner}')
-        print(f'discription-{discription}')
+        print(f'description-{description}')
         print(f'students-{students}')
         print(f'assignments-{assignments}')
         print('\n\n')
@@ -181,7 +181,7 @@ def classpage(request, classCode):
         context = {
         'className': name,
         'classCode': code,
-        'discription': discription,
+        'description': description,
         'students': students,
         'assignments': assignments,
         'assignmentList': []
