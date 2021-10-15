@@ -8,9 +8,8 @@ from . models import profile, classes, classcode
 import string
 import random
 
-
-def classfail(request):
-    return render(request, 'dashboard/class-fail.html')
+def print2(str):
+    print(f'\n\n{str}\n\n')
 
 def genCode6():
     letters = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
@@ -44,13 +43,41 @@ def invalid(request):
 def dashboard(request):
 
     user = request.user
+    if user.profile.teacher == True:
+        #teacher render classes
+        classs = classes.objects.filter(ownerstr=user)
+        classlist = []
+        for x in classs:
+            currentlist = []
+            name = x.name
+            code = x.codestr
+            color = x.color
+            subject = x.subject
 
+            currentlist.append(name)
+            currentlist.append(code)
+            currentlist.append(color)
+            currentlist.append(subject)
+
+            classlist.append(currentlist)
+    else:
+        #student class render
+        classs = classes.objects.filter(students=user)
+        print2(classs)
+        pass
+
+    context = {
+        'classList': classlist,
+
+    }
 
 
 
     if request.method == 'POST':
         print('\ntest\n')
         print(f'{request.POST}\n')
+        #rendering stuff
+
         if 'cc_className' in request.POST:
             classname = request.POST.get('cc_className')
             color = request.POST.get('classcolor')
@@ -75,27 +102,9 @@ def dashboard(request):
             #checks if code has been used, if not it makes new code and checks again
             code = codecheck(code, codelist)
             code = classcode.objects.create(code=code)
+            discription = 'tbd'
 
-
-
-
-
-            '''
-            name = models.CharField(max_length=30)
-
-            owner = models.OneToOneField(User, on_delete=models.PROTECT, default='')
-            discription = models.TextField(default='Description')
-            code = models.OneToOneField(classcode, on_delete=CASCADE, default='')
-
-            students = models.ForeignKey(profile, on_delete=PROTECT, default='')
-            assignments = models.ForeignKey(assignment, on_delete=PROTECT, default='')
-
-            color = models.IntegerField(default=-1)
-            created = models.DateTimeField(auto_now_add=True)
-            updated = models.DateTimeField(auto_now=True)
-            '''
-
-            currentclass = classes.objects.create(codestr=f'{code}',name=classname, owner=request.user, ownerstr=f'{request.user}', discription='', code=code, color=color )
+            currentclass = classes.objects.create(codestr=f'{code}',name=classname, owner=request.user, ownerstr=f'{request.user}', discription=discription, code=code, color=color, subject=f'{subject}' )
 
             #will deal with the create form post
         elif 'rc_class' in request.POST:
@@ -104,10 +113,8 @@ def dashboard(request):
             teacherClasses = classes.objects.filter(ownerstr=f'{request.user}')
             print(teacherClasses)
 
-
-
             print('\nremove \n')
-            #will deal with the remove form post
+            #will deal with the remove form post    
         elif 'jc_classCode' in request.POST:
 
             currentcode = request.POST.get('jc_classCode')
@@ -133,8 +140,11 @@ def dashboard(request):
             #will deal with the remove form post
 
 
+    return render(request, 'dashboard/dashboard.html', context)
 
-    return render(request, 'dashboard/dashboard.html', {})
+
+
+
 
 def submission(request, classCode, assignmentCode, docCode):
 
@@ -151,8 +161,6 @@ def classpage(request, classCode):
     classCode = str(classCode)
     try:
         classs = classes.objects.get(codestr=classCode)    
-        print(classs)
-        print(type(classs))
 
     
         name = classs.name
@@ -176,8 +184,8 @@ def classpage(request, classCode):
         'classCode': code,
         'discription': discription,
         'students': students,
-
-
+        'assignments': assignments,
+        'assignmentList': []
         }
         print(context)
         return render(request, 'dashboard/class.html', context)
@@ -185,25 +193,6 @@ def classpage(request, classCode):
         print('not a valid class')
         #return render(request, 'dashboard/class.html', context)
         return redirect('/invalid')
-
-
-    '''    
-    name = models.CharField(max_length=30)
-    owner = models.ForeignKey(User, on_delete=models.PROTECT)
-    ownerstr = models.CharField(max_length=30, default='')
-    discription = models.TextField(default='Description')
-    code = models.OneToOneField(classcode, on_delete=CASCADE)
-    codestr = models.CharField(max_length=6, default='')
-    students = models.ManyToManyField(profile, blank=True)
-    assignments = models.ManyToManyField(assignment, blank=True)
-    color = models.CharField(default='', max_length=15)
-    created = models.DateTimeField(auto_now_add=True)
-    updated = models.DateTimeField(auto_now=True)
-    '''
-
-
-
-
 
 def profiles(request):
 

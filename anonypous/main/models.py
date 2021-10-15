@@ -20,7 +20,7 @@ class profile(models.Model):
     updated = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return f'''Profile - {self.email}'''
+        return f'''{self.email}'''
 
 class documentcode(models.Model):
     code = models.CharField(max_length=16)
@@ -70,7 +70,7 @@ class classes(models.Model):
 
     students = models.ManyToManyField(profile, blank=True)
     assignments = models.ManyToManyField(assignment, blank=True)
-
+    subject = models.CharField(max_length=10, default='')
     color = models.CharField(default='', max_length=15)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
