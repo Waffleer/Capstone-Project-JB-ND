@@ -47,6 +47,10 @@ Dashboard
             font-family: Open Sans;
         }
 
+        .block h3 {
+            text-align: center;
+        }
+
         .red {
             background-color: var(--red);
         }
@@ -114,16 +118,17 @@ Dashboard
     </style>
     
     <body>
-
-        {% for x in classList %}
-
-            <a href="class/{{x.1}}/">
-                <div class="block">
-                    <h1><i class="fas fa-icons"></i></h1>
-                    <h3>{{ x.0 }}</h3>
-                </div>
-            </a>
-        {% endfor%}
+        <div class="classes-container">
+            {% for x in classList %}
+                <a href="class/{{x.1}}/">
+                    <div class="block {{x.2}}">
+                        <h1><i class="{{x.3}}"></i></h1>
+                        <h3>{{ x.0 }}</h3>
+                        <h6>{{ x.4 }}</h6>
+                    </div>
+                </a>
+            {% endfor%}
+        </div>
 
 
 
@@ -210,6 +215,9 @@ Dashboard
                         <input type="text" name="cc_className" class="form-control" id="className" required>
                     </div>
                     <div class="mb-3">
+                        <label for="className" class="form-label">Short Description</label>
+                        <input type="text" name=""
+                    <div class="mb-3">
                         <label for="classColor" class="form-label">Class Color</label>
                         <select id="classColor" name="classcolor" class="form-select" required>
                             <option selected value="gray">Gray</option>
@@ -229,25 +237,25 @@ Dashboard
                         <label for="classIcon" class="form-label">Subject</label>
                         <select id="classIcon" name="subject" class="form-select" required>
                             <option selected disabled="disabled" value="">– Select Subject –</option>
-                            <option value="paint-brush">Art</option>
-                            <option value="briefcase">Business</option>
-                            <option value="laptop-code">Computer Science</option>
-                            <option value="theater-masks">Drama</option>
-                            <option value="car-side">Driver's Ed</option>
-                            <option value="cogs">Engineering</option>
-                            <option value="book">English/Literature/Language Arts</option>
-                            <option value="heartbeat">Health</option>
-                            <option value="landmark">History/Social Studies</option>
-                            <option value="calculator">Math</option>
-                            <option value="music">Music/Band</option>
-                            <option value="football-ball">Physical Education</option>
-                            <option value="dna">Science (Biology)</option>
-                            <option value="flask">Science (Chemistry)</option>
-                            <option value="atom">Science (Physics)</option>
-                            <option value="microscope">Science (Generic)</option>
-                            <option value="cross">Theology</option>
-                            <option value="flag">World Language</option>
-                            <option value="fab-octopus-deploy">Other</option>
+                            <option value="fas fa-paint-brush">Art</option>
+                            <option value="fas fa-briefcase">Business</option>
+                            <option value="fas fa-laptop-code">Computer Science</option>
+                            <option value="fas fa-theater-masks">Drama</option>
+                            <option value="fas fa-car-side">Driver's Ed</option>
+                            <option value="fas fa-cogs">Engineering</option>
+                            <option value="fas fa-book">English/Literature/Language Arts</option>
+                            <option value="fas fa-heartbeat">Health</option>
+                            <option value="fas fa-landmark">History/Social Studies</option>
+                            <option value="fas fa-calculator">Math</option>
+                            <option value="fas fa-music">Music/Band</option>
+                            <option value="fas fa-football-ball">Physical Education</option>
+                            <option value="fas fa-dna">Science (Biology)</option>
+                            <option value="fas fa-flask">Science (Chemistry)</option>
+                            <option value="fas fa-atom">Science (Physics)</option>
+                            <option value="fas fa-microscope">Science (Generic)</option>
+                            <option value="fas fa-cross">Theology</option>
+                            <option value="fas fa-flag">World Language</option>
+                            <option value="fab fa-octopus-deploy">Other</option>
                         </select>
                     </div>
                     <div class="mb-3">
