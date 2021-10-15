@@ -169,7 +169,9 @@ Dashboard
                         <label for="classIcon" class="form-label">Class to Remove</label>
                         <select id="classIcon" name="rc_class" class="form-select" required>
                             <option selected disabled="disabled" value="">– Select Class to Remove –</option>
-                            <option value="test" > Test </option>
+                            {% for i in classList %}
+                                <option value={{i.0}}>{{i.0}} - {{i.1}}</option>
+                            {% endfor %}
                         </select>
                     </div>
 
