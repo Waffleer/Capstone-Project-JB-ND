@@ -42,7 +42,9 @@ def invalid(request):
 # Create your views here.
 def dashboard(request):
     user = request.user
-    try:
+    if request.user.is_authenticated:
+
+
         if user.profile.teacher == True:
             #teacher render classes
             classs = classes.objects.filter(ownerstr=user)
@@ -58,18 +60,23 @@ def dashboard(request):
                 currentlist.append(color)
                 currentlist.append(subject)
                 classlist.append(currentlist)
+                context = {
+                'classList': classlist,
+                }
         else:
             #student class render
             classs = classes.objects.all()
 
             print2(classs)
             pass
-        context = {
-            'classList': classlist,
-        }
+            classlist = []
+            context = {
+                'classList': classlist,
+            }
 
-    except:
-        return redirect('login')
+
+    else:
+        return redirect('/login')
 
 
 
