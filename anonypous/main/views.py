@@ -53,10 +53,12 @@ def dashboard(request):
                 code = x.codestr
                 color = x.color
                 subject = x.subject
+                description = x.description
                 currentlist.append(name)
                 currentlist.append(code)
                 currentlist.append(color)
                 currentlist.append(subject)
+                currentlist.append(description)
                 classlist.append(currentlist)
         else:
             #student class render
@@ -102,7 +104,6 @@ def dashboard(request):
             #checks if code has been used, if not it makes new code and checks again
             code = codecheck(code, codelist)
             code = classcode.objects.create(code=code)
-            description = 'tbd'
             currentclass = classes.objects.create(codestr=f'{code}',name=classname, owner=request.user, ownerstr=f'{request.user}', description=description, code=code, color=color, subject=f'{subject}' )
             return redirect(f'class/{code}/')
             #will deal with the create form post

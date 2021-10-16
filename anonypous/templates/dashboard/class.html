@@ -65,7 +65,7 @@ Class
         <!-- ONLY STUDENTS SEE -->
         <div class="card" style="width:100%;">
         <div class="card-body">
-            <h5 class="card-title">dsa{{className}}safds</h5>
+            <h5 class="card-title">{{className}}</h5>
         </div>
         </div>
         {% elif user.profile.teacher == True %}
@@ -101,18 +101,6 @@ Class
                     <div class="mb-3">
                         <label for="dueDate" class="form-label">Due Date</label>
                         <input type="date" name="dueDate" class="form-control" id="dueDate" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="postDate" class="form-label">Post Date</label>
-                        <input type="date" name="postDate" class="form-control" id="postDate">
-                    </div>
-                    <div class="mb-3">
-                        <label for="minimumWords" class="form-label">Minimum Word Count</label>
-                        <input type="number" name="minimumWords" class="form-control" id="minimumWords">
-                    </div>
-                    <div class="mb-3">
-                        <label for="maximumWords" class="form-label">Maximum Word Count</label>
-                        <input type="number" name="maximumWords" class="form-control" id="maximumWords">
                     </div>
                     <div class="mb-3">
                         <label for="instructions" class="form-label">Instructions:</label>
