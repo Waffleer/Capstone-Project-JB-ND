@@ -41,6 +41,7 @@ def invalid(request):
 
 # Create your views here.
 def dashboard(request):
+    context = {}
     user = request.user
     if request.user.is_authenticated:
 
@@ -66,12 +67,33 @@ def dashboard(request):
                 'classList': classlist,
                 }
         else:
-            #student class render
+            #student class render - hella inefficient
+            classlist = []
             classs = classes.objects.all()
+            for x in classs:
+                students = x.students.all()
+                for z in students:
+                    c = str(z)
+                    user = str(request.user)
+                    if user == c:
+                        print2(f'Worked for class {c}')
+                        currentlist = []
+                        name = x.name
+                        code = x.codestr
+                        color = x.color
+                        subject = x.subject
+                        description = x.description
+                        currentlist.append(name)
+                        currentlist.append(code)
+                        currentlist.append(color)
+                        currentlist.append(subject)
+                        currentlist.append(description)
+                        classlist.append(currentlist)
+
+
+
 
             print2(classs)
-            pass
-            classlist = []
             context = {
                 'classList': classlist,
             }
@@ -117,10 +139,20 @@ def dashboard(request):
         elif 'rc_class' in request.POST:
 
             
-            teacherClasses = classes.objects.filter(ownerstr=f'{request.user}')
-            print(teacherClasses)
+            classs = classes.objects.filter(ownerstr=user)
+            for x in classs:
+                print2('woked')
+                print(x)
+                print(str(request.POST.get('rc_class')))
+                c = str(x)
+                
+                if str(request.POST.get('rc_class')) == c:
+                    print2(f' = {x}')
+                    x.delete()
+                    return redirect('/dashboard')
 
-            print('\nremove \n')
+                
+
             #will deal with the remove form post    
         elif 'jc_classCode' in request.POST:
 
@@ -171,7 +203,6 @@ def classpage(request, classCode):
 
     
         name = classs.name
-
         code = classs.code
         owner = classs.owner
         description = classs.description
@@ -189,13 +220,29 @@ def classpage(request, classCode):
         context = {
         'className': name,
         'classCode': code,
-        'description': description,
+        'classDescription': description,
         'students': students,
         'assignments': assignments,
         'assignmentList': []
         }
+
+
         print(context)
-        return render(request, 'dashboard/class.html', context)
+
+
+
+
+        
+        if str(request.user) == classs.ownerstr:
+            return render(request, 'dashboard/class.html', context)
+        else:
+            for x in students:
+                print2(x)
+                print(request.user)
+                x = str(x)
+                if str(request.user) == x:
+                    return render(request, 'dashboard/class.html', context)
+            return redirect('/invalid')
     except:
         print('not a valid class')
         #return render(request, 'dashboard/class.html', context)
@@ -228,8 +275,6 @@ def root(request):
 
 def test(request):
     context = {
-        'classlist': ['dsahte', 'iisake', 'dksake'],
-
     }
 
     return render(request, 'dashboard/test.html', context)
@@ -242,8 +287,6 @@ def login_request(request):
         username = request.POST.get('email')
         password = request.POST.get('password')
 
-        username = username.strip(' ')
-        password = password.strip(' ')
 
         user = authenticate(username=username, password=password)
         if user is not None:
