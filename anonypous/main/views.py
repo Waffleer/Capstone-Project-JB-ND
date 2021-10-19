@@ -257,11 +257,10 @@ def profiles(request):
 
         user = request.user
         
-
-        user.profile.first = first
-        user.profile.last = last
+        user.profile.firstname = first
+        user.profile.lastname = last
         user.profile.email = email
-        user.save()
+        user.profile.save()
 
 
     return render(request, 'dashboard/profile.html')
