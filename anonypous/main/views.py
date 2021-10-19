@@ -163,8 +163,14 @@ def dashboard(request):
                     print(f'Added {request.user} to - {classs.name}')
                     print(classs.students.all())
                     classs.save()
+                    return redirect(f'class/{currentcode}/')
                 except:
                     print("Failed Add to Class - this shouldn't be called")
+                    context = {
+                        'classFail': True
+                    }
+                    return render(request, 'dashboard/dashboard.html', context)
+
             except:
                 print('class does not exist')
 
