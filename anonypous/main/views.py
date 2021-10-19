@@ -43,8 +43,6 @@ def invalid(request):
 def dashboard(request):
     user = request.user
     if request.user.is_authenticated:
-
-
         if user.profile.teacher == True:
             #teacher render classes
             classs = classes.objects.filter(ownerstr=user)
@@ -75,12 +73,8 @@ def dashboard(request):
             context = {
                 'classList': classlist,
             }
-
-
     else:
         return redirect('/login')
-
-
 
     if request.method == 'POST':
         print('\ntest\n')
