@@ -9,7 +9,6 @@ Class
 
 {% block content%}
 
-{% if user.is_authenticated %}
     <style>
         .box {
             display: flex;
@@ -27,12 +26,9 @@ Class
     <body>
         <div class="box">
             {% load static %}
-                <img src="{% static '/img/classfail.png' %}">
+                <img src="https://photos.smugmug.com/Anonypous/i-bkLCZfd/0/797838cd/L/classfail-L.png">
             <h2>404 Page not Found</h2>
             <h5>:)</h5>
         </div>
     </body>
-{% else %}
-    <meta http-equiv="Refresh" content="0; url='/login'" />
-{% endif %}
 {% endblock content%}
