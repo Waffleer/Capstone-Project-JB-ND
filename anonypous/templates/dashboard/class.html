@@ -91,10 +91,13 @@ Class
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form>
+
+
+
+                <form action='/class/' method='POST'>{% csrf_token %}
                     <div class="mb-3">
                         <label for="assignmentName" class="form-label">Assignment Name</label>
-                        <input type="text" name="assignmentName" class="form-control" id="assignmentName" required>
+                        <input type="text" name="cc_assignmentName" class="form-control" id="assignmentName" required>
                     </div>
                     <div class="mb-3">
                         <label for="pointValue" class="form-label">Point Value</label>
@@ -112,6 +115,10 @@ Class
                         <button type="submit" class="btn btn-primary" style="width:100%;border-radius:25px">Publish Assignment</button>
                     </div>
                 </form>
+
+
+
+
             </div>
             </div>
         </div>
