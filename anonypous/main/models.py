@@ -28,6 +28,8 @@ class documentcode(models.Model):
     def __str__(self):
         return f'''{self.code}'''
 
+
+
 class doc(models.Model):
     name = models.CharField(max_length=30)
     owner = models.OneToOneField(User, on_delete=PROTECT, default='')
@@ -42,16 +44,28 @@ class doc(models.Model):
         return f'''Session Name - {self.name}'''
 
 
+class assignmentcode(models.Model):
+    code = models.CharField(max_length=17)
+
+    def __str__(self):
+        return f'''{self.code}'''
+
 class assignment(models.Model):
     name = models.CharField(max_length=30)
 
     owner = models.OneToOneField(User, on_delete=models.PROTECT, default='')
-    text = models.TextField(default='Description')
+    assignmentcode = models.OneToOneField(assignmentcode, on_delete=models.CASCADE, default='')
+    pointValue = models.IntegerField(default='-1')
+
+
+    instructions = models.TextField(default='Instructions')
+
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
     
     def __str__(self):
         return f'''Session Name - {self.name}'''
+
 
 class classcode(models.Model):
     code = models.CharField(max_length=6)
