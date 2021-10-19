@@ -41,7 +41,9 @@ def invalid(request):
 
 # Create your views here.
 def dashboard(request):
-    context = {}
+    context = {
+        'classFail': False,
+    }
     user = request.user
     if request.user.is_authenticated:
         if user.profile.teacher == True:
@@ -166,13 +168,14 @@ def dashboard(request):
                     return redirect(f'class/{currentcode}/')
                 except:
                     print("Failed Add to Class - this shouldn't be called")
-                    context = {
-                        'classFail': True
-                    }
-                    return render(request, 'dashboard/dashboard.html', context)
+
 
             except:
                 print('class does not exist')
+                context = {
+                    'classFail': True,
+                }
+                return redirect('/dashboard', context)
 
            
             print(f'\njoin') 
@@ -234,15 +237,146 @@ def classpage(request, classCode):
 
         
         if str(request.user) == classs.ownerstr:
+
+
+
+
+            if request.method == 'POST':
+                print('\ntest\n')
+                print(f'{request.POST}\n')
+                #rendering stuff
+                user = request.user
+
+                if 'cc_assignmentName' in request.POST:
+                    print2('dfjkdfkjfdskjsdfkljsdfkjlfsdkjjkfs')
+                    assignmentname = request.POST.get('cc_assignmentName')
+                    pointValue = request.POST.get('pointValue')
+                    dueDate = request.POST.get('dueDate')
+                    instructions = request.POST.get('instructions')
+
+
+
+                    print(f'\n\n{assignmentname}')
+                    print(pointValue)
+                    print(dueDate)
+                    print(f'{instructions}\n\n')
+
+
+                    '''
+                    codes = classcode.objects.all()
+                    codelist = []
+                    for x in codes:
+                        code = x.code
+                        codelist.append(code)
+
+                    #makes new code
+                    code = genCode6()
+                    #checks if code has been used, if not it makes new code and checks again
+                    code = codecheck(code, codelist)
+                    code = classcode.objects.create(code=code)
+                    currentclass = classes.objects.create(codestr=f'{code}',name=classname, owner=request.user, ownerstr=f'{request.user}', description=description, code=code, color=color, subject=f'{subject}' )
+                    return redirect(f'class/{code}/')
+                    #will deal with the create form post
+                    '''
+
+                elif 'rc_class' in request.POST:
+
+                    
+                    classs = classes.objects.filter(ownerstr=user)
+                    for x in classs:
+                        print2('woked')
+                        print(x)
+                        print(str(request.POST.get('rc_class')))
+                        c = str(x)
+                        
+                        if str(request.POST.get('rc_class')) == c:
+                            print2(f' = {x}')
+                            x.delete()
+                            return redirect('/dashboard')
+
+                        
+
+                    #will deal with the remove form post    
+                elif 'jc_classCode' in request.POST:
+
+                    currentcode = request.POST.get('jc_classCode')
+                    currentcode = f'{currentcode}'
+
+
+                    try:
+                        classs = classes.objects.get(codestr=currentcode)
+                        print(classs)
+                        print(type(classs))
+                        try:
+                            classs.students.add(request.user.profile)
+                            print(f'Added {request.user} to - {classs.name}')
+                            print(classs.students.all())
+                            classs.save()
+                            return redirect(f'class/{currentcode}/')
+                        except:
+                            print("Failed Add to Class - this shouldn't be called")
+
+
+                    except:
+                        print('class does not exist')
+                        context = {
+                            'classFail': True,
+                        }
+                        return redirect('/dashboard', context)
+
+                
+                    print(f'\njoin') 
+                    #will deal with the remove form post
+
             return render(request, 'dashboard/class.html', context)
+
+
+
+
+
+
+
+
+
         else:
             for x in students:
                 print2(x)
                 print(request.user)
                 x = str(x)
                 if str(request.user) == x:
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
                     return render(request, 'dashboard/class.html', context)
             return redirect('/invalid')
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     except:
         print('not a valid class')
         #return render(request, 'dashboard/class.html', context)
@@ -251,6 +385,7 @@ def classpage(request, classCode):
 def profiles(request):
 
     if request.method == "POST":
+        print('hsagjklgs')
         first = request.POST.get('firstName')
         last = request.POST.get('lastName')
         email = request.POST.get('email')
