@@ -15,14 +15,14 @@
             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                 <i class="fas fa-user-circle"></i>
                 {% if user.is_authenticated %}
-                  &nbsp;{{ user.first_name }}
+                  &nbsp;{{ user.profile.firstname }}
                 {% else %}
                   &nbsp;Login
                 {% endif %}
             </a>
             <ul class="dropdown-menu" aria-labelledby="navbarDropdown" style="max-width:100px;width:100px;">
               {% if user.is_authenticated %}
-                <li><a class="dropdown-item" href="/profile"><strong>{{ user.profile.first }} {{ user.profile.lastname }}</strong></a></li>
+                <li><a class="dropdown-item" href="/profile"><strong>{{ user.profile.firstname }} {{ user.profile.lastname }}</strong></a></li>
                 <li><a class="dropdown-item" href="/dashboard">Dashboard</a></li>
                 <li><hr class="dropdown-divider"></li>
                 <li><a class="dropdown-item" href="/logout">Logout</a></li>

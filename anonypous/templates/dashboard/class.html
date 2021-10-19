@@ -66,6 +66,7 @@ Class
         <div class="card" style="width:100%;">
         <div class="card-body">
             <h5 class="card-title">{{className}}</h5>
+            <p class="card-body">{{classDescription}}</p>
         </div>
         </div>
         {% elif user.profile.teacher == True %}
@@ -74,6 +75,7 @@ Class
         <div class="card-body">
             <h5 class="card-title">{{className}}</h5>
             <h6 class="card-subtitle mb-2 text-muted"><strong>Class Code:</strong> {{classCode}}</h6>
+            <p class="card-body">{{classDescription}}</p>
             <a data-bs-toggle="modal" data-bs-target="#addAssignment"><button type="button" class="btn btn-success"><i class="fas fa-plus-circle" ></i>&nbsp;&nbsp;Add Assignment</button></a>
             <a data-bs-toggle="modal" data-bs-target="#removeAssignment"><button type="button" class="btn btn-danger"><i class="fas fa-minus-circle" data-bs-toggle="modal" data-bs-target="#removeAssignment"></i>&nbsp;&nbsp;Remove Assignment</button></a>
             <a data-bs-toggle="modal" data-bs-target="#classRoster"><button type="button" class="btn btn-warning"><i class="fas fa-users" data-bs-toggle="modal" data-bs-target="#classRoster"></i>&nbsp;&nbsp;Class Roster</button></a>
