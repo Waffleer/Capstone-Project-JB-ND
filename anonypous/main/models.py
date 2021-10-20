@@ -54,7 +54,7 @@ class assignment(models.Model):
     name = models.CharField(max_length=30)
 
     owner = models.OneToOneField(User, on_delete=models.PROTECT, default='')
-    assignmentcode = models.OneToOneField(assignmentcode, on_delete=models.CASCADE, default='')
+    code = models.OneToOneField(assignmentcode, on_delete=models.CASCADE, default='')
     pointValue = models.IntegerField(default='-1')
 
 
