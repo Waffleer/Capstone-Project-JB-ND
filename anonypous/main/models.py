@@ -50,13 +50,16 @@ class assignmentcode(models.Model):
     def __str__(self):
         return f'''{self.code}'''
 
-class assignment(models.Model):
+class assignmentObj(models.Model):
     name = models.CharField(max_length=30)
 
-    owner = models.OneToOneField(User, on_delete=models.PROTECT, default='')
-    code = models.OneToOneField(assignmentcode, on_delete=models.CASCADE, default='')
-    pointValue = models.IntegerField(default='-1')
+    owner = models.ForeignKey(User, on_delete=models.PROTECT)
+    ownerstr = models.CharField(max_length=30, default='')
 
+    code = models.OneToOneField(assignmentcode, on_delete=models.CASCADE, default='')
+    codestr = models.CharField(max_length=30, default='')
+    pointValue = models.IntegerField(default='-1')
+    dueDate = models.DateField(null=True, blank=True)
 
     instructions = models.TextField(default='Instructions')
 
@@ -64,7 +67,7 @@ class assignment(models.Model):
     updated = models.DateTimeField(auto_now=True)
     
     def __str__(self):
-        return f'''Session Name - {self.name}'''
+        return f'''{self.code}'''
 
 
 class classcode(models.Model):
@@ -83,7 +86,7 @@ class classes(models.Model):
     codestr = models.CharField(max_length=6, default='')
 
     students = models.ManyToManyField(profile, blank=True)
-    assignments = models.ManyToManyField(assignment, blank=True)
+    assignments = models.ManyToManyField(assignmentObj, blank=True)
     subject = models.CharField(max_length=10, default='')
     color = models.CharField(default='', max_length=15)
     created = models.DateTimeField(auto_now_add=True)

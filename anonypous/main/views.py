@@ -4,37 +4,62 @@ from django.shortcuts import render
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import login, logout, authenticate, get_user_model
 from django.contrib.auth.models import User
-from . models import profile, classes, classcode, assignmentcode, assignment
+from . models import profile, classes, classcode, assignmentcode, assignmentObj
 import string
 import random
 
 def print2(str):
     print(f'\n\n{str}\n\n')
 
-def genCode6():
+def genCodeClass():
+    codelist = []
+    codes = classcode.objects.all()
+    for x in codes:
+        code = x.code
+        codelist.append(code)
+    code = []
     letters = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
     y = 0
-    code = []
     while y < 6:
         num = random.randrange(0, 35)
         code.append(letters[num])
         y += 1
     y = 0
     code = ''.join(code)
+    print(code)
+    print(codelist)
+    for x in codelist:
+        if code == x:
+            print('Code already used')
+            genCodeClass()
     return code
 
-def codecheck(code, codelist):
-    if code in codelist:
-        codes = classcode.objects.all()
-        codelist = []
-        for x in codes:
-            code = x.code
-            codelist.append(code)
-        code = genCode6()
-        codecheck(code, codelist)
-        print('found code')
-    else:
-        return code
+def genCodeAssignment():
+
+    codelist = []
+    codes = assignmentcode.objects.all()
+    for x in codes:
+        code = x.code
+        codelist.append(code)
+    code = []
+    letters = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
+    y = 0
+    while y < 17:
+        if y == 5 or y == 11:
+            code.append('-')
+        else:
+            num = random.randrange(0, 35)
+            code.append(letters[num])
+        y += 1
+    y = 0
+    code = ''.join(code)
+    print(code)
+    print(codelist)
+    for x in codelist:
+        if code == x:
+            print('Code already used')
+            genCodeAssignment()
+    return code
 
 def invalid(request):
     return render(request, 'dashboard/invalid.html')
@@ -125,9 +150,7 @@ def dashboard(request):
                 codelist.append(code)
 
             #makes new code
-            code = genCode6()
-            #checks if code has been used, if not it makes new code and checks again
-            code = codecheck(code, codelist)
+            code = genCodeClass()
             code = classcode.objects.create(code=code)
             currentclass = classes.objects.create(codestr=f'{code}',name=classname, owner=request.user, ownerstr=f'{request.user}', description=description, code=code, color=color, subject=f'{subject}' )
             return redirect(f'class/{code}/')
@@ -184,203 +207,223 @@ def dashboard(request):
 
     return render(request, 'dashboard/dashboard.html', context)
 
-
-
-
-
 def submission(request, classCode, assignmentCode, docCode):
 
     return render(request, 'dashboard/submission.html', {})
 
 def assignment(request, classCode, assignmentCode):
 
-    return render(request, 'dashboard/assignment.html', {})
+    context = {}
+    """
+    print(f'code - [{classCode}]')
+    classCode = str(classCode)
+    #try:
 
+
+    classs = classes.objects.get(codestr=classCode)    
+
+    name = assignment.name
+    code = classs.code
+    owner = classs.owner
+    description = classs.description
+    students = classs.students.all()
+    assignments = classs.assignments.all()
+    print('\n\n')
+    print(f'name-{name}')
+    print(f'code-{code}')
+    print(f'owner-{owner}')
+    print(f'description-{description}')
+    print(f'students-{students}')
+    print(f'assignments-{assignments}')
+    print('\n\n')
+
+    context = {
+    'className': name,
+    'classCode': code,
+    'classDescription': description,
+    'students': students,
+    'assignments': assignments,
+    'assignmentList': []
+    }
+    currentClass = code
+    
+    #POST method goes here
+            
+    if str(request.user) == classs.ownerstr:
+        return render(request, 'dashboard/class.html', context)
+ 
+    else:
+        for x in students:
+            print2(x)
+            print(request.user)
+            x = str(x)
+            if str(request.user) == x:
+                return render(request, 'dashboard/assignment.html', context)
+        return redirect('/invalid')
+
+
+
+    #except:
+     #   print('not a valid class')
+        #return render(request, 'dashboard/class.html', context)
+     #   return redirect('/invalid')
+    """
+    return render(request, 'dashboard/assignment.html', context)
 
 def classpage(request, classCode):
 
     print(f'code - [{classCode}]')
     classCode = str(classCode)
-    try:
-        classs = classes.objects.get(codestr=classCode)    
-
-    
-        name = classs.name
-        code = classs.code
-        owner = classs.owner
-        description = classs.description
-        students = classs.students.all()
-        assignments = classs.assignments.all()
-        print('\n\n')
-        print(f'name-{name}')
-        print(f'code-{code}')
-        print(f'owner-{owner}')
-        print(f'description-{description}')
-        print(f'students-{students}')
-        print(f'assignments-{assignments}')
-        print('\n\n')
-
-        context = {
-        'className': name,
-        'classCode': code,
-        'classDescription': description,
-        'students': students,
-        'assignments': assignments,
-        'assignmentList': []
-        }
+    #try:
 
 
-        print(context)
+    classs = classes.objects.get(codestr=classCode)    
+
+    name = classs.name
+    code = classs.code
+    owner = classs.owner
+    description = classs.description
+    students = classs.students.all()
+    assignments = classs.assignments.all()
+    print('\n\n')
+    print(f'name-{name}')
+    print(f'code-{code}')
+    print(f'owner-{owner}')
+    print(f'description-{description}')
+    print(f'students-{students}')
+    print(f'assignments-{assignments}')
+    print('\n\n')
+
+    context = {
+    'className': name,
+    'classCode': code,
+    'classDescription': description,
+    'students': students,
+    'assignments': assignments,
+    'assignmentList': []
+    }
+    currentClass = code
+
+    if request.method == 'POST':
+            print('\ntest\n')
+            print(f'{request.POST}\n')
+            #rendering stuff
+            user = request.user
+
+            #Finished
+            if 'cc_assignmentName' in request.POST:
+                print2('dfjkdfkjfdskjsdfkljsdfkjlfsdkjjkfs')
+                assignmentname = request.POST.get('cc_assignmentName')
+                pointValue = request.POST.get('pointValue')
+                dueDate = request.POST.get('dueDate')
+                instructions = request.POST.get('instructions')
 
 
 
+                code = genCodeAssignment()
+                code = assignmentcode.objects.create(code=code)
+                code.save()
+                print(f'\n\n{assignmentname}')
+                print(pointValue)
+                print(dueDate)
+                print(instructions)
+                print(f'{code}\n\n')
 
-        
-        if str(request.user) == classs.ownerstr:
 
-
-
-
-            if request.method == 'POST':
-                print('\ntest\n')
-                print(f'{request.POST}\n')
-                #rendering stuff
+                print(1)
                 user = request.user
+                print(2)
+                currentAssignment = assignmentObj.objects.create(name=str(assignmentname), owner=user, ownerstr=str(user), code=code, codestr=str(code), pointValue=int(pointValue), instructions=str(instructions), dueDate=dueDate)
+                print('jkdsajklfdljsafjlksdlkfslsgefefkldsfjkldjsl;fjdlk;sa')
+                print(currentClass)
+                print(code)
+                currentAssignment.save()
 
-                if 'cc_assignmentName' in request.POST:
-                    print2('dfjkdfkjfdskjsdfkljsdfkjlfsdkjjkfs')
-                    assignmentname = request.POST.get('cc_assignmentName')
-                    pointValue = request.POST.get('pointValue')
-                    dueDate = request.POST.get('dueDate')
-                    instructions = request.POST.get('instructions')
+                classs.assignments.add(currentAssignment)
+                print('added class')
+                print(classs.assignments.all())
+                return redirect(f'{str(code)}/')
 
-
-
-                    print(f'\n\n{assignmentname}')
-                    print(pointValue)
-                    print(dueDate)
-                    print(f'{instructions}\n\n')
-
-
-                    '''
-                    codes = assignmentcode.objects.all()
-                    codelist = []
-                    for x in codes:
-                        code = x.code
-                        codelist.append(code)
-
-                    #makes new code
-                    code = genCode6()
-                    #checks if code has been used, if not it makes new code and checks again
-                    code = codecheck(code, codelist)
-                    code = classcode.objects.create(code=code)
-                    currentclass = classes.objects.create(codestr=f'{code}',name=classname, owner=request.user, ownerstr=f'{request.user}', description=description, code=code, color=color, subject=f'{subject}' )
-                    return redirect(f'class/{code}/')
-                    #will deal with the create form post
-                    '''
-
-                elif 'rc_class' in request.POST:
-
-                    
-                    classs = classes.objects.filter(ownerstr=user)
-                    for x in classs:
-                        print2('woked')
-                        print(x)
-                        print(str(request.POST.get('rc_class')))
-                        c = str(x)
-                        
-                        if str(request.POST.get('rc_class')) == c:
-                            print2(f' = {x}')
-                            x.delete()
-                            return redirect('/dashboard')
-
-                        
-
-                    #will deal with the remove form post    
-                elif 'jc_classCode' in request.POST:
-
-                    currentcode = request.POST.get('jc_classCode')
-                    currentcode = f'{currentcode}'
-
-
-                    try:
-                        classs = classes.objects.get(codestr=currentcode)
-                        print(classs)
-                        print(type(classs))
-                        try:
-                            classs.students.add(request.user.profile)
-                            print(f'Added {request.user} to - {classs.name}')
-                            print(classs.students.all())
-                            classs.save()
-                            return redirect(f'class/{currentcode}/')
-                        except:
-                            print("Failed Add to Class - this shouldn't be called")
-
-
-                    except:
-                        print('class does not exist')
-                        context = {
-                            'classFail': True,
-                        }
-                        return redirect('/dashboard', context)
+            #To Do
+            elif 'rc_class' in request.POST:
 
                 
-                    print(f'\njoin') 
-                    #will deal with the remove form post
+                classs = classes.objects.filter(ownerstr=user)
+                for x in classs:
+                    print2('woked')
+                    print(x)
+                    print(str(request.POST.get('rc_class')))
+                    c = str(x)
+                    
+                    if str(request.POST.get('rc_class')) == c:
+                        print2(f' = {x}')
+                        x.delete()
+                        return redirect('/dashboard')
 
-            return render(request, 'dashboard/class.html', context)
+                    
 
+                #will deal with the remove form post    
+            elif 'jc_classCode' in request.POST:
 
-
-
-
-
-
-
-
-        else:
-            for x in students:
-                print2(x)
-                print(request.user)
-                x = str(x)
-                if str(request.user) == x:
-
-
+                currentcode = request.POST.get('jc_classCode')
+                currentcode = f'{currentcode}'
 
 
+                try:
+                    classs = classes.objects.get(codestr=currentcode)
+                    print(classs)
+                    print(type(classs))
+                    try:
+                        classs.students.add(request.user.profile)
+                        print(f'Added {request.user} to - {classs.name}')
+                        print(classs.students.all())
+                        classs.save()
+                        return redirect(f'class/{currentcode}/')
+                    except:
+                        print("Failed Add to Class - this shouldn't be called")
 
 
+                except:
+                    print('class does not exist')
+                    context = {
+                        'classFail': True,
+                    }
+                    return redirect('/dashboard', context)
 
+            
+                print(f'\njoin') 
+                #will deal with the remove form post
 
-
-
-
-
-
-
-
-
-
-                    return render(request, 'dashboard/class.html', context)
-            return redirect('/invalid')
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    except:
-        print('not a valid class')
-        #return render(request, 'dashboard/class.html', context)
+    
+    if str(request.user) == classs.ownerstr:
+        return render(request, 'dashboard/class.html', context)
+ 
+    else:
+        for x in students:
+            print2(x)
+            print(request.user)
+            x = str(x)
+            if str(request.user) == x:
+                return render(request, 'dashboard/class.html', context)
         return redirect('/invalid')
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    #except:
+     #   print('not a valid class')
+        #return render(request, 'dashboard/class.html', context)
+     #   return redirect('/invalid')
 
 def profiles(request):
 

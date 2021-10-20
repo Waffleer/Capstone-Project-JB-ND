@@ -4,7 +4,7 @@ from . models import *
 
 admin.site.register(profile)
 admin.site.register(classes)
-admin.site.register(assignment)
+admin.site.register(assignmentObj)
 admin.site.register(doc)
 admin.site.register(classcode)
 admin.site.register(documentcode)
