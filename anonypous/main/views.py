@@ -4,7 +4,7 @@ from django.shortcuts import render
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import login, logout, authenticate, get_user_model
 from django.contrib.auth.models import User
-from . models import profile, classes, classcode
+from . models import profile, classes, classcode, assignmentcode, assignment
 import string
 import random
 
@@ -263,7 +263,7 @@ def classpage(request, classCode):
 
 
                     '''
-                    codes = classcode.objects.all()
+                    codes = assignmentcode.objects.all()
                     codelist = []
                     for x in codes:
                         code = x.code
