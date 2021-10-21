@@ -4,7 +4,11 @@ from django.db.models.deletion import CASCADE, PROTECT
 from django.db.models.fields import CharField
 # Create your models here.
 
+class documentcode(models.Model):
+    code = models.CharField(max_length=16)
 
+    def __str__(self):
+        return f'''{self.code}'''
 
 class profile(models.Model):
     email = models.EmailField(default='')
@@ -15,19 +19,13 @@ class profile(models.Model):
 
     #true = teacher account, false = student account
     teacher = models.BooleanField(default=False)
+    submissions = models.ManyToManyField(documentcode, blank=True)
 
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return f'''{self.email}'''
-
-class documentcode(models.Model):
-    code = models.CharField(max_length=16)
-
-    def __str__(self):
-        return f'''{self.code}'''
-
 
 
 class doc(models.Model):
@@ -61,6 +59,7 @@ class assignmentObj(models.Model):
     pointValue = models.IntegerField(default='-1')
     dueDate = models.DateField(null=True, blank=True)
 
+    submissions = models.ManyToManyField(doc, blank=True)
     instructions = models.TextField(default='Instructions')
 
     created = models.DateTimeField(auto_now_add=True)

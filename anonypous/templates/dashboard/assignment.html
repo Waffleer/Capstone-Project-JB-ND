@@ -25,10 +25,23 @@ Assignment
                 <!-- IF ALL SUBMISSIONS ARE GRADED -->
                 <button type="button" class="btn btn-primary">Commit to Grades</button>
             {% else %}
-                <!-- IF ALREADY SUBMITTED -->
-                <button type="button" class="btn btn-primary" disabled>Submit</button>
+                <form action='' method='POST'>{% csrf_token %}
                 <!-- IF NOT SUBMITTED -->
-                <button type="button" class="btn btn-primary">Submit</button>
+                <button type="submit" class="btn btn-primary">Submit</button>
+
+
+                <!-- IF ALREADY SUBMITTED    <button type="button" class="btn btn-primary" disabled>Submit</button>  -->
+                     
+                <br><br><br>
+                <textarea name="text" class="form-control" rows="5"></textarea>
+                </form>
+
+
+
+
+
+
+
             {% endif %}
         </div>
         </div>
@@ -109,18 +122,16 @@ Assignment
                     </div>
                 </a>
         </body>
-    {% else %}
-        <style>
 
-        </style>
-        
-        <body>
-            <br>
-            <form>
-                <textarea class="form-control" rows="5"></textarea>
-            </form>
+
+
+    {% else %}
+
         </body>
     {% endif %}
+
+
+
 {% else %}
     <meta http-equiv="Refresh" content="0; url='/login'" />
 {% endif %}

@@ -133,13 +133,15 @@ Class
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form>
+
+
+                <form action='' method='POST'>{% csrf_token %}
                     <div class="mb-3">
                         <label for="classIcon" class="form-label">Assignment to Remove</label>
-                        <select id="classIcon" class="form-select" required>
+                        <select id="classIcon" name="ra_class" class="form-select" required>
                             <option selected disabled="disabled" value="">– Select Assignment to Remove –</option>
                             {% for i in assignments %}
-                                <option value={{i}}>{{i}}</option>
+                                <option value={{i.2}}>{{i.0}}</option>
                             {% empty %}
                                 <option disabled>No Assignments Yet</option>
                             {% endfor %}
@@ -149,6 +151,9 @@ Class
                         <button type="submit" class="btn btn-primary" style="width:100%;border-radius:25px">Remove Assignment</button>
                     </div>
                 </form>
+
+
+
             </div>
             </div>
         </div>
