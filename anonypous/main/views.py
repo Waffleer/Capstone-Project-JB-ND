@@ -214,43 +214,45 @@ def submission(request, classCode, assignmentCode, docCode):
 def assignment(request, classCode, assignmentCode):
 
     context = {}
-    """
+
     print(f'code - [{classCode}]')
     classCode = str(classCode)
     #try:
 
 
+    assignment = assignmentObj.objects.get(codestr=assignmentCode)
     classs = classes.objects.get(codestr=classCode)    
 
+    students = classs.students.all()    
+
     name = assignment.name
-    code = classs.code
-    owner = classs.owner
-    description = classs.description
-    students = classs.students.all()
-    assignments = classs.assignments.all()
+    code = assignment.code
+    owner = assignment.owner
+    instructions = assignment.instructions
+    pointValue = assignment.pointValue
+
+
     print('\n\n')
     print(f'name-{name}')
     print(f'code-{code}')
     print(f'owner-{owner}')
-    print(f'description-{description}')
-    print(f'students-{students}')
-    print(f'assignments-{assignments}')
+    print(f'description-{instructions}')
+    print(f'students-{pointValue}')
     print('\n\n')
 
     context = {
-    'className': name,
-    'classCode': code,
-    'classDescription': description,
-    'students': students,
-    'assignments': assignments,
+    'assignmentName': name,
+    'assignmentCode': code,
+    'assignmentInstructions': instructions,
+    'pointValue': pointValue,
     'assignmentList': []
     }
-    currentClass = code
+    
     
     #POST method goes here
             
-    if str(request.user) == classs.ownerstr:
-        return render(request, 'dashboard/class.html', context)
+    if str(request.user) == assignment.ownerstr:
+        return render(request, 'dashboard/assignment.html', context)
  
     else:
         for x in students:
@@ -267,7 +269,7 @@ def assignment(request, classCode, assignmentCode):
      #   print('not a valid class')
         #return render(request, 'dashboard/class.html', context)
      #   return redirect('/invalid')
-    """
+
     return render(request, 'dashboard/assignment.html', context)
 
 def classpage(request, classCode):
@@ -284,15 +286,24 @@ def classpage(request, classCode):
     owner = classs.owner
     description = classs.description
     students = classs.students.all()
-    assignments = classs.assignments.all()
+    rawAssignments = classs.assignments.all()
     print('\n\n')
     print(f'name-{name}')
     print(f'code-{code}')
     print(f'owner-{owner}')
     print(f'description-{description}')
     print(f'students-{students}')
-    print(f'assignments-{assignments}')
+    print(f'assignments-{rawAssignments}')
     print('\n\n')
+    
+    assignments = []
+    for x in rawAssignments:
+        assignmentList = []
+        assignmentList.append(x.name)
+        assignmentList.append(x.dueDate)
+        assignmentList.append(x.code)
+        print(x.code)
+        assignments.append(assignmentList)
 
     context = {
     'className': name,

@@ -183,11 +183,11 @@ Class
                 <div class="status"><strong>Status</strong></div>
             </div>
             {% for i in assignments %}
-                <a href="">
+                <a href="/class/{{classCode}}/{{i.2}}/">
                     <div class="assignment active">
-                        <div class="title">{{i}}</div>
-                        <div class="duedate">{{i}}</div>
-                        <div class="status">{{i}}</div>
+                        <div class="title">{{i.0}}</div>
+                        <div class="duedate">{{i.1}}</div>
+                        <div class="status">Need to make</div>
                     </div>
                 </a>
             {% empty %}
