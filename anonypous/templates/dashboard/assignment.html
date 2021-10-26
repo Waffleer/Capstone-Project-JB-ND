@@ -16,12 +16,11 @@ Assignment
 
         <div class="card" style="width:100%;">
         <div class="card-body">
-            <h5 class="card-title">Assignment Title</h5>
-            <p class="card-body"><strong>[POINT VALUE] Points</strong></p>
-            <p class="card-body">Assignment Instructions</p>
+            <h5 class="card-title">{{assignmentName}}</h5>
+            <p class="card-body"><strong>{{pointValue}} Points</strong></p>
+            <p class="card-body">{{assignmentInstructions}}</p>
             {% if user.profile.teacher == True %}
-                <!-- IF NOT ALL SUBMISSIONS ARE GRADED -->
-                <button type="button" class="btn btn-primary" disabled>Commit to Grades</button>
+
                 <!-- IF ALL SUBMISSIONS ARE GRADED -->
                 <button type="button" class="btn btn-primary">Commit to Grades</button>
             {% else %}
@@ -31,11 +30,10 @@ Assignment
 
 
                 <!-- IF ALREADY SUBMITTED    <button type="button" class="btn btn-primary" disabled>Submit</button>  -->
-                     
-                <br><br><br>
-                <textarea name="text" class="form-control" rows="5"></textarea>
-                </form>
 
+                <br><br><br>
+                <textarea name="text" class="form-control" rows="5">{{ text }}</textarea>
+                </form>
 
 
 
@@ -105,22 +103,20 @@ Assignment
                 <div class="submission header">
                     <div class="id"><strong>Submission ID</strong></div>
                     <div class="date"><strong>Submission Date</strong></div>
-                    <div class="status"><strong>Status</strong></div>
+                    <!-- <div class="status"><strong>Status</strong></div> -->
                 </div>
-                <a href="assignment/submission">
-                    <div class="submission active">
-                        <div class="id">a1b2c3-d4e5f6-g7h8i9</div>
-                        <div class="date">October 31, 2021 - 21:00</div>
-                        <div class="status">Graded</div>
-                    </div>
-                </a>
-                <a href="assignment/submission">
-                    <div class="submission active">
-                        <div class="id">j7i0p8-f8s6g8-b7e9b7</div>
-                        <div class="date">October 31, 2021 - 22:00</div>
-                        <div class="status">To Grade</div>
-                    </div>
-                </a>
+
+                {% for x in submissions%}
+                    <a href="class/{{classCode}}/{{assigmentCode}}/{{x.0}}">
+                        <div class="submission active">
+                            <div class="id">{{x.0}}</div>
+                            <div class="date">{{x.1}}</div>
+                            <!-- <div class="status">Graded</div> -->
+                        </div>
+                    </a>
+
+                {% endfor %}
+               
         </body>
 
 

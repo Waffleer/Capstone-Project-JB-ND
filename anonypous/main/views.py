@@ -4,9 +4,10 @@ from django.shortcuts import render
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import login, logout, authenticate, get_user_model
 from django.contrib.auth.models import User
-from . models import profile, classes, classcode, assignmentcode, assignmentObj
-import string
+from . models import profile, classes, classcode, assignmentcode, assignmentObj, documentcode, doc
+
 import random
+from datetime import datetime
 
 def print2(str):
     print(f'\n\n{str}\n\n')
@@ -59,6 +60,29 @@ def genCodeAssignment():
         if code == x:
             print('Code already used')
             genCodeAssignment()
+    return code
+
+def genCodeDoc():
+    codelist = []
+    codes = documentcode.objects.all()
+    for x in codes:
+        code = x.code
+        codelist.append(code)
+    code = []
+    letters = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
+    y = 0
+    while y < 23:
+        if y == 5 or y == 11 or y == 17:
+            code.append('-')
+        else:
+            num = random.randrange(0, 35)
+            code.append(letters[num])
+        y += 1
+    y = 0
+    code = ''.join(code)
+    for x in codelist:
+        if code == x:
+            genCodeDoc()
     return code
 
 def invalid(request):
@@ -207,7 +231,6 @@ def dashboard(request):
 
     return render(request, 'dashboard/dashboard.html', context)
 
-
 def grade(request, classCode, assignmentCode, docCode):
 
 
@@ -225,9 +248,9 @@ def assignment(request, classCode, assignmentCode):
     if str(assignmentCode) == 'style.css':
         pass
     else:
-        assignment = assignmentObj.objects.get(codestr=assignmentCode)
+        assignment = assignmentObj.objects.get(codestr=str(assignmentCode))
         classs = classes.objects.get(codestr=classCode)    
-
+        user = request.user
         students = classs.students.all()    
 
         name = assignment.name
@@ -238,30 +261,76 @@ def assignment(request, classCode, assignmentCode):
         submissions = assignment.submissions.all()
 
         #configure submission array
+        text = ''
+        assignment = assignmentObj.objects.get(codestr=str(assignmentCode))
+        sublist = []
+        for x in assignment.submissions.all():
+            code = x.code
+            text = x.text
+            submissionDate = x.submissionDate
+            sublist.append(code)
+            sublist.append(text)
+            sublist.append(submissionDate)
+
+        for x in assignment.submissions.all():
+            if str(x.owner) == str(user):
+                text = x.text
 
 
 
-        print('\n\n')
-        print(f'name-{name}')
-        print(f'code-{code}')
-        print(f'owner-{owner}')
-        print(f'description-{instructions}')
-        print(f'students-{pointValue}')
-        print('\n\n')
+
 
         context = {
+        'classCode': classCode,
         'assignmentName': name,
         'assignmentCode': code,
         'assignmentInstructions': instructions,
         'pointValue': pointValue,
-        'submissions': submissions,
-        'assignmentList': []
+        'submissions': sublist,
+        'assignmentList': [],
+        'text': text,
+
         }
         
         
         if request.method == 'POST':
             text = request.POST.get('text')
-            print2(text)
+
+
+            currentTime = datetime.now()
+            
+
+            assignment = assignmentObj.objects.get(codestr=str(assignmentCode))
+            docName = 'Name TBD'
+            
+            assignmentCreate = True
+            for x in assignment.submissions.all():
+                if str(x.owner) == str(user):
+                    assignmentCreate = False
+                    x.submissionDate = currentTime
+                    x.text = text
+                    text = x.text
+                    x.save()
+            code = genCodeDoc()
+            docCode = documentcode.objects.create(code=str(code))
+            if assignmentCreate == True:
+                currentdoc = doc.objects.create(name=str(docName), owner=user, code=docCode, text=text)
+                assignment.submissions.add(currentdoc)
+                user.profile.submissions.add(docCode)
+
+            
+
+            context = {
+            'assignmentName': name,
+            'assignmentCode': code,
+            'assignmentInstructions': instructions,
+            'pointValue': pointValue,
+            'submissions': submissions,
+            'assignmentList': [],
+            'text': text
+            }
+
+            return render(request, 'dashboard/assignment.html', context)
 
 
                 
@@ -270,8 +339,6 @@ def assignment(request, classCode, assignmentCode):
     
         else:
             for x in students:
-                print2(x)
-                print(request.user)
                 x = str(x)
                 if str(request.user) == x:
                     return render(request, 'dashboard/assignment.html', context)

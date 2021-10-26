@@ -30,16 +30,17 @@ class profile(models.Model):
 
 class doc(models.Model):
     name = models.CharField(max_length=30)
-    owner = models.OneToOneField(User, on_delete=PROTECT, default='')
+    owner = models.ForeignKey(User, on_delete=PROTECT, default='')
     code = models.OneToOneField(documentcode, on_delete=CASCADE, default='')
 
     text = models.TextField(default='File Text')
+    submissionDate = models.DateTimeField(null=True, blank=True)
 
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return f'''Session Name - {self.name}'''
+        return f'''Doc - {self.code}'''
 
 
 class assignmentcode(models.Model):
