@@ -56,24 +56,25 @@ Root
         <body>
             <div class="container">
                 <form class="submission-block">
-                    <textarea class="form-control" style="min-height:250px;cursor:not-allowed" disabled></textarea>
+                    <textarea class="form-control" style="min-height:250px;cursor:not-allowed" disabled>{{assignmentText}}</textarea>
                 
                 
                 </form>
                     <div class="card grade-block">
                         <div class="card-body">
-                            <h5 class="card-title">Submission ID</h5>
-                            <p class="card-body">Submission Date</p>
-                            <p class="card-body">Assignment Instructions</p>
+                            <h5 class="card-title">{{docCode}}</h5>
+                            <p class="card-body">{{ subDate }}</p>
+                            <p class="card-body">{{ instructions }}</p>
+
                             <form>
                                 <div class="mb-3">
                                     <textarea class="form-control grade-field" placeholder="Assignment Feedback" style="min-height:100px;"></textarea>
                                 </div>
                                 <div class="mb-3">
-                                    <input type="number" class="form-control grade-field" placeholder="Score out of [POINTS] points" required>
+                                    <input type="number" class="form-control grade-field" placeholder="Score out of {{pointValue}} points" required>
                                 </div>
                                 <div class="mb-3">
-                                    <button type="submit" class="btn btn-primary" style="width:250px;">Submit Grade</button>
+                                    <button type="submit" class="btn btn-primary" style="width:250px;">Save Grade</button>
                                 </div>
                             </form>
 

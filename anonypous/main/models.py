@@ -32,6 +32,7 @@ class doc(models.Model):
     name = models.CharField(max_length=30)
     owner = models.ForeignKey(User, on_delete=PROTECT, default='')
     code = models.OneToOneField(documentcode, on_delete=CASCADE, default='')
+    codestr = models.CharField(max_length=30, default='')
 
     text = models.TextField(default='File Text')
     submissionDate = models.DateTimeField(null=True, blank=True)

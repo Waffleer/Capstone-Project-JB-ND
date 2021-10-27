@@ -149,6 +149,9 @@ def dashboard(request):
     else:
         return redirect('/login')
 
+
+
+
     if request.method == 'POST':
         print('\ntest\n')
         print(f'{request.POST}\n')
@@ -233,10 +236,27 @@ def dashboard(request):
 
 def grade(request, classCode, assignmentCode, docCode):
 
+    document = doc.objects.get(codestr=docCode) 
+    text = str(document.text)
+    subDate = document.submissionDate
+    docCode = str(document.code)
 
+    assignment = assignmentObj.objects.get(codestr=str(assignmentCode))
+    instructions = assignment.instructions
+    pointValue = assignment.pointValue
+    assignmentOwner = assignment.owner
 
-    context = {}
-    return render(request, 'dashboard/submission.html', context)
+    if assignmentOwner == request.user:
+        context = {
+            'assignmentText':text,
+            'subDate': subDate,
+            'docCode': docCode,
+            'instructions': instructions,
+            'pointValue': pointValue,
+        }
+        return render(request, 'dashboard/submission.html', context)
+    else:
+        return redirect('/invalid')
 
 def assignment(request, classCode, assignmentCode):
     context = {}
@@ -305,6 +325,7 @@ def assignment(request, classCode, assignmentCode):
             
 
             assignment = assignmentObj.objects.get(codestr=str(assignmentCode))
+
             docName = 'Name TBD'
             
             assignmentCreate = True
@@ -318,7 +339,7 @@ def assignment(request, classCode, assignmentCode):
             code = genCodeDoc()
             docCode = documentcode.objects.create(code=str(code))
             if assignmentCreate == True:
-                currentdoc = doc.objects.create(name=str(docName), owner=user, code=docCode, text=text)
+                currentdoc = doc.objects.create(name=str(docName), owner=user, code=docCode, text=text, codestr=str(docCode))
                 assignment.submissions.add(currentdoc)
                 user.profile.submissions.add(docCode)
 
