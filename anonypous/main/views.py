@@ -259,6 +259,7 @@ def assignment(request, classCode, assignmentCode):
         instructions = assignment.instructions
         pointValue = assignment.pointValue
         submissions = assignment.submissions.all()
+        assignmentDueDate = assignment.dueDate
 
         #configure submission array
         text = ''
@@ -287,6 +288,7 @@ def assignment(request, classCode, assignmentCode):
         'assignmentName': name,
         'assignmentCode': code,
         'assignmentInstructions': instructions,
+        'dueDate': assignmentDueDate,
         'pointValue': pointValue,
         'submissions': sublist,
         'assignmentList': [],
