@@ -1,4 +1,4 @@
-
+import smtplib, ssl
 from django.http.response import HttpResponse
 from django.shortcuts import render
 from django.shortcuts import render, redirect, get_object_or_404
@@ -88,7 +88,6 @@ def genCodeDoc():
 def invalid(request):
     return render(request, 'dashboard/invalid.html')
 
-# Create your views here.
 def dashboard(request):
     context = {
         'classFail': False,
@@ -235,128 +234,133 @@ def dashboard(request):
     return render(request, 'dashboard/dashboard.html', context)
 
 def grade(request, classCode, assignmentCode, docCode):
+    if str(docCode) == 'style.css':
+        pass
+    else:
+        document = doc.objects.get(codestr=docCode)
+        text = str(document.text)
+        subDate = document.submissionDate
+        docCode = str(document.code)
+        feedback = document.comment
+        score = document.score
 
-    document = doc.objects.get(codestr=docCode) 
-    text = str(document.text)
-    subDate = document.submissionDate
-    docCode = str(document.code)
-    feedback = document.comment
-    score = document.score
+        assignment = assignmentObj.objects.get(codestr=str(assignmentCode))
+        instructions = assignment.instructions
+        pointValue = assignment.pointValue
+        assignmentOwner = assignment.owner
 
-    assignment = assignmentObj.objects.get(codestr=str(assignmentCode))
-    instructions = assignment.instructions
-    pointValue = assignment.pointValue
-    assignmentOwner = assignment.owner
+        if assignmentOwner == request.user:
 
-    if assignmentOwner == request.user:
+            if request.method == 'POST':
 
-        if request.method == 'POST':
+                comments = request.POST.get('feedback')
+                score_ = request.POST.get('score')
 
-            comments = request.POST.get('feedback')
-            score_ = request.POST.get('score')
+                document = doc.objects.get(codestr=docCode) 
+                document.comment = comments
+                document.score = score_
+                document.save()
+                text = str(document.text)
+                subDate = document.submissionDate
+                docCode = str(document.code)
+                feedback = document.comment
+                score = document.score
+                assignment = assignmentObj.objects.get(codestr=str(assignmentCode))
+                instructions = assignment.instructions
+                pointValue = assignment.pointValue
+                assignmentOwner = assignment.owner
 
-            document = doc.objects.get(codestr=docCode) 
-            document.comment = comments
-            document.score = score_
-            document.save()
-            text = str(document.text)
-            subDate = document.submissionDate
-            docCode = str(document.code)
-            feedback = document.comment
-            score = document.score
-            assignment = assignmentObj.objects.get(codestr=str(assignmentCode))
-            instructions = assignment.instructions
-            pointValue = assignment.pointValue
-            assignmentOwner = assignment.owner
+                context = {
+                'assignmentText':text,
+                'subDate': subDate,
+                'docCode': docCode,
+                'instructions': instructions,
+                'pointValue': pointValue,
+                'score': score,
+                'feedback': feedback
+                }
+                
+                return redirect(f'/class/{classCode}/{assignmentCode}/')
 
             context = {
-            'assignmentText':text,
-            'subDate': subDate,
-            'docCode': docCode,
-            'instructions': instructions,
-            'pointValue': pointValue,
-            'score': score,
-            'feedback': feedback
+                'assignmentText':text,
+                'subDate': subDate,
+                'docCode': docCode,
+                'instructions': instructions,
+                'pointValue': pointValue,
+                'score': score,
+                'feedback': feedback
             }
-            
-            return redirect(f'/class/{classCode}/{assignmentCode}/')
-
-        context = {
-            'assignmentText':text,
-            'subDate': subDate,
-            'docCode': docCode,
-            'instructions': instructions,
-            'pointValue': pointValue,
-            'score': score,
-            'feedback': feedback
-        }
 
 
-        return render(request, 'dashboard/submission.html', context)
-    else:
-        return redirect('/invalid')
-
-
+            return render(request, 'dashboard/submission.html', context)
+        else:
+            return redirect('/invalid')
 
 def assignment(request, classCode, assignmentCode):
     context = {}
 
-    print(f'code - [{classCode}]')
     classCode = str(classCode)
     #try:
-
+    user = request.user
     if str(assignmentCode) == 'style.css':
         pass
     else:
-        assignment = assignmentObj.objects.get(codestr=str(assignmentCode))
-        classs = classes.objects.get(codestr=classCode)    
-        user = request.user
-        students = classs.students.all()    
+        if user.profile.teacher == True:
+            assignment = assignmentObj.objects.get(codestr=str(assignmentCode))
+            classs = classes.objects.get(codestr=classCode)    
+            user = request.user
+            students = classs.students.all()    
 
-        name = assignment.name
-        code = assignment.code
-        owner = assignment.owner
-        instructions = assignment.instructions
-        pointValue = assignment.pointValue
-        submissions = assignment.submissions.all()
-        assignmentDueDate = assignment.dueDate
+            name = assignment.name
+            code = assignment.code
+            owner = assignment.owner
+            instructions = assignment.instructions
+            pointValue = assignment.pointValue
+            submissions = assignment.submissions.all()
+            assignmentDueDate = assignment.dueDate
 
-        #configure submission array
-        text = ''
-        assignment = assignmentObj.objects.get(codestr=str(assignmentCode))
-        sublist = []
-        for x in assignment.submissions.all():
-            submission = []
-            code = x.code
-            text = x.text
-            submissionDate = x.submissionDate
-            submission.append(code)
-            submission.append(text)
-            submission.append(submissionDate)
-            sublist.append(submission)
-
-        for x in assignment.submissions.all():
-            if str(x.owner) == str(user):
+            #configure submission array
+            text = ''
+            assignment = assignmentObj.objects.get(codestr=str(assignmentCode))
+            sublist = []
+            for x in assignment.submissions.all():
+                if x.open == False:
+                    commit = True
+                submission = []
+                code = x.code
                 text = x.text
+                submissionDate = x.submissionDate
+                submission.append(code)
+                submission.append(text)
+                submission.append(submissionDate)
+                sublist.append(submission)
+
+            for x in assignment.submissions.all():
+                if str(x.owner) == str(user):
+                    text = x.text
 
 
 
 
 
-        context = {
-        'classCode': classCode,
-        'assignmentName': name,
-        'assignmentCode': code,
-        'assignmentInstructions': instructions,
-        'dueDate': assignmentDueDate,
-        'pointValue': pointValue,
-        'submissions': sublist,
-        'assignmentList': [],
-        'text': text,
-
-        }
+            context = {
+            'classCode': classCode,
+            'assignmentName': name,
+            'assignmentCode': code,
+            'assignmentInstructions': instructions,
+            'dueDate': assignmentDueDate,
+            'pointValue': pointValue,
+            'submissions': sublist,
+            'assignmentList': [],
+            'text': text,
+            'commit': commit,
+            }
     
+
+
         if user.profile.teacher == False:
+            #If Student
             if request.method == 'POST':
                 text = request.POST.get('text')
 
@@ -392,13 +396,57 @@ def assignment(request, classCode, assignmentCode):
                 'pointValue': pointValue,
                 'submissions': submissions,
                 'assignmentList': [],
-                'text': text
+                'text': text,
+                'commit': commit,
                 }
 
                 return render(request, 'dashboard/assignment.html', context)
         else:
+            #If Teacher
             if request.method == 'POST':
-                pass
+                assignment = assignmentObj.objects.get(codestr=str(assignmentCode))
+                submissions_ = assignment.submissions.all()
+                print2(submissions_)
+                #add if false check
+                emailList = []
+                for x in submissions_:
+                    emailList.append(str(x.owner))
+                    x.open = False
+                    x.save()
+
+                context = ssl.create_default_context()
+                
+                smtp_server = ''
+                port = 587
+                sender = ''
+                password = ''
+
+                server = smtplib.SMTP(smtp_server,port)
+                server.starttls(context=context) # Secure the connection
+                server.login(sender, password)
+
+                print("Connection Complete\n")
+
+                for z in emailList:
+                    receiver = z
+                    message = ""
+                    server.sendmail(sender, receiver, message)
+                    print(f"sent message to {receiver}")
+
+                context['commit'] = True
+                return render(request, 'dashboard/assignment.html', context)
+
+
+
+
+
+
+
+
+
+
+
+
 
                 
         if str(request.user) == assignment.ownerstr:

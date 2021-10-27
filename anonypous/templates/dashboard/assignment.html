@@ -22,7 +22,9 @@ Assignment
             {% if user.profile.teacher == True %}
 
                 <!-- IF ALL SUBMISSIONS ARE GRADED -->
-                <button type="button" class="btn btn-primary">Commit to Grades</button>
+                <form action='' method='POST'>{% csrf_token %}
+                <button type="submit" class="btn btn-primary">{%if commit == True%}Commited to Grades{% else %}Commit to Grade{% endif%}</button>
+                </form>
             {% else %}
                 <form action='' method='POST'>{% csrf_token %}
                 <!-- IF NOT SUBMITTED -->

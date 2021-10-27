@@ -34,11 +34,13 @@ class doc(models.Model):
     code = models.OneToOneField(documentcode, on_delete=CASCADE, default='')
     codestr = models.CharField(max_length=30, default='')
 
-    text = models.TextField(default='File Text')
+    text = models.TextField(default='')
     submissionDate = models.DateTimeField(null=True, blank=True)
 
     comment = models.TextField(default='')
-    score = models.IntegerField(default='-1')
+    score = models.IntegerField(blank=True, null=True)
+
+    open = models.BooleanField(default=True)
 
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
