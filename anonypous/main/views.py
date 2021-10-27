@@ -240,6 +240,8 @@ def grade(request, classCode, assignmentCode, docCode):
     text = str(document.text)
     subDate = document.submissionDate
     docCode = str(document.code)
+    feedback = document.comment
+    score = document.score
 
     assignment = assignmentObj.objects.get(codestr=str(assignmentCode))
     instructions = assignment.instructions
@@ -247,16 +249,54 @@ def grade(request, classCode, assignmentCode, docCode):
     assignmentOwner = assignment.owner
 
     if assignmentOwner == request.user:
+
+        if request.method == 'POST':
+
+            comments = request.POST.get('feedback')
+            score_ = request.POST.get('score')
+
+            document = doc.objects.get(codestr=docCode) 
+            document.comment = comments
+            document.score = score_
+            document.save()
+            text = str(document.text)
+            subDate = document.submissionDate
+            docCode = str(document.code)
+            feedback = document.comment
+            score = document.score
+            assignment = assignmentObj.objects.get(codestr=str(assignmentCode))
+            instructions = assignment.instructions
+            pointValue = assignment.pointValue
+            assignmentOwner = assignment.owner
+
+            context = {
+            'assignmentText':text,
+            'subDate': subDate,
+            'docCode': docCode,
+            'instructions': instructions,
+            'pointValue': pointValue,
+            'score': score,
+            'feedback': feedback
+            }
+            
+            return redirect(f'/class/{classCode}/{assignmentCode}/')
+
         context = {
             'assignmentText':text,
             'subDate': subDate,
             'docCode': docCode,
             'instructions': instructions,
             'pointValue': pointValue,
+            'score': score,
+            'feedback': feedback
         }
+
+
         return render(request, 'dashboard/submission.html', context)
     else:
         return redirect('/invalid')
+
+
 
 def assignment(request, classCode, assignmentCode):
     context = {}
@@ -315,48 +355,50 @@ def assignment(request, classCode, assignmentCode):
         'text': text,
 
         }
-        
-        
-        if request.method == 'POST':
-            text = request.POST.get('text')
+    
+        if user.profile.teacher == False:
+            if request.method == 'POST':
+                text = request.POST.get('text')
 
 
-            currentTime = datetime.now()
-            
+                currentTime = datetime.now()
+                
 
-            assignment = assignmentObj.objects.get(codestr=str(assignmentCode))
+                assignment = assignmentObj.objects.get(codestr=str(assignmentCode))
 
-            docName = 'Name TBD'
-            
-            assignmentCreate = True
-            for x in assignment.submissions.all():
-                if str(x.owner) == str(user):
-                    assignmentCreate = False
-                    x.submissionDate = currentTime
-                    x.text = text
-                    text = x.text
-                    x.save()
-            code = genCodeDoc()
-            docCode = documentcode.objects.create(code=str(code))
-            if assignmentCreate == True:
-                currentdoc = doc.objects.create(name=str(docName), owner=user, code=docCode, text=text, codestr=str(docCode))
-                assignment.submissions.add(currentdoc)
-                user.profile.submissions.add(docCode)
+                docName = 'Name TBD'
+                
+                assignmentCreate = True
+                for x in assignment.submissions.all():
+                    if str(x.owner) == str(user):
+                        assignmentCreate = False
+                        x.submissionDate = currentTime
+                        x.text = text
+                        text = x.text
+                        x.save()
+                code = genCodeDoc()
+                docCode = documentcode.objects.create(code=str(code))
+                if assignmentCreate == True:
+                    currentdoc = doc.objects.create(name=str(docName), owner=user, code=docCode, text=text, codestr=str(docCode))
+                    assignment.submissions.add(currentdoc)
+                    user.profile.submissions.add(docCode)
 
-            
+                
 
-            context = {
-            'assignmentName': name,
-            'assignmentCode': code,
-            'assignmentInstructions': instructions,
-            'pointValue': pointValue,
-            'submissions': submissions,
-            'assignmentList': [],
-            'text': text
-            }
+                context = {
+                'assignmentName': name,
+                'assignmentCode': code,
+                'assignmentInstructions': instructions,
+                'pointValue': pointValue,
+                'submissions': submissions,
+                'assignmentList': [],
+                'text': text
+                }
 
-            return render(request, 'dashboard/assignment.html', context)
-
+                return render(request, 'dashboard/assignment.html', context)
+        else:
+            if request.method == 'POST':
+                pass
 
                 
         if str(request.user) == assignment.ownerstr:

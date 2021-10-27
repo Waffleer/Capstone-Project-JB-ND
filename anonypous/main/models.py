@@ -37,6 +37,9 @@ class doc(models.Model):
     text = models.TextField(default='File Text')
     submissionDate = models.DateTimeField(null=True, blank=True)
 
+    comment = models.TextField(default='')
+    score = models.IntegerField(default='-1')
+
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
 
