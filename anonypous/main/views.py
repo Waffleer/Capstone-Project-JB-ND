@@ -265,12 +265,14 @@ def assignment(request, classCode, assignmentCode):
         assignment = assignmentObj.objects.get(codestr=str(assignmentCode))
         sublist = []
         for x in assignment.submissions.all():
+            submission = []
             code = x.code
             text = x.text
             submissionDate = x.submissionDate
-            sublist.append(code)
-            sublist.append(text)
-            sublist.append(submissionDate)
+            submission.append(code)
+            submission.append(text)
+            submission.append(submissionDate)
+            sublist.append(submission)
 
         for x in assignment.submissions.all():
             if str(x.owner) == str(user):
