@@ -11,26 +11,38 @@
         <li class="nav-item">
           <a class="nav-link active" aria-current="page" href="/">Home</a>
         </li>
+          {% if request.path == '/dashboard' %}
             <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                <i class="fas fa-user-circle"></i>
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  <i class="fas fa-chalkboard-teacher"></i> Classes</a>
+              <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                  {% for x in classList %}
+                    <li><a class="dropdown-item" href="class/{{x.1}}/"><i class="{{x.3}}"></i>&nbsp;&nbsp;{{ x.0 }}</a></li>
+                  {% endfor %}
+              </ul>
+            </li>
+          {% endif %}
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  <i class="fas fa-user-circle"></i>
+                  {% if user.is_authenticated %}
+                    &nbsp;{{ user.profile.firstname }}
+                  {% else %}
+                    &nbsp;Login
+                  {% endif %}
+              </a>
+              <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                 {% if user.is_authenticated %}
-                  &nbsp;{{ user.profile.firstname }}
+                  <li><a class="dropdown-item" href="/profile"><strong>{{ user.profile.firstname }} {{ user.profile.lastname }}</strong></a></li>
+                  <li><a class="dropdown-item" href="/dashboard">Dashboard</a></li>
+                  <li><hr class="dropdown-divider"></li>
+                  <li><a class="dropdown-item" href="/logout">Logout</a></li>
                 {% else %}
-                  &nbsp;Login
+                  <li><a class="dropdown-item" href="/login">Login</a></li>
+                  <li><hr class="dropdown-divider"></li>
+                  <li><a class="dropdown-item" href="/register">Register</a></li>
                 {% endif %}
-            </a>
-            <ul class="dropdown-menu" aria-labelledby="navbarDropdown" style="max-width:100px;width:100px;">
-              {% if user.is_authenticated %}
-                <li><a class="dropdown-item" href="/profile"><strong>{{ user.profile.firstname }} {{ user.profile.lastname }}</strong></a></li>
-                <li><a class="dropdown-item" href="/dashboard">Dashboard</a></li>
-                <li><hr class="dropdown-divider"></li>
-                <li><a class="dropdown-item" href="/logout">Logout</a></li>
-              {% else %}
-                <li><a class="dropdown-item" href="/login">Login</a></li>
-                <li><hr class="dropdown-divider"></li>
-                <li><a class="dropdown-item" href="/register">Register</a></li>
-              {% endif %}
+              </ul>
             </li>
         </ul>
     </div>
