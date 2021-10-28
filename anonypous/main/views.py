@@ -408,18 +408,19 @@ def assignment(request, classCode, assignmentCode):
                 submissions_ = assignment.submissions.all()
                 print2(submissions_)
                 #add if false check
-                emailList = []
-                for x in submissions_:
-                    emailList.append(str(x.owner))
-                    x.open = False
-                    x.save()
+                emailList = ['nicholas.doboszenski@tgeagle.org']
+           #     for x in submissions_:
+           #         emailList.append(str(x.owner))
+           #         x.open = False
+           #         x.save()
 
+                '''
                 context = ssl.create_default_context()
                 
-                smtp_server = ''
-                port = 587
-                sender = ''
-                password = ''
+                smtp_server = 'smtp.ionos.com'
+                port = 465
+                sender = 'no-reply@anonypous.com'
+                password = 'Octo3.14!'
 
                 server = smtplib.SMTP(smtp_server,port)
                 server.starttls(context=context) # Secure the connection
@@ -429,10 +430,12 @@ def assignment(request, classCode, assignmentCode):
 
                 for z in emailList:
                     receiver = z
-                    message = ""
+                    message = "Did this work..."
                     server.sendmail(sender, receiver, message)
                     print(f"sent message to {receiver}")
+                '''
 
+        
                 context['commit'] = True
                 return render(request, 'dashboard/assignment.html', context)
 
