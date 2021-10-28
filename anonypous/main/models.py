@@ -68,6 +68,7 @@ class assignmentObj(models.Model):
 
     submissions = models.ManyToManyField(doc, blank=True)
     instructions = models.TextField(default='Instructions')
+    open = models.BooleanField(default=True)
 
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)

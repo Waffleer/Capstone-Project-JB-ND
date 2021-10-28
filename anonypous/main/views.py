@@ -194,6 +194,7 @@ def dashboard(request):
                 if str(request.POST.get('rc_class')) == c:
                     print2(f' = {x}')
                     x.delete()
+                    print2(1)
                     return redirect('/dashboard')
 
                 
@@ -224,6 +225,7 @@ def dashboard(request):
                 context = {
                     'classFail': True,
                 }
+                print2(2)
                 return redirect('/dashboard', context)
 
            
@@ -297,6 +299,34 @@ def grade(request, classCode, assignmentCode, docCode):
         else:
             return redirect('/invalid')
 
+def results(request, classCode, assignmentCode):
+
+    user = request.user
+    assignment = assignmentObj.objects.get(codestr=str(assignmentCode))
+    classs = classes.objects.get(codestr=classCode)    
+    user = request.user
+    submissions = assignment.submissions.all()
+    assignmentName = assignment.name
+    pointValue = assignment.pointValue
+    submissionList = []
+    for x in submissions:
+        list = []
+        name = x.owner
+        code = x.code
+        score = x.score
+        feedback = x.comment
+        list.append(name)
+        list.append(code)
+        list.append(score)
+        list.append(feedback)
+        submissionList.append(list)
+    context = {
+        'assignmentName': assignmentName,
+        'submissions': submissionList,
+        'value': pointValue,
+    } 
+    return render(request, 'dashboard/results.html', context)
+
 def assignment(request, classCode, assignmentCode):
     context = {}
 
@@ -306,6 +336,18 @@ def assignment(request, classCode, assignmentCode):
     if str(assignmentCode) == 'style.css':
         pass
     else:
+        assignment = assignmentObj.objects.get(codestr=str(assignmentCode))
+        classs = classes.objects.get(codestr=classCode)    
+        user = request.user
+        students = classs.students.all()    
+
+        name = assignment.name
+        code = assignment.code
+        owner = assignment.owner
+        instructions = assignment.instructions
+        pointValue = assignment.pointValue
+        submissions = assignment.submissions.all()
+        assignmentDueDate = assignment.dueDate
         if user.profile.teacher == True:
             assignment = assignmentObj.objects.get(codestr=str(assignmentCode))
             classs = classes.objects.get(codestr=classCode)    
@@ -342,7 +384,7 @@ def assignment(request, classCode, assignmentCode):
 
 
 
-
+            commit = ''
 
             context = {
             'classCode': classCode,
@@ -394,10 +436,9 @@ def assignment(request, classCode, assignmentCode):
                 'assignmentCode': code,
                 'assignmentInstructions': instructions,
                 'pointValue': pointValue,
-                'submissions': submissions,
-                'assignmentList': [],
-                'text': text,
-                'commit': commit,
+
+
+
                 }
 
                 return render(request, 'dashboard/assignment.html', context)
@@ -407,37 +448,22 @@ def assignment(request, classCode, assignmentCode):
                 assignment = assignmentObj.objects.get(codestr=str(assignmentCode))
                 submissions_ = assignment.submissions.all()
                 print2(submissions_)
+
+                return redirect(f'/class/{classCode}/{assignmentCode}/r/result')
+
+
+
                 #add if false check
-                emailList = ['nicholas.doboszenski@tgeagle.org']
+            #    emailList = ['nicholas.doboszenski@tgeagle.org']
            #     for x in submissions_:
            #         emailList.append(str(x.owner))
            #         x.open = False
            #         x.save()
 
-                '''
-                context = ssl.create_default_context()
-                
-                smtp_server = 'smtp.ionos.com'
-                port = 465
-                sender = 'no-reply@anonypous.com'
-                password = 'Octo3.14!'
-
-                server = smtplib.SMTP(smtp_server,port)
-                server.starttls(context=context) # Secure the connection
-                server.login(sender, password)
-
-                print("Connection Complete\n")
-
-                for z in emailList:
-                    receiver = z
-                    message = "Did this work..."
-                    server.sendmail(sender, receiver, message)
-                    print(f"sent message to {receiver}")
-                '''
 
         
-                context['commit'] = True
-                return render(request, 'dashboard/assignment.html', context)
+              #  context['commit'] = True
+             #   return render(request, 'dashboard/assignment.html', context)
 
 
 
@@ -459,6 +485,27 @@ def assignment(request, classCode, assignmentCode):
             for x in students:
                 x = str(x)
                 if str(request.user) == x:
+                    assignment = assignmentObj.objects.get(codestr=str(assignmentCode))
+                    classs = classes.objects.get(codestr=classCode)    
+                    user = request.user
+                    students = classs.students.all()    
+
+                    name = assignment.name
+                    code = assignment.code
+                    owner = assignment.owner
+                    instructions = assignment.instructions
+                    pointValue = assignment.pointValue
+                    submissions = assignment.submissions.all()
+                    assignmentDueDate = assignment.dueDate
+
+                    context = {
+                    'assignmentName': name,
+                    'assignmentCode': code,
+                    'assignmentInstructions': instructions,
+                    'pointValue': pointValue,
+                    'submissions': submissions,
+
+                    }
                     return render(request, 'dashboard/assignment.html', context)
             return redirect('/invalid')
 
@@ -643,6 +690,7 @@ def login_request(request):
         user = authenticate(username=username, password=password)
         if user is not None:
             login(request, user=user)
+            print2(3)
             return redirect('/dashboard')
         else:
             context = {
@@ -857,6 +905,7 @@ def register(request):
             user = authenticate(username=email, password=password)
             login(request, user=user)
             print(f'Login Successful\n')
+            print2(4)
             return redirect('/dashboard')
         elif account == 0:
             user = User.objects.create_user(username=email, email=email, password=password)
@@ -867,6 +916,7 @@ def register(request):
             user = authenticate(username=email, password=password)
             login(request, user=user)
             print(f'Login Successful\n')
+            print2(5)
             return redirect('/dashboard')
 
         else:

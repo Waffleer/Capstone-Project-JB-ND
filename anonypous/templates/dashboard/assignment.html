@@ -25,6 +25,8 @@ Assignment
                 <form action='' method='POST'>{% csrf_token %}
                 <button type="submit" class="btn btn-primary">{%if commit == True%}Commited to Grades{% else %}Commit to Grade{% endif%}</button>
                 </form>
+
+
             {% else %}
                 <form action='' method='POST'>{% csrf_token %}
                 <!-- IF NOT SUBMITTED -->
@@ -112,7 +114,7 @@ Assignment
                     <a href="{{x.0}}">
                         <div class="submission active">
                             <div class="id">{{x.0}}</div>
-                            <div class="date">{{x.1}}</div>
+                            <div class="date"></div>
                             <!-- <div class="status">Graded</div> -->
                         </div>
                     </a>

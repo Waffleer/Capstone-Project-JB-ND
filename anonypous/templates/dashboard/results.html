@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+
+{% block title%}
+Results
+{% endblock title%}
+
+
+
+{% block content%}
+
+{% if user.is_authenticated %}
+{% if user.profile.teacher == True %}
+<br><br><br><br>
+{% for x in submissions %}
+
+<p>name :  {{x.0}}</p>
+<p>Code :  {{x.1}}</p>
+<p>Score :  {{x.2}} / {{value}}</p>
+<p>Feedback :  {{x.3}}</p>
+<br><br>
+
+{% endfor %}
+
+
+
+
+
+
+
+{% else %}
+    <meta http-equiv="Refresh" content="0; url='/login'" />
+{% endif %}
+{% else %}
+    <meta http-equiv="Refresh" content="0; url='/login'" />
+{% endif %}
+
+
+
+{% endblock content%}
