@@ -448,7 +448,54 @@ def assignment(request, classCode, assignmentCode):
             if request.method == 'POST':
                 assignment = assignmentObj.objects.get(codestr=str(assignmentCode))
                 submissions_ = assignment.submissions.all()
-                print2(submissions_)
+
+                reciverList = []
+                nameList = []
+                docInfo = []
+
+                for x in submissions_:
+
+                    reciverList.append(str(x.owner))
+                    nameList.append(str(x.owner.profile.firstname))
+                    nameList.append(str(x.owner.profile.lastname))
+                    docInfo.append(f"{str(x.score)}/{assignment.pointValue}")
+                    docInfo.append(str(x.comment))
+
+
+
+                print(reciverList)
+                print("\n\n")
+
+                smtp_server = "smtp.gmail.com"
+                port = 587  # For starttls
+                sender = "noreply.anonypous@gmail.com"
+                password = "loginOctopus"
+
+
+                context1 = ssl.create_default_context()
+                server = smtplib.SMTP(smtp_server,port)
+                server.starttls(context=context1) # Secure the connection
+                server.login(sender, password)
+
+                y = 0
+                for x in reciverList:   
+                    pass
+                    email = f"""
+                    From : Anonypous Student Security Site <noreply.anonypous@gmail.com>
+                    To : {nameList[y]} {nameList[y+1]} <{x}>
+                    Subject: Returning Results on {assignment.name}.
+
+                    Results are {docInfo[y]}.
+                    Comments are {docInfo[y+1]}
+                    
+                    """
+                    server.sendmail(sender, x, email)
+                    y += 2
+                server.quit()
+
+
+
+
 
                 return redirect(f'/class/{classCode}/{assignmentCode}/r/result')
 
