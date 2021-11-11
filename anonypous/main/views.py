@@ -5,6 +5,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import login, logout, authenticate, get_user_model
 from django.contrib.auth.models import User
 from . models import profile, classes, classcode, assignmentcode, assignmentObj, documentcode, doc
+import smtplib, ssl
 
 import random
 from datetime import datetime
@@ -673,8 +674,28 @@ def root(request):
     return redirect('/login')
 
 def test(request):
+    
+
+    smtp_server = "smtp.gmail.com"
+    port = 587  # For starttls
+    sender = "noreply.aonoypous@gmail.com"
+    password = "loginOctopus"
+
+    receiver = "ndwafflend@gmail.com"
+    message = "jflkdsafjdjslkafjdsjafjdksjafjdlsk"
+
+    
+    context1 = ssl.create_default_context()
+    server = smtplib.SMTP(smtp_server,port)
+    server.starttls(context=context1) # Secure the connection
+    server.login(sender, password)
+
+    server.sendmail(sender, receiver, message)
+    server.quit()
+
     context = {
     }
+
 
     return render(request, 'dashboard/test.html', context)
 
