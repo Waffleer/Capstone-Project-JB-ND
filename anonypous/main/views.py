@@ -86,6 +86,9 @@ def genCodeDoc():
             genCodeDoc()
     return code
 
+
+
+
 def invalid(request):
     return render(request, 'dashboard/invalid.html')
 
@@ -312,9 +315,10 @@ def results(request, classCode, assignmentCode):
     submissionList = []
     for x in submissions:
         list = []
-        name = x.owner
-        code = x.code
-        score = x.score
+        name = f"{x.owner.profile.firstname} {x.owner.profile.lastname}"
+        code = str(x.code)
+        code = code.replace('-', ' ')
+        score = f"{x.score} / {pointValue}"
         feedback = x.comment
         list.append(name)
         list.append(code)
@@ -324,7 +328,7 @@ def results(request, classCode, assignmentCode):
     context = {
         'assignmentName': assignmentName,
         'submissions': submissionList,
-        'value': pointValue,
+
     } 
     return render(request, 'dashboard/results.html', context)
 
