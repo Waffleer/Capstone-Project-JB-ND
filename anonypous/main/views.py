@@ -449,27 +449,37 @@ def assignment(request, classCode, assignmentCode):
                 submission.append(text)
                 submission.append(submissionDate)
                 sublist.append(submission)
-
+            print("fdsafdsafdsafdsafdsa")
+            for x in assignment.submissions.all():
+                if str(x.owner) == str(user):
+                    text = x.text
+                    print(text)
+            context = {
+            'classCode': classCode,
+                'assignmentName': name,
+            'assignmentCode': code,
+                'assignmentInstructions': instructions,
+                'dueDate': assignmentDueDate,
+                'pointValue': pointValue,
+            'submissions': sublist,
+            'assignmentList': [],
+                'text': text,
+                'commit': commit,
+            }
+        else:
             for x in assignment.submissions.all():
                 if str(x.owner) == str(user):
                     text = x.text
 
-
-
-            commit = ''
-
             context = {
-            'classCode': classCode,
-            'assignmentName': name,
-            'assignmentCode': code,
-            'assignmentInstructions': instructions,
-            'dueDate': assignmentDueDate,
-            'pointValue': pointValue,
-            'submissions': sublist,
-            'assignmentList': [],
-            'text': text,
-            'commit': commit,
+                'assignmentName': name,
+                'assignmentInstructions': instructions,
+                'dueDate': assignmentDueDate,
+                'pointValue': pointValue,
+                'text': text,
             }
+
+ 
     
 
 
@@ -480,8 +490,6 @@ def assignment(request, classCode, assignmentCode):
 
 
                 currentTime = datetime.now()
-                
-
                 assignment = assignmentObj.objects.get(codestr=str(assignmentCode))
 
                 docName = 'Name TBD'
