@@ -23,7 +23,7 @@ Assignment
 
                 <!-- IF ALL SUBMISSIONS ARE GRADED -->
                 <form action='' method='POST'>{% csrf_token %}
-                <button type="submit" class="btn btn-primary">{%if commit == True%}Commited to Grades{% else %}Commit to Grade{% endif%}</button>
+                <button type="submit" class="btn btn-primary">Results</button>
                 </form>
 
 
@@ -34,7 +34,6 @@ Assignment
 
 
                 <!-- IF ALREADY SUBMITTED    <button type="button" class="btn btn-primary" disabled>Submit</button>  -->
-
                 <br><br><br>
                 <textarea name="text" class="form-control" rows="5">{{ text }}</textarea>
                 </form>
