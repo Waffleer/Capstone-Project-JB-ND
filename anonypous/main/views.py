@@ -250,10 +250,12 @@ def grade(request, classCode, assignmentCode, docCode):
         feedback = document.comment
         score = document.score
 
+
         assignment = assignmentObj.objects.get(codestr=str(assignmentCode))
         instructions = assignment.instructions
         pointValue = assignment.pointValue
         assignmentOwner = assignment.owner
+        submitBool = assignment.submitted
 
         if assignmentOwner == request.user:
 
@@ -276,6 +278,7 @@ def grade(request, classCode, assignmentCode, docCode):
                 pointValue = assignment.pointValue
                 assignmentOwner = assignment.owner
 
+
                 context = {
                 'assignmentText':text,
                 'subDate': subDate,
@@ -283,7 +286,8 @@ def grade(request, classCode, assignmentCode, docCode):
                 'instructions': instructions,
                 'pointValue': pointValue,
                 'score': score,
-                'feedback': feedback
+                'feedback': feedback,
+                'submitBool': submitBool,
                 }
                 
                 return redirect(f'/class/{classCode}/{assignmentCode}/')
@@ -295,7 +299,8 @@ def grade(request, classCode, assignmentCode, docCode):
                 'instructions': instructions,
                 'pointValue': pointValue,
                 'score': score,
-                'feedback': feedback
+                'feedback': feedback,
+                'submitBool': submitBool
             }
 
 
@@ -412,28 +417,25 @@ def assignment(request, classCode, assignmentCode):
         classs = classes.objects.get(codestr=classCode)    
         user = request.user
         students = classs.students.all()    
-
         name = assignment.name
         code = assignment.code
         owner = assignment.owner
         instructions = assignment.instructions
         pointValue = assignment.pointValue
-        submissions = assignment.submissions.all()
         assignmentDueDate = assignment.dueDate
         if user.profile.teacher == True:
+            if str(owner) != str(user):
+                return redirect("/invalid")
             assignment = assignmentObj.objects.get(codestr=str(assignmentCode))
             classs = classes.objects.get(codestr=classCode)    
             user = request.user
             students = classs.students.all()    
-
             name = assignment.name
             code = assignment.code
             owner = assignment.owner
             instructions = assignment.instructions
             pointValue = assignment.pointValue
-            submissions = assignment.submissions.all()
             assignmentDueDate = assignment.dueDate
-
             #configure submission array
             text = ''
             assignment = assignmentObj.objects.get(codestr=str(assignmentCode))
@@ -449,11 +451,9 @@ def assignment(request, classCode, assignmentCode):
                 submission.append(text)
                 submission.append(submissionDate)
                 sublist.append(submission)
-            print("fdsafdsafdsafdsafdsa")
             for x in assignment.submissions.all():
                 if str(x.owner) == str(user):
                     text = x.text
-                    print(text)
             context = {
             'classCode': classCode,
                 'assignmentName': name,
@@ -464,13 +464,21 @@ def assignment(request, classCode, assignmentCode):
             'submissions': sublist,
             'assignmentList': [],
                 'text': text,
-                'commit': commit,
             }
         else:
-            for x in assignment.submissions.all():
-                if str(x.owner) == str(user):
-                    text = x.text
+            passed = False
+            for x in students:
+                if str(x) == str(user):
+                    passed = True
+            if passed == False:
+                return redirect("/invalid")
 
+
+            for x in assignment.submissions.all():
+                print2(f"{x} - {x.owner}")
+                if str(x.owner) == str(user):
+                    print2(x.text)
+                    text = x.text
             context = {
                 'assignmentName': name,
                 'assignmentInstructions': instructions,
@@ -478,6 +486,7 @@ def assignment(request, classCode, assignmentCode):
                 'pointValue': pointValue,
                 'text': text,
             }
+
 
  
     
@@ -487,8 +496,6 @@ def assignment(request, classCode, assignmentCode):
             #If Student
             if request.method == 'POST':
                 text = request.POST.get('text')
-
-
                 currentTime = datetime.now()
                 assignment = assignmentObj.objects.get(codestr=str(assignmentCode))
 
@@ -509,15 +516,14 @@ def assignment(request, classCode, assignmentCode):
                     assignment.submissions.add(currentdoc)
                     user.profile.submissions.add(docCode)
 
-                
 
                 context = {
                 'assignmentName': name,
                 'assignmentCode': code,
                 'assignmentInstructions': instructions,
                 'pointValue': pointValue,
-
-
+                'text': text,
+                'dueDate': assignmentDueDate,
 
                 }
 
@@ -527,72 +533,12 @@ def assignment(request, classCode, assignmentCode):
             if request.method == 'POST':
                 return redirect(f'/class/{classCode}/{assignmentCode}/r/result')
 
-
-
-                #add if false check
-            #    emailList = ['nicholas.doboszenski@tgeagle.org']
-           #     for x in submissions_:
-           #         emailList.append(str(x.owner))
-           #         x.open = False
-           #         x.save()
-
-
-        
-              #  context['commit'] = True
-             #   return render(request, 'dashboard/assignment.html', context)
-
-
-
-
-
-
-
-
-
-
-
-
-
-                
-        if str(request.user) == assignment.ownerstr:
-            return render(request, 'dashboard/assignment.html', context)
-    
-        else:
-            for x in students:
-                x = str(x)
-                if str(request.user) == x:
-                    assignment = assignmentObj.objects.get(codestr=str(assignmentCode))
-                    classs = classes.objects.get(codestr=classCode)    
-                    user = request.user
-                    students = classs.students.all()    
-
-                    name = assignment.name
-                    code = assignment.code
-                    owner = assignment.owner
-                    instructions = assignment.instructions
-                    pointValue = assignment.pointValue
-                    submissions = assignment.submissions.all()
-                    assignmentDueDate = assignment.dueDate
-
-                    context = {
-                    'assignmentName': name,
-                    'assignmentCode': code,
-                    'assignmentInstructions': instructions,
-                    'pointValue': pointValue,
-                    'submissions': submissions,
-
-                    }
-                    return render(request, 'dashboard/assignment.html', context)
-            return redirect('/invalid')
-
-
-
         #except:
         #   print('not a valid class')
             #return render(request, 'dashboard/class.html', context)
         #   return redirect('/invalid')
 
-    return render(request, 'dashboard/assignment.html', context)
+        return render(request, 'dashboard/assignment.html', context)
 
 def classpage(request, classCode):
 

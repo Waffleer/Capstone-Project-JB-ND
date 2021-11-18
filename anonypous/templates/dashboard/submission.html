@@ -75,7 +75,9 @@ Root
                                     <input type="number" name='score' class="form-control grade-field" value={{pointValue}} required>
                                 </div>
                                 <div class="mb-3">
+                                    {% if subissionBool == False%}
                                     <button type="submit" name='save' class="btn btn-primary" style="width:250px;">Save Grade</button>
+                                    {% endif%}
                                 </div>
                             </form>
 
