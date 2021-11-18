@@ -69,13 +69,24 @@ Root
 
                            <form action='' method='POST'>{% csrf_token %}
                                 <div class="mb-3">
-                                    <textarea class="form-control grade-field" name='feedback' placeholder="Assignment Feedback" style="min-height:100px;">{{feedback}}</textarea>
+
+                                    {% if submitBool != True%}
+                                        <textarea class="form-control grade-field" name='feedback' placeholder="Assignment Feedback" style="min-height:100px;">{{feedback}}</textarea>
+                                    {%else%}
+                                        <textarea class="form-control grade-field" name='feedback' placeholder="Assignment Feedback" style="min-height:100px;"disabled>{{feedback}}</textarea>
+                                    {%endif%}
+
                                 </div>
                                 <div class="mb-3">
-                                    <input type="number" name='score' class="form-control grade-field" value={{pointValue}} required>
+                                    {% if submitBool != True%}
+                                        <input type="number" name='score' class="form-control grade-field" value={{score}} required>
+                                    {%else%}
+                                        <input type="number" name='score' class="form-control grade-field" value={{score}} disabled>
+                                    {%endif%}
+                                
                                 </div>
                                 <div class="mb-3">
-                                    {% if subissionBool == False%}
+                                    {% if submitBool != True%}
                                     <button type="submit" name='save' class="btn btn-primary" style="width:250px;">Save Grade</button>
                                     {% endif%}
                                 </div>

@@ -20,7 +20,7 @@ def genCodeClass():
         code = x.code
         codelist.append(code)
     code = []
-    letters = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
+    letters = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '1', '2', '3', '4', '5', '6', '7', '8', '9']
     y = 0
     while y < 6:
         num = random.randrange(0, 35)
@@ -86,9 +86,6 @@ def genCodeDoc():
             genCodeDoc()
     return code
 
-
-
-
 def invalid(request):
     return render(request, 'dashboard/invalid.html')
 
@@ -141,11 +138,6 @@ def dashboard(request):
                         currentlist.append(subject)
                         currentlist.append(description)
                         classlist.append(currentlist)
-
-
-
-
-            print2(classs)
             context = {
                 'classList': classlist,
             }
@@ -153,12 +145,8 @@ def dashboard(request):
         return redirect('/login')
 
 
-
-
     if request.method == 'POST':
-        print('\ntest\n')
-        print(f'{request.POST}\n')
-        #rendering stuff
+
 
         if 'cc_className' in request.POST:
             classname = request.POST.get('cc_className')
@@ -314,6 +302,7 @@ def results(request, classCode, assignmentCode):
     assignment = assignmentObj.objects.get(codestr=str(assignmentCode))
     classs = classes.objects.get(codestr=classCode)    
 
+    submitBool = assignment.submitted
     if assignment.submitted == True:
         submissions = assignment.submissions.all()
         assignmentName = assignment.name
@@ -334,12 +323,15 @@ def results(request, classCode, assignmentCode):
         context = {
             'assignmentName': assignmentName,
             'submissions': submissionList,
+            'submitBool': submitBool,
         }
     else:
         submissions = assignment.submissions.all()
         assignmentName = assignment.name
         pointValue = assignment.pointValue
         submissionList = []
+        submitBool = assignment.submitted
+        print2(submitBool)
         for x in submissions:
             list = []
             #name = f"{x.owner.profile.firstname} {x.owner.profile.lastname}"
@@ -355,53 +347,56 @@ def results(request, classCode, assignmentCode):
         context = {
             'assignmentName': assignmentName,
             'submissions': submissionList,
+            'submitBool': submitBool,
         }
 
 
         if request.method == 'POST':
-            #Popup window saying plz wait would be nice
-            assignment = assignmentObj.objects.get(codestr=str(assignmentCode))
-            submissions_ = assignment.submissions.all()
+            if 'submit' in request.POST:
+                print2("kfdsjlkdsflkdfsjkl;dfskljdfsjklfsdlkdfsl;k")
+                #Popup window saying plz wait would be nice
+                assignment = assignmentObj.objects.get(codestr=str(assignmentCode))
+                submissions_ = assignment.submissions.all()
 
-            reciverList = []
-            nameList = []
-            docInfo = []
-            for x in submissions_:
-                reciverList.append(str(x.owner))
-                nameList.append(str(x.owner.profile.firstname))
-                nameList.append(str(x.owner.profile.lastname))
-                docInfo.append(f"{str(x.score)}/{assignment.pointValue}")
-                docInfo.append(str(x.comment))
-            print(reciverList)
-            print("\n\n")
-            smtp_server = "smtp.gmail.com"
-            port = 587  # For starttls
-            sender = "noreply.anonypous@gmail.com"
-            password = "loginOctopus"
-            context1 = ssl.create_default_context()
-            server = smtplib.SMTP(smtp_server,port)
-            server.starttls(context=context1) # Secure the connection
-            server.login(sender, password)
-            y = 0
-            for x in reciverList:   
-                pass
-                email = f"""
-                From : Anonypous Student Security Site <noreply.anonypous@gmail.com>
-                To : {nameList[y]} {nameList[y+1]} <{x}>
-                Subject: Returning Results on {assignment.name}.
+                reciverList = []
+                nameList = []
+                docInfo = []
+                for x in submissions_:
+                    reciverList.append(str(x.owner))
+                    nameList.append(str(x.owner.profile.firstname))
+                    nameList.append(str(x.owner.profile.lastname))
+                    docInfo.append(f"{str(x.score)}/{assignment.pointValue}")
+                    docInfo.append(str(x.comment))
+                print(reciverList)
+                print("\n\n")
+                smtp_server = "smtp.gmail.com"
+                port = 587  # For starttls
+                sender = "noreply.anonypous@gmail.com"
+                password = "loginOctopus"
+                context1 = ssl.create_default_context()
+                server = smtplib.SMTP(smtp_server,port)
+                server.starttls(context=context1) # Secure the connection
+                server.login(sender, password)
+                y = 0
+                for x in reciverList:   
+                    pass
+                    email = f"""
+                    From : Anonypous Student Security Site <noreply.anonypous@gmail.com>
+                    To : {nameList[y]} {nameList[y+1]} <{x}>
+                    Subject: Returning Results on {assignment.name}.
 
-                Results are {docInfo[y]}.
-                Comments are {docInfo[y+1]}
-                
-                """
-                server.sendmail(sender, x, email)
-                y += 2
-            server.quit()
-            assignment.submitted = True
-            assignment.save()
-            assignment = assignmentObj.objects.get(codestr=str(assignmentCode))
-            print(assignment.submitted)
-            return redirect(f'class/{classCode}/{assignmentCode}/r/result')
+                    Results are {docInfo[y]}.
+                    Comments are {docInfo[y+1]}
+                    
+                    """
+                    server.sendmail(sender, x, email)
+                    y += 2
+                server.quit()
+                assignment.submitted = True
+                assignment.save()
+
+                print2("kfdsjlkdsflkdfsjkl;dfskljdfsjklfsdlkdfsl;k")
+                return redirect(f'/class/{classCode}/{assignmentCode}/r/result')
     return render(request, 'dashboard/results.html', context)
 
 def assignment(request, classCode, assignmentCode):
@@ -472,13 +467,15 @@ def assignment(request, classCode, assignmentCode):
                     passed = True
             if passed == False:
                 return redirect("/invalid")
-
-
+            passed = False
             for x in assignment.submissions.all():
                 print2(f"{x} - {x.owner}")
                 if str(x.owner) == str(user):
                     print2(x.text)
                     text = x.text
+                    passed = True
+            if passed == False:
+                text = ''
             context = {
                 'assignmentName': name,
                 'assignmentInstructions': instructions,

@@ -85,10 +85,13 @@ Results
 -->
 
         <div class="analytics-container">
-            <p>Analytics Here</p>
+            <p></p>
         </div>
+
         <a data-bs-toggle="modal" data-bs-target="#commit">
+        {% if submitBool != True%}
             <button type="button" class="btn btn-primary" style="float:right">Commit to Grades</button>
+        {% endif%}
         </a>
 
 <!-- Remove Class -->
@@ -96,14 +99,18 @@ Results
         <div class="modal-dialog">
             <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Commit to Grades</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <h5 class="modal-title" id="exampleModalLabel">Commit to Grades</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
+
+            <form method='POST'>{% csrf_token %}
             <div class="modal-body">
                 <h4>Are you sure you want to commit?</h4>
+                <p>You can not go back and change your grades afterwords</p>
                 <button type="button" class="btn btn-danger" data-bs-dismiss="modal">No</button>
-                <button type="button" class="btn btn-success">Yes</button>
+                <button type="submit" name="submit" class="btn btn-success">Yes</button>
             </div>
+            </form>
             </div>
         </div>
         </div>
