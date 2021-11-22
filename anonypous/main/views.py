@@ -43,12 +43,13 @@ def stats(request):
 
     return render(request, 'dashboard/stats.html')
 
-
 def statsAssignment(request, assignmentTag):
     return render(request, 'dashboard/stats.html')
 
 def statsClass(request, classTag):
     return render(request, 'dashboard/stats.html')
+
+
 
 def print2(str):
     print(f'\n\n{str}\n\n')
@@ -320,7 +321,7 @@ def grade(request, classCode, assignmentCode, docCode):
                 'submitBool': submitBool,
                 }
                 
-                return redirect(f'/class/{classCode}/{assignmentCode}/')
+                return redirect(f'/class/{classCode}/')
 
             context = {
                 'assignmentText':text,
