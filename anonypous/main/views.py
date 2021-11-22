@@ -484,7 +484,7 @@ def assignment(request, classCode, assignmentCode):
                 submission = []
                 code = x.code
                 text = x.text
-                submissionDate = x.submissionDate
+                submissionDate = str(x.submissionDate)
                 submission.append(code)
                 submission.append(text)
                 submission.append(submissionDate)
