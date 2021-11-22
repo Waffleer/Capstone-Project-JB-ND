@@ -15,11 +15,13 @@ urlpatterns = [
     path('profile', views.profiles, name='profile'),
     path('invalid', views.invalid, name='invalid'),
     path('class/<str:classCode>/', views.classpage, name='class'),
-    path('class/<classCode>/<str:assignmentCode>/', views.assignment, name="assignment"),
-    path('class/<classCode>/<str:assignmentCode>/r/result', views.results, name='result'),
+    path('class/<classCode>/<str:assignmentCode>/', views.assignment, name="Assignment"),
+    path('class/<classCode>/<str:assignmentCode>/r/result', views.results, name='Result'),
     path('class/<classCode>/<assignmentCode>/<str:docCode>/', views.grade, name='Grade'),
 
-
     path('test', views.test, name='test'),
+    path('stats', views.stats, name='stats'),
+    path('stats/a/<str:assignmentTag>', views.statsAssignment, name='stats'),
+    path('stats/t/<str:classTag>', views.statsClass, name='stats'),
 
 ]

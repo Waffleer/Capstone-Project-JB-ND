@@ -21,13 +21,31 @@ class profile(models.Model):
     teacher = models.BooleanField(default=False)
     submissions = models.ManyToManyField(documentcode, blank=True)
 
+    tagsNum = models.IntegerField(default=0)
+    assignmentTagsNum = models.IntegerField(default=0)
+
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return f'''{self.email}'''
 
+class tags(models.Model):
+    name = models.CharField(max_length=30)
+    owner = models.ForeignKey(User, on_delete=PROTECT, default='')
+    number = models.IntegerField(default=0)
 
+    def __str__(self):
+        return f'''{self.name}'''
+
+class assignmentTags(models.Model):
+    name = models.CharField(max_length=30)
+    owner = models.ForeignKey(User, on_delete=PROTECT, default='')
+    number = models.IntegerField(default=0)
+
+    def __str__(self):
+        return f'''{self.name}'''
+    
 class doc(models.Model):
     name = models.CharField(max_length=30)
     owner = models.ForeignKey(User, on_delete=PROTECT, default='')
@@ -38,7 +56,7 @@ class doc(models.Model):
     submissionDate = models.DateTimeField(null=True, blank=True)
 
     comment = models.TextField(default='')
-    score = models.IntegerField(blank=True, null=True)
+    score = models.FloatField(blank=True, null=True)
 
     open = models.BooleanField(default=True)
 
@@ -71,6 +89,8 @@ class assignmentObj(models.Model):
     open = models.BooleanField(default=True)
     submitted = models.BooleanField(default=False)
 
+    tags = models.ManyToManyField(assignmentTags, blank=True)
+
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
     
@@ -99,6 +119,10 @@ class classes(models.Model):
     color = models.CharField(default='', max_length=15)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
+
+    year = models.IntegerField(default=0000)
+
+    tags = models.ManyToManyField(tags, blank=True)
 
     def __str__(self):
         return f'''{self.code}'''

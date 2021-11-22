@@ -60,16 +60,6 @@ Class
     </style>
 
     <body>
-
-        {% if user.profile.teacher == False %}
-        <!-- ONLY STUDENTS SEE -->
-        <div class="card" style="width:100%;">
-        <div class="card-body">
-            <h5 class="card-title">{{className}}</h5>
-            <p class="card-body">{{classDescription}}</p>
-        </div>
-        </div>
-        {% elif user.profile.teacher == True %}
         <!-- ONLY TEACHERS SEE -->
         <div class="card" style="width:100%;">
         <div class="card-body">
@@ -182,25 +172,7 @@ Class
         </div>
         {% endif %}
 
-        <div class="assignments-container">
-            <div class="assignment header">
-                <div class="title"><strong>Assignment Name</strong></div>
-                <div class="duedate"><strong>Due Date</strong></div>
-                <div class="status"><strong>Status</strong></div>
-            </div>
-            {% for i in assignments %}
-                <a href="/class/{{classCode}}/{{i.2}}/">
-                    <div class="assignment active">
-                        <div class="title">{{i.0}}</div>
-                        <div class="duedate">{{i.1}}</div>
-                        <div class="status">Need to make</div>
-                    </div>
-                </a>
-            {% empty %}
-                <div class="assignment">
-                    <div class="title">Looks like you don't have any assignments yet. Enjoy it while it lasts :)</div>
-                </div>
-            {% endfor %}
+
 
         <script>
             var myModal = document.getElementById('myModal')
@@ -211,7 +183,5 @@ Class
             })
         </script>
     </body>
-{% else %}
-    <meta http-equiv="Refresh" content="0; url='/login'" />
-{% endif %}
+
 {% endblock content%}

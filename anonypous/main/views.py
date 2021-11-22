@@ -10,6 +10,46 @@ import smtplib, ssl
 import random
 from datetime import datetime
 
+def stats(request):
+    if request.user.profile.teacher == False:
+        return redirect('/invalid')
+
+
+
+    classList = classes.objects.filter(ownerstr=request.user)
+    print(classList)
+    classResults = []
+
+    for x in classList:
+        classAdd = []
+        classResultSum = 0
+        classResultActual = 0
+        assignments = x.assignments
+        '''
+        for y in assignments:
+            classResultSum += (y.pointValue * len(assignments))
+            submissions = y.submissions
+            for z in submissions:
+                classResultActual += z.score
+        classAdd.append(x.name)
+        classAdd.append(classResultActual)
+        classAdd.append(classResultSum)
+        classResults.append(classAdd)
+        '''
+
+    print(classResults)
+
+
+
+    return render(request, 'dashboard/stats.html')
+
+
+def statsAssignment(request, assignmentTag):
+    return render(request, 'dashboard/stats.html')
+
+def statsClass(request, classTag):
+    return render(request, 'dashboard/stats.html')
+
 def print2(str):
     print(f'\n\n{str}\n\n')
 
@@ -153,12 +193,14 @@ def dashboard(request):
             color = request.POST.get('classcolor')
             subject = request.POST.get('subject')
             description = request.POST.get('description')
+            year = request.POST.get('year')
 
 
 
             print(f'{classname}\n')
             print(f'{color}\n')
             print(f'{subject}\n')
+            print(f'{year}\n')
 
 
             codes = classcode.objects.all()
@@ -170,7 +212,7 @@ def dashboard(request):
             #makes new code
             code = genCodeClass()
             code = classcode.objects.create(code=code)
-            currentclass = classes.objects.create(codestr=f'{code}',name=classname, owner=request.user, ownerstr=f'{request.user}', description=description, code=code, color=color, subject=f'{subject}' )
+            currentclass = classes.objects.create(codestr=f'{code}',name=classname, owner=request.user, ownerstr=f'{request.user}', description=description, code=code, color=color, subject=f'{subject}', year=year )
             return redirect(f'class/{code}/')
             #will deal with the create form post
         elif 'rc_class' in request.POST:
@@ -549,6 +591,7 @@ def classpage(request, classCode):
     name = classs.name
     code = classs.code
     owner = classs.owner
+    year = classs.year
     description = classs.description
     students = classs.students.all()
     rawAssignments = classs.assignments.all()
@@ -576,7 +619,8 @@ def classpage(request, classCode):
     'classDescription': description,
     'students': students,
     'assignments': assignments,
-    'assignmentList': []
+    'assignmentList': [],
+    'year': year
     }
     currentClass = code
 
