@@ -321,7 +321,7 @@ def grade(request, classCode, assignmentCode, docCode):
                 'submitBool': submitBool,
                 }
                 
-                return redirect(f'/class/{classCode}/')
+                return redirect(f'/class/{classCode}/{assignmentCode}')
 
             context = {
                 'assignmentText':text,
@@ -497,7 +497,7 @@ def assignment(request, classCode, assignmentCode):
                 'assignmentName': name,
             'assignmentCode': code,
                 'assignmentInstructions': instructions,
-                'dueDate': assignmentDueDate,
+            'dueDate': assignmentDueDate,
                 'pointValue': pointValue,
             'submissions': sublist,
             'assignmentList': [],
@@ -527,9 +527,6 @@ def assignment(request, classCode, assignmentCode):
                 'text': text,
             }
 
-
- 
-    
 
 
         if user.profile.teacher == False:
@@ -567,7 +564,7 @@ def assignment(request, classCode, assignmentCode):
 
                 }
 
-                return render(request, 'dashboard/assignment.html', context)
+                return redirect(f'/class/{classCode}')
         else:
             #If Teacher
             if request.method == 'POST':
