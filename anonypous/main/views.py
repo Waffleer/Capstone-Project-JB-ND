@@ -484,7 +484,7 @@ def assignment(request, classCode, assignmentCode):
                 submission = []
                 code = x.code
                 text = x.text
-                submissionDate = str(x.submissionDate)
+                submissionDate = x.submissionDate
                 submission.append(code)
                 submission.append(text)
                 submission.append(submissionDate)
@@ -548,8 +548,9 @@ def assignment(request, classCode, assignmentCode):
                         x.save()
                 code = genCodeDoc()
                 docCode = documentcode.objects.create(code=str(code))
+                date = currentTime
                 if assignmentCreate == True:
-                    currentdoc = doc.objects.create(name=str(docName), owner=user, code=docCode, text=text, codestr=str(docCode))
+                    currentdoc = doc.objects.create(name=str(docName), owner=user, code=docCode, text=text, codestr=str(docCode), submissionDate=date)
                     assignment.submissions.add(currentdoc)
                     user.profile.submissions.add(docCode)
 
