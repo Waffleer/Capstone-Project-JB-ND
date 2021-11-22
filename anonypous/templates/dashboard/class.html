@@ -64,7 +64,7 @@ Class
         {% if user.profile.teacher == False %}
         <!-- ONLY STUDENTS SEE -->
         <div class="card" style="width:100%;">
-        <div class="card-body">
+        <div class="card-body squished">
             <h5 class="card-title">{{className}}</h5>
             <p class="card-body">{{classDescription}}</p>
         </div>
@@ -110,7 +110,7 @@ Class
                     </div>
                     <div class="mb-3">
                         <label for="instructions" class="form-label">Instructions:</label>
-                        <textarea name="instructions" class="form-control" id="instructions" required></textarea>
+                        <textarea name="instructions" class="form-control" id="instructions"></textarea>
                     </div>
                     <div class="mb-3">
                         <button type="submit" class="btn btn-primary" style="width:100%;border-radius:25px">Publish Assignment</button>

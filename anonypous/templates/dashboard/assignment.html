@@ -17,9 +17,9 @@ Assignment
         <div class="card" style="width:100%;">
         <div class="card-body">
             <h5 class="card-title">{{assignmentName}}</h5>
-            <p class="card-body"><strong>{{pointValue}} Points</strong></p>
-            <p class="card-body">{{assignmentInstructions}}</p>
-            <p class="card-body">{{assignmentDueDate}}</p>
+            <p class="card-body squished"><strong>{{pointValue}} Points</strong></p>
+            <p class="card-body squished">{{assignmentInstructions}}</p>
+            <p class="card-body squished">{{dueDate}}</p>
             {% if user.profile.teacher == True %}
 
                 <!-- IF ALL SUBMISSIONS ARE GRADED -->
@@ -99,6 +99,11 @@ Assignment
             a {
                 color: black;
                 text-decoration: none;
+            }
+
+            .squished {
+                padding-top: 5px;
+                padding-bottom: 5px;
             }
         </style>
         
