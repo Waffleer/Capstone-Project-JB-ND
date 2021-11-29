@@ -11,10 +11,37 @@ Assignment
 
 {% if user.is_authenticated %}
 
+    <head>
+        <script src='https://cdn.tiny.cloud/1/s96kqr6m3ezu3bywvfgcj2e5hayqafc7ifui53pvwfrx06ro/tinymce/5/tinymce.min.js' referrerpolicy="origin">
+        </script>
+        <script>
+          tinymce.init({
+            selector: '#submission',
+            plugins : "table contextmenu paste wordcount autosave media fullpage fullscreen image media link code imagetools save print lists",
+            toolbar: 'undo redo | bold underline italic | numlist bullist| image media link table | align fontsizeselect fontselect forecolor backcolor | code | print fullscreen',
+            branding: false
+          });
+        </script>
+        <script>
+            tinymce.init({
+              selector: 'textarea#instructions',
+              readonly: 1,
+              branding: false,
+              toolbar: '',
+              menubar: '',
+              resize: false,
+            });
+          </script>
+    </head>
+
     <style>
         .squished {
             padding-top: 2px;
             padding-bottom: 2px;
+        }
+
+        .submission {
+            height: 250px;
         }
     </style>
 
@@ -26,7 +53,7 @@ Assignment
         <div class="card-body">
             <h5 class="card-title">{{assignmentName}}</h5>
             <p class="card-body squished"><strong>{{pointValue}} Points</strong></p>
-            <p class="card-body squished">{{assignmentInstructions}}</p>
+            <textarea class="card-body squished" id="instructions"><strong>Assignment Instructions:</strong><br>{{assignmentInstructions}}</textarea>
             <p class="card-body squished">{{dueDate}}</p>
             {% if user.profile.teacher == True %}
 
@@ -40,11 +67,12 @@ Assignment
                 <form action='' method='POST'>{% csrf_token %}
                 <!-- IF NOT SUBMITTED -->
                 <button type="submit" class="btn btn-primary">Submit</button>
+                <button type="save" class="btn btn-warning" onclick="tinymce.activeEditor.execCommand('mceSave');">Save</button>
 
 
                 <!-- IF ALREADY SUBMITTED    <button type="button" class="btn btn-primary" disabled>Submit</button>  -->
                 <br><br><br>
-                <textarea name="text" class="form-control" rows="5">{{text}}</textarea>
+                <textarea name="text" id="submission" class="form-control submission" rows="5">{{text}}</textarea>
                 </form>
 
 

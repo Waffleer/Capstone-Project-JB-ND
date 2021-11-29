@@ -47,16 +47,35 @@ Root
         min-width: 300px;
         width: 75vw;
         margin-right: 2.5vw;
-        height: 
+    }
+
+    .submission {
+        width: 100%;
     }
 </style>
+
+<head>
+    <script src='https://cdn.tiny.cloud/1/s96kqr6m3ezu3bywvfgcj2e5hayqafc7ifui53pvwfrx06ro/tinymce/5/tinymce.min.js' referrerpolicy="origin">
+    </script>
+    <script>
+      tinymce.init({
+        selector: 'textarea#submission',
+        plugins: 'print wordcount',
+        readonly: 0,
+        width: "100%",
+        toolbar: '',
+        menubar: '',
+        branding: false,
+      });
+    </script>
+</head>
 
 {% if user.is_authenticated %}
     {% if user.profile.teacher == True %}
         <body>
             <div class="container">
                 <form class="submission-block">
-                    <textarea class="form-control" style="min-height:250px;cursor:not-allowed" disabled>{{assignmentText}}</textarea>
+                    <textarea id="submission" class="form-control submission">{{assignmentText}}</textarea>
                 
                 
                 </form>
@@ -88,9 +107,10 @@ Root
                                 <div class="mb-3">
                                     {% if submitBool != True%}
                                     <button type="submit" name='save' class="btn btn-primary" style="width:250px;">Save Grade</button>
-                                    {% endif%}
+                                    {%endif%}
                                 </div>
                             </form>
+                            <button class="btn btn-warning" style="width:250px;" onclick="tinymce.activeEditor.execCommand('mcePrint');">Print Assignment</button>
 
 
 

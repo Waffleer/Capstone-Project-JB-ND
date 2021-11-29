@@ -59,6 +59,20 @@ Class
         }
     </style>
 
+    <head>
+        <script src='https://cdn.tiny.cloud/1/s96kqr6m3ezu3bywvfgcj2e5hayqafc7ifui53pvwfrx06ro/tinymce/5/tinymce.min.js' referrerpolicy="origin">
+        </script>
+        <script>
+          tinymce.init({
+            selector: 'textarea#instructions',
+            plugins: 'image',
+            toolbar: 'undo redo | bold underline italic | align fontsizeselect fontselect forecolor backcolor | image',
+            menubar: '',
+            branding: false
+          });
+        </script>
+    </head>
+
     <body>
 
         {% if user.profile.teacher == False %}
@@ -110,7 +124,7 @@ Class
                     </div>
                     <div class="mb-3">
                         <label for="instructions" class="form-label">Instructions:</label>
-                        <textarea name="instructions" class="form-control" id="instructions"></textarea>
+                        <textarea name="instructions" id="instructions" class="form-control" id="instructions"></textarea>
                     </div>
                     <div class="mb-3">
                         <button type="submit" class="btn btn-primary" style="width:100%;border-radius:25px">Publish Assignment</button>
