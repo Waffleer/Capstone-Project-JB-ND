@@ -474,21 +474,23 @@ def assignment(request, classCode, assignmentCode):
             instructions = assignment.instructions
             pointValue = assignment.pointValue
             assignmentDueDate = assignment.dueDate
+
             #configure submission array
             text = ''
             assignment = assignmentObj.objects.get(codestr=str(assignmentCode))
             sublist = []
             for x in assignment.submissions.all():
-                if x.open == False:
-                    commit = True
-                submission = []
-                code = x.code
-                text = x.text
-                submissionDate = x.submissionDate
-                submission.append(code)
-                submission.append(text)
-                submission.append(submissionDate)
-                sublist.append(submission)
+                if x.submitted != False:
+                    if x.open == False:
+                        commit = True
+                    submission = []
+                    code = x.code
+                    text = x.text
+                    submissionDate = x.submissionDate
+                    submission.append(code)
+                    submission.append(text)
+                    submission.append(submissionDate)
+                    sublist.append(submission)
             for x in assignment.submissions.all():
                 if str(x.owner) == str(user):
                     text = x.text
