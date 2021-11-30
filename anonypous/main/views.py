@@ -546,11 +546,12 @@ def assignment(request, classCode, assignmentCode):
                         x.text = text
                         text = x.text
                         x.save()
+                        currentdoc = x
                 code = genCodeDoc()
                 docCode = documentcode.objects.create(code=str(code))
                 date = currentTime
                 if assignmentCreate == True:
-                    currentdoc = doc.objects.create(name=str(docName), owner=user, code=docCode, text=text, codestr=str(docCode), submissionDate=date)
+                    currentdoc = doc.objects.create(name=str(docName), owner=user, code=docCode, text=text, codestr=str(docCode), submissionDate=date, submitted=False)
                     assignment.submissions.add(currentdoc)
                     user.profile.submissions.add(docCode)
                 context = {
@@ -562,6 +563,8 @@ def assignment(request, classCode, assignmentCode):
                 'dueDate': assignmentDueDate,
                 }
                 if 'submit' in request.POST:
+                    currentdoc.submitted = True
+                    currentdoc.save()
                     return redirect(f'/class/{classCode}')
                 else:
                     return redirect(f'/class/{classCode}/{assignmentCode}')

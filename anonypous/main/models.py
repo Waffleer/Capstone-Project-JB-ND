@@ -58,7 +58,7 @@ class doc(models.Model):
     comment = models.TextField(default='')
     score = models.FloatField(blank=True, null=True)
 
-    submited = models.BooleanField(default=False)
+    submitted = models.BooleanField(default=False)
 
     open = models.BooleanField(default=True)
 
