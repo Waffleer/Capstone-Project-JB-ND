@@ -58,6 +58,8 @@ class doc(models.Model):
     comment = models.TextField(default='')
     score = models.FloatField(blank=True, null=True)
 
+    submited = models.BooleanField(default=False)
+
     open = models.BooleanField(default=True)
 
     created = models.DateTimeField(auto_now_add=True)

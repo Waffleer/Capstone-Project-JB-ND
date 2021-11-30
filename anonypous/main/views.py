@@ -553,8 +553,6 @@ def assignment(request, classCode, assignmentCode):
                     currentdoc = doc.objects.create(name=str(docName), owner=user, code=docCode, text=text, codestr=str(docCode), submissionDate=date)
                     assignment.submissions.add(currentdoc)
                     user.profile.submissions.add(docCode)
-
-
                 context = {
                 'assignmentName': name,
                 'assignmentCode': code,
@@ -562,10 +560,11 @@ def assignment(request, classCode, assignmentCode):
                 'pointValue': pointValue,
                 'text': text,
                 'dueDate': assignmentDueDate,
-
                 }
-
-                return redirect(f'/class/{classCode}')
+                if 'submit' in request.POST:
+                    return redirect(f'/class/{classCode}')
+                else:
+                    return redirect(f'/class/{classCode}/{assignmentCode}')
         else:
             #If Teacher
             if request.method == 'POST':
