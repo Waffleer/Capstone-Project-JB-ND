@@ -518,18 +518,18 @@ def assignment(request, classCode, assignmentCode):
                 if str(x.owner) == str(user):
                     print2(x.text)
                     text = x.text
+                    submitted = x.submitted
                     passed = True
             if passed == False:
                 text = ''
             context = {
                 'assignmentName': name,
                 'assignmentInstructions': instructions,
+                'submitted': submitted,
                 'dueDate': assignmentDueDate,
                 'pointValue': pointValue,
                 'text': text,
             }
-
-
 
         if user.profile.teacher == False:
             #If Student
@@ -537,7 +537,6 @@ def assignment(request, classCode, assignmentCode):
                 text = request.POST.get('text')
                 currentTime = datetime.now()
                 assignment = assignmentObj.objects.get(codestr=str(assignmentCode))
-
                 docName = 'Name TBD'
                 
                 assignmentCreate = True
@@ -564,6 +563,9 @@ def assignment(request, classCode, assignmentCode):
                 'text': text,
                 'dueDate': assignmentDueDate,
                 }
+                
+                if 'resubmit' in request.POST:
+                    return redirect(f'/class/{classCode}')
                 if 'submit' in request.POST:
                     currentdoc.submitted = True
                     currentdoc.save()
