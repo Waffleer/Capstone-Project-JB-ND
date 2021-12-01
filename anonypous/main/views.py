@@ -131,12 +131,9 @@ def invalid(request):
 
 def dashboard(request):
     currentDate = datetime.utcnow()
-    context = {
-        'classFail': False,
-        'currentDate': currentDate
-    }
-    user = request.user
+    
     if request.user.is_authenticated:
+        user = request.user
         if user.profile.teacher == True:
             #teacher render classes
             classs = classes.objects.filter(ownerstr=user)
@@ -165,10 +162,9 @@ def dashboard(request):
             for x in classs:
                 students = x.students.all()
                 for z in students:
-                    c = str(z)
                     user = str(request.user)
-                    if user == c:
-                        print2(f'Worked for class {c}')
+                    if user == str(z):
+                        print2(f'Worked for class {z}')
                         currentlist = []
                         name = x.name
                         code = x.codestr
@@ -262,7 +258,8 @@ def dashboard(request):
                 print('class does not exist')
                 context = {
                     'classFail': True,
-                    'currentDate': currentDate
+                    'currentDate': currentDate,
+                    'classList': classlist,
                 }
                 print2(2)
                 return redirect('/dashboard', context)
@@ -275,11 +272,39 @@ def dashboard(request):
     return render(request, 'dashboard/dashboard.html', context)
 
 def grade(request, classCode, assignmentCode, docCode):
+
+    
     currentDate = datetime.utcnow()
     if str(docCode) == 'style.css':
         pass
     else:
-        document = doc.objects.get(codestr=docCode)
+        try:
+            classs = classes.objects.get(codestr=classCode)   
+            assignment = assignmentObj.objects.get(codestr=str(assignmentCode))
+            document = doc.objects.get(codestr=docCode) 
+        except:
+            return redirect('/invalid')
+
+        classlist = []
+        classss = classes.objects.all()
+        for x in classss:
+            students = x.students.all()
+            for z in students:
+                userStr = str(request.user)
+                if userStr == str(z):
+                    currentlist = []
+                    name = x.name
+                    code = x.codestr
+                    color = x.color
+                    subject = x.subject
+                    description = x.description
+                    currentlist.append(name)
+                    currentlist.append(code)
+                    currentlist.append(color)
+                    currentlist.append(subject)
+                    currentlist.append(description)
+                    classlist.append(currentlist) 
+            
         text = str(document.text)
         subDate = document.submissionDate
         docCode = str(document.code)
@@ -287,7 +312,7 @@ def grade(request, classCode, assignmentCode, docCode):
         score = document.score
 
 
-        assignment = assignmentObj.objects.get(codestr=str(assignmentCode))
+            
         instructions = assignment.instructions
         pointValue = assignment.pointValue
         assignmentOwner = assignment.owner
@@ -300,7 +325,7 @@ def grade(request, classCode, assignmentCode, docCode):
                 comments = request.POST.get('feedback')
                 score_ = request.POST.get('score')
 
-                document = doc.objects.get(codestr=docCode) 
+                
                 document.comment = comments
                 document.score = score_
                 document.save()
@@ -309,7 +334,6 @@ def grade(request, classCode, assignmentCode, docCode):
                 docCode = str(document.code)
                 feedback = document.comment
                 score = document.score
-                assignment = assignmentObj.objects.get(codestr=str(assignmentCode))
                 instructions = assignment.instructions
                 pointValue = assignment.pointValue
                 assignmentOwner = assignment.owner
@@ -325,6 +349,7 @@ def grade(request, classCode, assignmentCode, docCode):
                 'feedback': feedback,
                 'submitBool': submitBool,
                 'currentDate': currentDate,
+                'classList': classlist,
                 }
                 
                 return redirect(f'/class/{classCode}/{assignmentCode}')
@@ -339,6 +364,7 @@ def grade(request, classCode, assignmentCode, docCode):
                 'feedback': feedback,
                 'submitBool': submitBool,
                 'currentDate': currentDate,
+                'classList': classlist,
 
             }
 
@@ -354,6 +380,32 @@ def results(request, classCode, assignmentCode):
     classs = classes.objects.get(codestr=classCode)    
 
     submitBool = assignment.submitted
+    try:
+        classs = classes.objects.get(codestr=classCode)   
+        assignment = assignmentObj.objects.get(codestr=str(assignmentCode))
+    except:
+        return redirect('/invalid')
+    classlist = []
+    classss = classes.objects.all()
+    for x in classss:
+        students = x.students.all()
+        for z in students:
+            userStr = str(request.user)
+            if userStr == str(z):
+                currentlist = []
+                name = x.name
+                code = x.codestr
+                color = x.color
+                subject = x.subject
+                description = x.description
+                currentlist.append(name)
+                currentlist.append(code)
+                currentlist.append(color)
+                currentlist.append(subject)
+                currentlist.append(description)
+                classlist.append(currentlist) 
+
+
     if assignment.submitted == True:
         submissions = assignment.submissions.all()
         assignmentName = assignment.name
@@ -376,6 +428,7 @@ def results(request, classCode, assignmentCode):
             'submissions': submissionList,
             'submitBool': submitBool,
             'currentDate': currentDate,
+            'classList': classlist,
         }
     else:
         submissions = assignment.submissions.all()
@@ -401,6 +454,7 @@ def results(request, classCode, assignmentCode):
             'submissions': submissionList,
             'submitBool': submitBool,
             'currentDate': currentDate,
+            'classList': classlist,
         }
 
 
@@ -461,8 +515,32 @@ def assignment(request, classCode, assignmentCode):
     if str(assignmentCode) == 'style.css':
         pass
     else:
-        assignment = assignmentObj.objects.get(codestr=str(assignmentCode))
-        classs = classes.objects.get(codestr=classCode)    
+        try:
+            assignment = assignmentObj.objects.get(codestr=str(assignmentCode))
+            classs = classes.objects.get(codestr=classCode)   
+        except:
+            return redirect('/invalid') 
+
+        classlist = []
+        classss = classes.objects.all()
+        for x in classss:
+            students = x.students.all()
+            for z in students:
+                userStr = str(request.user)
+                if userStr == str(z):
+                    currentlist = []
+                    name = x.name
+                    code = x.codestr
+                    color = x.color
+                    subject = x.subject
+                    description = x.description
+                    currentlist.append(name)
+                    currentlist.append(code)
+                    currentlist.append(color)
+                    currentlist.append(subject)
+                    currentlist.append(description)
+                    classlist.append(currentlist) 
+
         user = request.user
         students = classs.students.all()    
         name = assignment.name
@@ -520,6 +598,7 @@ def assignment(request, classCode, assignmentCode):
             'assignmentList': [],
                 'text': text,
                 'currentDate': currentDate,
+                'classList': classlist,
             }
         else:
             passed = False
@@ -552,7 +631,8 @@ def assignment(request, classCode, assignmentCode):
                 'pointValue': pointValue,
                 'text': text,
                 'late': late,
-                'currentDate': currentDate,'currentDate': currentDate,
+                'currentDate': currentDate,
+                'classList': classlist,
             }
 
 
@@ -588,6 +668,7 @@ def assignment(request, classCode, assignmentCode):
                 'text': text,
                 'dueDate': assignmentDueDate,
                 'currentDate': currentDate,
+                'classList': classlist,
                 }
                 
                 if 'resubmit' in request.POST:
@@ -616,8 +697,31 @@ def classpage(request, classCode):
     classCode = str(classCode)
     #try:
 
+    try:
+        classs = classes.objects.get(codestr=classCode)    
+    except:
+        return redirect('/invalid')
 
-    classs = classes.objects.get(codestr=classCode)    
+
+    classlist = []
+    classss = classes.objects.all()
+    for x in classss:
+        students = x.students.all()
+        for z in students:
+            userStr = str(request.user)
+            if userStr == str(z):
+                currentlist = []
+                name = x.name
+                code = x.codestr
+                color = x.color
+                subject = x.subject
+                description = x.description
+                currentlist.append(name)
+                currentlist.append(code)
+                currentlist.append(color)
+                currentlist.append(subject)
+                currentlist.append(description)
+                classlist.append(currentlist) 
 
     name = classs.name
     code = classs.code
@@ -655,6 +759,7 @@ def classpage(request, classCode):
     'assignmentList': [],
     'year': year,
     'currentDate': currentDate,
+    'classList': classlist,
     }
     currentClass = code
 
@@ -746,6 +851,28 @@ def classpage(request, classCode):
 
 def profiles(request):
     currentDate = datetime.utcnow()
+
+
+    classlist = []
+    classss = classes.objects.all()
+    for x in classss:
+        students = x.students.all()
+        for z in students:
+            userStr = str(request.user)
+            if userStr == str(z):
+                currentlist = []
+                name = x.name
+                code = x.codestr
+                color = x.color
+                subject = x.subject
+                description = x.description
+                currentlist.append(name)
+                currentlist.append(code)
+                currentlist.append(color)
+                currentlist.append(subject)
+                currentlist.append(description)
+                classlist.append(currentlist) 
+
     if request.method == "POST":
         print('hsagjklgs')
         first = request.POST.get('firstName')
@@ -771,6 +898,29 @@ def root(request):
 
 def test(request):
     currentDate = datetime.utcnow()
+
+
+    classlist = []
+    classss = classes.objects.all()
+    for x in classss:
+        students = x.students.all()
+        for z in students:
+            userStr = str(request.user)
+            if userStr == str(z):
+                currentlist = []
+                name = x.name
+                code = x.codestr
+                color = x.color
+                subject = x.subject
+                description = x.description
+                currentlist.append(name)
+                currentlist.append(code)
+                currentlist.append(color)
+                currentlist.append(subject)
+                currentlist.append(description)
+                classlist.append(currentlist) 
+
+
     '''
     smtp_server = "smtp.gmail.com"
     port = 587  # For starttls
@@ -791,16 +941,40 @@ def test(request):
     '''
     context = {
         'currentDate': currentDate,
+        'classList': classlist,
     }
 
 
     return render(request, 'dashboard/test.html', context)
 
 def login_request(request):
+
+    classlist = []
+    classss = classes.objects.all()
+    for x in classss:
+        students = x.students.all()
+        for z in students:
+            userStr = str(request.user)
+            if userStr == str(z):
+                currentlist = []
+                name = x.name
+                code = x.codestr
+                color = x.color
+                subject = x.subject
+                description = x.description
+                currentlist.append(name)
+                currentlist.append(code)
+                currentlist.append(color)
+                currentlist.append(subject)
+                currentlist.append(description)
+                classlist.append(currentlist) 
+
+
     currentDate = datetime.utcnow()
     context = {
         'authfail' : False,
         'currentDate': currentDate,
+        'classList': classlist,
     }
     if request.method == "POST":
         username = request.POST.get('email')
@@ -816,6 +990,7 @@ def login_request(request):
             context = {
                 'authfail' : True,
                 'currentDate': currentDate,
+                'classList': classlist,
             }
             return render(request, 'dashboard/login.html', context)
 
