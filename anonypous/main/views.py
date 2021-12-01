@@ -90,7 +90,7 @@ def genCodeAssignment():
         if y == 5 or y == 11:
             code.append('-')
         else:
-            num = random.randrange(0, 35)
+            num = random.randrange(0, len(letters)-1)
             code.append(letters[num])
         y += 1
     y = 0
@@ -116,7 +116,7 @@ def genCodeDoc():
         if y == 5 or y == 11 or y == 17:
             code.append('-')
         else:
-            num = random.randrange(0, 35)
+            num = random.randrange(0, len(letters)-1)
             code.append(letters[num])
         y += 1
     y = 0
