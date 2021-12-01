@@ -63,7 +63,7 @@ def genCodeClass():
     letters = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '1', '2', '3', '4', '5', '6', '7', '8', '9']
     y = 0
     while y < 6:
-        num = random.randrange(0, 35)
+        num = random.randrange(0, len(letters)-1)
         code.append(letters[num])
         y += 1
     y = 0
