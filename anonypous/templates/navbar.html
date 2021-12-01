@@ -31,6 +31,7 @@
                     &nbsp;Login
                   {% endif %}
               </a>
+
               <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                 {% if user.is_authenticated %}
                   <li><a class="dropdown-item" href="/profile"><strong>{{ user.profile.firstname }} {{ user.profile.lastname }}</strong></a></li>
@@ -44,6 +45,9 @@
                 {% endif %}
               </ul>
             </li>
+
+            <p>{{ currentDate }}</p>
+
         </ul>
     </div>
   </div>

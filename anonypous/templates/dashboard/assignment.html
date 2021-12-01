@@ -54,7 +54,16 @@ Assignment
             <h5 class="card-title">{{assignmentName}}</h5>
             <p class="card-body squished"><strong>{{pointValue}} Points</strong></p>
             <textarea class="card-body squished" id="instructions"><strong>Assignment Instructions:</strong><br>{{assignmentInstructions}}</textarea>
-            <p class="card-body squished">{{dueDate}}</p>
+            
+            {% if  late == True%}
+            <p class="card-body squished" style="color:red;" >Due Date - {{dueDate}}</p>
+            <p class="card-body squished">Current Time - {{currentDate}}</p>
+            {% else %}
+            <p class="card-body squished">Due Date - {{dueDate}}</p>
+            <p class="card-body squished">Current Time - {{currentDate}}</p>
+            {% endif %}
+
+
             {% if user.profile.teacher == True %}
 
                 <!-- IF ALL SUBMISSIONS ARE GRADED -->
@@ -153,7 +162,13 @@ Assignment
                     <a href="{{x.0}}">
                         <div class="submission active">
                             <div class="id">{{x.0}}</div>
-                            <div class="date">{{x.2}} UTC</div>
+
+                            {%if x.3 == True%}
+                                <div class="date" style="color:red;" style="color:red;" >{{x.2}} UTC</div>
+                            {%else%}
+                                <div class="date">{{x.2}} UTC</div>
+                            {% endif %}
+
                             <!-- <div class="status">Graded</div> -->
                         </div>
                     </a>

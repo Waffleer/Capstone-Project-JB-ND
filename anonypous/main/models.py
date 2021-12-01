@@ -84,7 +84,7 @@ class assignmentObj(models.Model):
     code = models.OneToOneField(assignmentcode, on_delete=models.CASCADE, default='')
     codestr = models.CharField(max_length=30, default='')
     pointValue = models.IntegerField(default='-1')
-    dueDate = models.DateField(null=True, blank=True)
+    dueDate = models.DateTimeField(null=True, blank=True)
 
     submissions = models.ManyToManyField(doc, blank=True)
     instructions = models.TextField(default='Instructions')

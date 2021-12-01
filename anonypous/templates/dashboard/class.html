@@ -118,10 +118,15 @@ Class
                         <label for="pointValue" class="form-label">Point Value</label>
                         <input type="number" name="pointValue" class="form-control" id="pointValue" required>
                     </div>
+
+
                     <div class="mb-3">
-                        <label for="dueDate" class="form-label">Due Date</label>
-                        <input type="date" name="dueDate" class="form-control" id="dueDate" required>
+                        <p class="card-body squished">{{currentDate}}</p>
+                        <label for="dueDate" class="form-label">Due Date &#38 Time</label>
+                        <input type="datetime-local" name="dueDate" class="form-control" id="dueDate" required>
                     </div>
+
+
                     <div class="mb-3">
                         <label for="instructions" class="form-label">Instructions:</label>
                         <textarea name="instructions" id="instructions" class="form-control" id="instructions"></textarea>

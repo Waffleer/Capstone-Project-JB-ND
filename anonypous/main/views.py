@@ -6,9 +6,10 @@ from django.contrib.auth import login, logout, authenticate, get_user_model
 from django.contrib.auth.models import User
 from . models import profile, classes, classcode, assignmentcode, assignmentObj, documentcode, doc
 import smtplib, ssl
-
 import random
 from datetime import datetime
+
+
 
 def stats(request):
     if request.user.profile.teacher == False:
@@ -48,8 +49,6 @@ def statsAssignment(request, assignmentTag):
 
 def statsClass(request, classTag):
     return render(request, 'dashboard/stats.html')
-
-
 
 def print2(str):
     print(f'\n\n{str}\n\n')
@@ -131,8 +130,10 @@ def invalid(request):
     return render(request, 'dashboard/invalid.html')
 
 def dashboard(request):
+    currentDate = datetime.utcnow()
     context = {
         'classFail': False,
+        'currentDate': currentDate
     }
     user = request.user
     if request.user.is_authenticated:
@@ -155,6 +156,7 @@ def dashboard(request):
                 classlist.append(currentlist)
                 context = {
                 'classList': classlist,
+                'currentDate': currentDate
                 }
         else:
             #student class render - hella inefficient
@@ -181,6 +183,7 @@ def dashboard(request):
                         classlist.append(currentlist)
             context = {
                 'classList': classlist,
+                'currentDate': currentDate,
             }
     else:
         return redirect('/login')
@@ -259,6 +262,7 @@ def dashboard(request):
                 print('class does not exist')
                 context = {
                     'classFail': True,
+                    'currentDate': currentDate
                 }
                 print2(2)
                 return redirect('/dashboard', context)
@@ -271,6 +275,7 @@ def dashboard(request):
     return render(request, 'dashboard/dashboard.html', context)
 
 def grade(request, classCode, assignmentCode, docCode):
+    currentDate = datetime.utcnow()
     if str(docCode) == 'style.css':
         pass
     else:
@@ -309,7 +314,7 @@ def grade(request, classCode, assignmentCode, docCode):
                 pointValue = assignment.pointValue
                 assignmentOwner = assignment.owner
 
-
+                currentDate = datetime.utcnow()
                 context = {
                 'assignmentText':text,
                 'subDate': subDate,
@@ -319,6 +324,7 @@ def grade(request, classCode, assignmentCode, docCode):
                 'score': score,
                 'feedback': feedback,
                 'submitBool': submitBool,
+                'currentDate': currentDate,
                 }
                 
                 return redirect(f'/class/{classCode}/{assignmentCode}')
@@ -331,7 +337,9 @@ def grade(request, classCode, assignmentCode, docCode):
                 'pointValue': pointValue,
                 'score': score,
                 'feedback': feedback,
-                'submitBool': submitBool
+                'submitBool': submitBool,
+                'currentDate': currentDate,
+
             }
 
 
@@ -340,7 +348,7 @@ def grade(request, classCode, assignmentCode, docCode):
             return redirect('/invalid')
 
 def results(request, classCode, assignmentCode):
-
+    currentDate = datetime.utcnow()
     user = request.user
     assignment = assignmentObj.objects.get(codestr=str(assignmentCode))
     classs = classes.objects.get(codestr=classCode)    
@@ -367,6 +375,7 @@ def results(request, classCode, assignmentCode):
             'assignmentName': assignmentName,
             'submissions': submissionList,
             'submitBool': submitBool,
+            'currentDate': currentDate,
         }
     else:
         submissions = assignment.submissions.all()
@@ -391,6 +400,7 @@ def results(request, classCode, assignmentCode):
             'assignmentName': assignmentName,
             'submissions': submissionList,
             'submitBool': submitBool,
+            'currentDate': currentDate,
         }
 
 
@@ -443,7 +453,7 @@ def results(request, classCode, assignmentCode):
     return render(request, 'dashboard/results.html', context)
 
 def assignment(request, classCode, assignmentCode):
-    context = {}
+    currentDate = datetime.utcnow()
 
     classCode = str(classCode)
     #try:
@@ -487,10 +497,15 @@ def assignment(request, classCode, assignmentCode):
                     code = x.code
                     text = x.text
                     submissionDate = x.submissionDate
+                    late = False
+                    if x.submissionDate > assignmentDueDate:
+                        late = True
                     submission.append(code)
                     submission.append(text)
                     submission.append(submissionDate)
+                    submission.append(late)
                     sublist.append(submission)
+                    
             for x in assignment.submissions.all():
                 if str(x.owner) == str(user):
                     text = x.text
@@ -504,9 +519,11 @@ def assignment(request, classCode, assignmentCode):
             'submissions': sublist,
             'assignmentList': [],
                 'text': text,
+                'currentDate': currentDate,
             }
         else:
             passed = False
+            late = False
             for x in students:
                 if str(x) == str(user):
                     passed = True
@@ -514,14 +531,19 @@ def assignment(request, classCode, assignmentCode):
                 return redirect("/invalid")
             passed = False
             for x in assignment.submissions.all():
-                print2(f"{x} - {x.owner}")
                 if str(x.owner) == str(user):
-                    print2(x.text)
                     text = x.text
                     submitted = x.submitted
                     passed = True
+                    if x.submissionDate > assignmentDueDate:
+                        late = True
+                        print2("Found late")
+                    print2(x.submissionDate)
+                    print2(assignmentDueDate)
             if passed == False:
+                submitted = False
                 text = ''
+            currentDate = datetime.utcnow()
             context = {
                 'assignmentName': name,
                 'assignmentInstructions': instructions,
@@ -529,7 +551,10 @@ def assignment(request, classCode, assignmentCode):
                 'dueDate': assignmentDueDate,
                 'pointValue': pointValue,
                 'text': text,
+                'late': late,
+                'currentDate': currentDate,'currentDate': currentDate,
             }
+
 
         if user.profile.teacher == False:
             #If Student
@@ -562,6 +587,7 @@ def assignment(request, classCode, assignmentCode):
                 'pointValue': pointValue,
                 'text': text,
                 'dueDate': assignmentDueDate,
+                'currentDate': currentDate,
                 }
                 
                 if 'resubmit' in request.POST:
@@ -585,7 +611,7 @@ def assignment(request, classCode, assignmentCode):
         return render(request, 'dashboard/assignment.html', context)
 
 def classpage(request, classCode):
-
+    currentDate = datetime.utcnow()
     print(f'code - [{classCode}]')
     classCode = str(classCode)
     #try:
@@ -617,6 +643,8 @@ def classpage(request, classCode):
         assignmentList.append(x.code)
         print(x.code)
         assignments.append(assignmentList)
+    
+    currentDate = datetime.utcnow()
 
     context = {
     'className': name,
@@ -625,7 +653,8 @@ def classpage(request, classCode):
     'students': students,
     'assignments': assignments,
     'assignmentList': [],
-    'year': year
+    'year': year,
+    'currentDate': currentDate,
     }
     currentClass = code
 
@@ -716,7 +745,7 @@ def classpage(request, classCode):
      #   return redirect('/invalid')
 
 def profiles(request):
-
+    currentDate = datetime.utcnow()
     if request.method == "POST":
         print('hsagjklgs')
         first = request.POST.get('firstName')
@@ -741,7 +770,7 @@ def root(request):
     return redirect('/login')
 
 def test(request):
-    
+    currentDate = datetime.utcnow()
     '''
     smtp_server = "smtp.gmail.com"
     port = 587  # For starttls
@@ -761,14 +790,17 @@ def test(request):
     server.quit()
     '''
     context = {
+        'currentDate': currentDate,
     }
 
 
     return render(request, 'dashboard/test.html', context)
 
 def login_request(request):
+    currentDate = datetime.utcnow()
     context = {
         'authfail' : False,
+        'currentDate': currentDate,
     }
     if request.method == "POST":
         username = request.POST.get('email')
@@ -783,6 +815,7 @@ def login_request(request):
         else:
             context = {
                 'authfail' : True,
+                'currentDate': currentDate,
             }
             return render(request, 'dashboard/login.html', context)
 
@@ -791,6 +824,7 @@ def login_request(request):
 
 def register(request):
     logout(request)
+    currentDate = datetime.utcnow()
 
     #gets a list of all register emails
     email = profile.objects.all()
@@ -828,6 +862,7 @@ def register(request):
             'error5' : False,
             'error6' : False,
             'error7' : False,
+            'currentDate': currentDate,
         }
     if request.method == "POST":
 
@@ -861,6 +896,7 @@ def register(request):
                 'error5' : False,
                 'error6' : False,
                 'error7' : False,
+                'currentDate': currentDate,
                 }
             return render(request, 'dashboard/register.html', context)\
 
@@ -876,6 +912,7 @@ def register(request):
                 'error5' : False,
                 'error6' : False,
                 'error7' : False,
+                'currentDate': currentDate,
                 }
             return render(request, 'dashboard/register.html', context)     
 
@@ -893,6 +930,7 @@ def register(request):
                 'error5' : False,
                 'error6' : True,
                 'error7' : False,
+                'currentDate': currentDate,
                 }
             return render(request, 'dashboard/register.html', context)
 
@@ -916,6 +954,7 @@ def register(request):
                 'error5' : False,
                 'error6' : False,
                 'error7' : False,
+                'currentDate': currentDate,
                 }
             return render(request, 'dashboard/register.html', context)
         if upperbool == True:
@@ -930,6 +969,7 @@ def register(request):
                 'error5' : True,
                 'error6' : False,
                 'error7' : False,
+                'currentDate': currentDate,
                 }
             return render(request, 'dashboard/register.html', context)
 
@@ -947,6 +987,7 @@ def register(request):
                 'error5' : False,
                 'error6' : False,
                 'error7' : False,
+                'currentDate': currentDate,
             }
             return render(request, 'dashboard/register.html', context)
 
@@ -961,6 +1002,7 @@ def register(request):
                 'error5' : False,
                 'error6' : False,
                 'error7' : True,
+                'currentDate': currentDate,
                 } 
             return render(request, 'dashboard/register.html', context)
 
@@ -980,6 +1022,7 @@ def register(request):
                 'error5' : False,
                 'error6' : False,
                 'error7' : False,
+                'currentDate': currentDate,
                 } 
             return render(request, 'dashboard/register.html', context)
 
