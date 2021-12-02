@@ -129,69 +129,42 @@ def genCodeDoc():
 def invalid(request):
     return render(request, 'dashboard/invalid.html')
 
+def getClassList(request):
+    if request.user.profile.teacher == True:
+        #teacher render classes
+        classs = classes.objects.filter(ownerstr=request.user)
+        classlist = []
+        for x in classs:
+            currentlist = []
+            name = x.name
+            subject = x.subject
+            code = x.codestr
+            currentlist.append(name)
+            currentlist.append(code)
+            currentlist.append(subject)
+            classlist.append(currentlist)
+    else:
+        #student class render - hella inefficient
+        classlist = []
+        classs = classes.objects.all()
+        for x in classs:
+            students = x.students.all()
+            for z in students:
+                user = str(request.user)
+                if user == str(z):
+                    print2(f'Worked for class {z}')
+                    currentlist = []
+                    name = x.name
+                    code = x.codestr
+                    subject = x.subject
+                    currentlist.append(name)
+                    currentlist.append(code)
+                    currentlist.append(subject)
+                    classlist.append(currentlist)
+    return classlist
+
 def dashboard(request):
     currentDate = datetime.utcnow()
-    
-
-if user.profile.teacher == True:
-            #teacher render classes
-            classs = classes.objects.filter(ownerstr=user)
-            classlist = []
-            for x in classs:
-                currentlist = []
-                name = x.name
-                code = x.codestr
-                color = x.color
-                subject = x.subject
-                description = x.description
-                currentlist.append(name)
-                currentlist.append(code)
-                currentlist.append(color)
-                currentlist.append(subject)
-                currentlist.append(description)
-                classlist.append(currentlist)
-                context = {
-                'classList': classlist,
-                'currentDate': currentDate
-                }
-        else:
-            #student class render - hella inefficient
-            classlist = []
-            classs = classes.objects.all()
-            for x in classs:
-                students = x.students.all()
-                for z in students:
-                    user = str(request.user)
-                    if user == str(z):
-                        print2(f'Worked for class {z}')
-                        currentlist = []
-                        name = x.name
-                        code = x.codestr
-                        color = x.color
-                        subject = x.subject
-                        description = x.description
-                        currentlist.append(name)
-                        currentlist.append(code)
-                        currentlist.append(color)
-                        currentlist.append(subject)
-                        currentlist.append(description)
-                        classlist.append(currentlist)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     if request.user.is_authenticated:
         user = request.user
@@ -208,8 +181,8 @@ if user.profile.teacher == True:
                 description = x.description
                 currentlist.append(name)
                 currentlist.append(code)
-                currentlist.append(color)
                 currentlist.append(subject)
+                currentlist.append(color)
                 currentlist.append(description)
                 classlist.append(currentlist)
                 context = {
@@ -234,8 +207,8 @@ if user.profile.teacher == True:
                         description = x.description
                         currentlist.append(name)
                         currentlist.append(code)
-                        currentlist.append(color)
                         currentlist.append(subject)
+                        currentlist.append(color)
                         currentlist.append(description)
                         classlist.append(currentlist)
             context = {
@@ -346,25 +319,7 @@ def grade(request, classCode, assignmentCode, docCode):
         except:
             return redirect('/invalid')
 
-        classlist = []
-        classss = classes.objects.all()
-        for x in classss:
-            students = x.students.all()
-            for z in students:
-                userStr = str(request.user)
-                if userStr == str(z):
-                    currentlist = []
-                    name = x.name
-                    code = x.codestr
-                    color = x.color
-                    subject = x.subject
-                    description = x.description
-                    currentlist.append(name)
-                    currentlist.append(code)
-                    currentlist.append(color)
-                    currentlist.append(subject)
-                    currentlist.append(description)
-                    classlist.append(currentlist) 
+        classlist = getClassList(request)
             
         text = str(document.text)
         subDate = document.submissionDate
@@ -446,25 +401,8 @@ def results(request, classCode, assignmentCode):
         assignment = assignmentObj.objects.get(codestr=str(assignmentCode))
     except:
         return redirect('/invalid')
-    classlist = []
-    classss = classes.objects.all()
-    for x in classss:
-        students = x.students.all()
-        for z in students:
-            userStr = str(request.user)
-            if userStr == str(z):
-                currentlist = []
-                name = x.name
-                code = x.codestr
-                color = x.color
-                subject = x.subject
-                description = x.description
-                currentlist.append(name)
-                currentlist.append(code)
-                currentlist.append(color)
-                currentlist.append(subject)
-                currentlist.append(description)
-                classlist.append(currentlist) 
+        
+    classlist = getClassList(request)
 
 
     if assignment.submitted == True:
@@ -582,25 +520,7 @@ def assignment(request, classCode, assignmentCode):
         except:
             return redirect('/invalid') 
 
-        classlist = []
-        classss = classes.objects.all()
-        for x in classss:
-            students = x.students.all()
-            for z in students:
-                userStr = str(request.user)
-                if userStr == str(z):
-                    currentlist = []
-                    name = x.name
-                    code = x.codestr
-                    color = x.color
-                    subject = x.subject
-                    description = x.description
-                    currentlist.append(name)
-                    currentlist.append(code)
-                    currentlist.append(color)
-                    currentlist.append(subject)
-                    currentlist.append(description)
-                    classlist.append(currentlist) 
+        classlist = getClassList(request)
 
         user = request.user
         students = classs.students.all()    
@@ -764,25 +684,7 @@ def classpage(request, classCode):
         return redirect('/invalid')
 
 
-    classlist = []
-    classss = classes.objects.all()
-    for x in classss:
-        students = x.students.all()
-        for z in students:
-            userStr = str(request.user)
-            if userStr == str(z):
-                currentlist = []
-                name = x.name
-                code = x.codestr
-                color = x.color
-                subject = x.subject
-                description = x.description
-                currentlist.append(name)
-                currentlist.append(code)
-                currentlist.append(color)
-                currentlist.append(subject)
-                currentlist.append(description)
-                classlist.append(currentlist) 
+    classlist = getClassList(request)
 
     name = classs.name
     code = classs.code
@@ -914,25 +816,7 @@ def profiles(request):
     currentDate = datetime.utcnow()
 
 
-    classlist = []
-    classss = classes.objects.all()
-    for x in classss:
-        students = x.students.all()
-        for z in students:
-            userStr = str(request.user)
-            if userStr == str(z):
-                currentlist = []
-                name = x.name
-                code = x.codestr
-                color = x.color
-                subject = x.subject
-                description = x.description
-                currentlist.append(name)
-                currentlist.append(code)
-                currentlist.append(color)
-                currentlist.append(subject)
-                currentlist.append(description)
-                classlist.append(currentlist) 
+    classlist = getClassList(request)
 
     if request.method == "POST":
         print('hsagjklgs')
@@ -961,25 +845,7 @@ def test(request):
     currentDate = datetime.utcnow()
 
 
-    classlist = []
-    classss = classes.objects.all()
-    for x in classss:
-        students = x.students.all()
-        for z in students:
-            userStr = str(request.user)
-            if userStr == str(z):
-                currentlist = []
-                name = x.name
-                code = x.codestr
-                color = x.color
-                subject = x.subject
-                description = x.description
-                currentlist.append(name)
-                currentlist.append(code)
-                currentlist.append(color)
-                currentlist.append(subject)
-                currentlist.append(description)
-                classlist.append(currentlist) 
+    classlist = getClassList(request)
 
 
     '''
