@@ -132,6 +132,67 @@ def invalid(request):
 def dashboard(request):
     currentDate = datetime.utcnow()
     
+
+if user.profile.teacher == True:
+            #teacher render classes
+            classs = classes.objects.filter(ownerstr=user)
+            classlist = []
+            for x in classs:
+                currentlist = []
+                name = x.name
+                code = x.codestr
+                color = x.color
+                subject = x.subject
+                description = x.description
+                currentlist.append(name)
+                currentlist.append(code)
+                currentlist.append(color)
+                currentlist.append(subject)
+                currentlist.append(description)
+                classlist.append(currentlist)
+                context = {
+                'classList': classlist,
+                'currentDate': currentDate
+                }
+        else:
+            #student class render - hella inefficient
+            classlist = []
+            classs = classes.objects.all()
+            for x in classs:
+                students = x.students.all()
+                for z in students:
+                    user = str(request.user)
+                    if user == str(z):
+                        print2(f'Worked for class {z}')
+                        currentlist = []
+                        name = x.name
+                        code = x.codestr
+                        color = x.color
+                        subject = x.subject
+                        description = x.description
+                        currentlist.append(name)
+                        currentlist.append(code)
+                        currentlist.append(color)
+                        currentlist.append(subject)
+                        currentlist.append(description)
+                        classlist.append(currentlist)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     if request.user.is_authenticated:
         user = request.user
         if user.profile.teacher == True:

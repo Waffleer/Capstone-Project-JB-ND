@@ -11,6 +11,10 @@
         <li class="nav-item">
           <a class="nav-link active" aria-current="page" href="/">Home</a>
         </li>
+
+
+
+
           {% if request.path == '/dashboard' %}
             <li class="nav-item dropdown">
               <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -22,6 +26,13 @@
               </ul>
             </li>
           {% endif %}
+
+
+
+
+
+
+
             <li class="nav-item dropdown">
               <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                   <i class="fas fa-user-circle"></i>
@@ -45,9 +56,9 @@
                 {% endif %}
               </ul>
             </li>
-
-            <p>{{ currentDate }}</p>
-
+            <li class="nav-item">
+          <a class="nav-link active" aria-current="page">{{currentDate}}</a>
+          </li>
         </ul>
     </div>
   </div>
