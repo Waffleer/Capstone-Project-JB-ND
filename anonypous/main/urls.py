@@ -23,5 +23,6 @@ urlpatterns = [
     path('stats', views.stats, name='stats'),
     path('stats/a/<str:assignmentTag>', views.statsAssignment, name='stats'),
     path('stats/t/<str:classTag>', views.statsClass, name='stats'),
+    path('forms', views.forms, name='forms')
 
 ]

@@ -9,6 +9,8 @@ import smtplib, ssl
 import random
 from datetime import datetime
 
+def forms(request):
+    return render(request, 'dashboard/forms.html')
 
 
 def stats(request):
