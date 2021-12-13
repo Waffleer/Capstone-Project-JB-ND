@@ -557,6 +557,7 @@ def assignment(request, classCode, assignmentCode):
                     submission = []
                     code = x.code
                     text = x.text
+                    score = x.score
                     submissionDate = x.submissionDate
                     late = False
                     if x.submissionDate > assignmentDueDate:
@@ -565,7 +566,9 @@ def assignment(request, classCode, assignmentCode):
                     submission.append(text)
                     submission.append(submissionDate)
                     submission.append(late)
+                    submission.append(score)
                     sublist.append(submission)
+                    
                     
             for x in assignment.submissions.all():
                 if str(x.owner) == str(user):
@@ -599,9 +602,7 @@ def assignment(request, classCode, assignmentCode):
                     passed = True
                     if x.submissionDate > assignmentDueDate:
                         late = True
-                        print2("Found late")
-                    print2(x.submissionDate)
-                    print2(assignmentDueDate)
+
             if passed == False:
                 submitted = False
                 text = ''

@@ -127,15 +127,15 @@ Assignment
             }
 
             .id {
-                width: 500px;
+                width: 250px;
+            }
+
+            .score {
+                width: 100px;
             }
 
             .date {
                 width: 200px;
-            }
-
-            .status {
-                width: 100px;
             }
 
             .active:hover {
@@ -154,6 +154,7 @@ Assignment
             <div class="submissions-container">
                 <div class="submission header">
                     <div class="id"><strong>Submission ID</strong></div>
+                    <div class="score"><strong>Score</strong></div>
                     <div class="date"><strong>Submission Date</strong></div>
                     <!-- <div class="status"><strong>Status</strong></div> -->
                 </div>
@@ -162,7 +163,7 @@ Assignment
                     <a href="{{x.0}}">
                         <div class="submission active">
                             <div class="id">{{x.0}}</div>
-
+                            <div class="score">{{x.4}}</div>
                             {%if x.3 == True%}
                                 <div class="date" style="color:red;" style="color:red;" >{{x.2}} UTC</div>
                             {%else%}

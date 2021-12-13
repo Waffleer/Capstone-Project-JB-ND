@@ -17,7 +17,7 @@ Root
     .container {
         display: flex;
         flex-direction: row;
-        height: 75vh;
+        // height: 75vh;
         width: 100%;
     }
 
@@ -68,6 +68,32 @@ Root
         branding: false,
       });
     </script>
+
+    <script>
+      tinymce.init({
+        selector: 'textarea#feedback',
+        plugins: 'print wordcount',
+        readonly: 0,
+        width: "100%",
+        toolbar: '',
+        menubar: '',
+        branding: false,
+        height: '100',
+      });
+    </script>
+
+    <script>
+        tinymce.init({
+          selector: 'textarea#instructions',
+          plugins: '',
+          readonly: 1,
+          width: "100%",
+          toolbar: '',
+          menubar: '',
+          branding: false,
+          height: '100',
+        });
+      </script>
 </head>
 
 {% if user.is_authenticated %}
@@ -84,13 +110,14 @@ Root
                             <h5 class="card-title">{{docCode}}</h5>
                             <p class="card-body">{{ subDate }}</p>
                             <p class="card-body">Out of {{ pointValue }} points</p>
-                            <p class="card-body">{{ instructions }}</p>
+                            <!--<p class="card-body">{{ instructions }}</p> -->
+                            <textarea id="instructions">{{instructions}}</textarea>
 
                            <form action='' method='POST'>{% csrf_token %}
                                 <div class="mb-3">
 
                                     {% if submitBool != True%}
-                                        <textarea class="form-control grade-field" name='feedback' placeholder="Assignment Feedback" style="min-height:100px;">{{feedback}}</textarea>
+                                        <textarea class="form-control grade-field" name='feedback' id="feedback" placeholder="Assignment Feedback" style="min-height:100px;">{{feedback}}</textarea>
                                     {%else%}
                                         <textarea class="form-control grade-field" name='feedback' placeholder="Assignment Feedback" style="min-height:100px;"disabled>{{feedback}}</textarea>
                                     {%endif%}
