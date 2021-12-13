@@ -303,8 +303,10 @@ def dashboard(request):
            
             print(f'\njoin') 
             #will deal with the remove form post
-
-
+    try:
+        context.update({'null': "null"})
+    except:
+        context = {}
     return render(request, 'dashboard/dashboard.html', context)
 
 def grade(request, classCode, assignmentCode, docCode):
