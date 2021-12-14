@@ -495,8 +495,9 @@ def results(request, classCode, assignmentCode):
                     To : {nameList[y]} {nameList[y+1]} <{x}>
                     Subject: Returning Results on {assignment.name}.
 
-                    Results are {docInfo[y]}.
-                    Comments are {docInfo[y+1]}
+                    Results are :     {docInfo[y]}.
+                    Feedback :  
+                    {docInfo[y+1]}
                     
                     """
                     server.sendmail(sender, x, email)
@@ -602,6 +603,8 @@ def assignment(request, classCode, assignmentCode):
                     text = x.text
                     submitted = x.submitted
                     passed = True
+                    score = x.score
+                    feedback = x.comment
                     if x.submissionDate > assignmentDueDate:
                         late = True
 
@@ -610,6 +613,8 @@ def assignment(request, classCode, assignmentCode):
                 text = ''
             currentDate = datetime.utcnow()
             context = {
+                'feedback': feedback,
+                'score': score,
                 'assignmentName': name,
                 'assignmentInstructions': instructions,
                 'submitted': submitted,

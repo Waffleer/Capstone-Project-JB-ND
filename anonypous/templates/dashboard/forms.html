@@ -7,12 +7,28 @@ Login
 
 {% block content%}
 
+  <style>
+    .content {
+      display: flex;
+      flex-direction: row;
+      width: 100%;
+    }
 
-    <a aria-current="page" href="https://docs.google.com/forms/d/e/1FAIpQLScrpnvvLNJlUWM35sBFaro73WUDdtQUN8bMbaoWVt3Px_PoPg/viewform?usp=sf_link">Bug Report</a>
+    .element {
+      display: flex;
+      width: 100%;
+    }
+  </style>
+    <a>You may also send an email to <a href="mailto:anonypous.superuser@gmail.com" target="_blank">anonypous.superuser@gmail.com</a> for an suggustions or bug fixes </a>
 
-    <br>
-    <a aria-current="page" href="">Suggustion</a><br><br>
-    <a>You an also send an email to anonypous.superuser@gmail.com for an suggustions or bug fixes </a>
+    <div class="content">
+      <div class="element">
+        <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSddCnw7cGVFmyF_RuVXHKWG_wYwPQMmMrDFEtwcdIAD39DnUw/viewform?embedded=true" width="100%" height="1750" frameborder="0" marginheight="0" marginwidth="0">Loading…</iframe>
+      </div>
+      <div class="element">
+        <iframe src="https://docs.google.com/forms/d/e/1FAIpQLScrpnvvLNJlUWM35sBFaro73WUDdtQUN8bMbaoWVt3Px_PoPg/viewform?embedded=true" width="100%" height="1750" frameborder="0" marginheight="0" marginwidth="0">Loading…</iframe>
+      </div>
+    </div>
   
   </body>
 

@@ -43,6 +43,14 @@ Assignment
         .submission {
             height: 250px;
         }
+
+        .score {
+            display: inline-block;
+            padding: 15px;
+            border-radius: 5px;
+            border: 1px black dashed;
+            background-color: #d9ffd4;
+        }
     </style>
 
     <body>
@@ -56,11 +64,11 @@ Assignment
             <textarea class="card-body squished" id="instructions"><strong>Assignment Instructions:</strong><br>{{assignmentInstructions}}</textarea>
             
             {% if  late == True%}
-            <p class="card-body squished" style="color:red;" >Due Date - {{dueDate}}</p>
-            <p class="card-body squished">Current Time - {{currentDate}}</p>
+                <p class="card-body squished" style="color:red;" >Due Date - {{dueDate}}</p>
+                <p class="card-body squished">Current Time - {{currentDate}}</p>
             {% else %}
-            <p class="card-body squished">Due Date - {{dueDate}}</p>
-            <p class="card-body squished">Current Time - {{currentDate}}</p>
+                <p class="card-body squished">Due Date - {{dueDate}}</p>
+                <p class="card-body squished">Current Time - {{currentDate}}</p>
             {% endif %}
 
 
@@ -76,10 +84,14 @@ Assignment
                 <form action='' method='POST'>{% csrf_token %}
                 <!-- IF NOT SUBMITTED -->
                 {% if submitted == True %}
-                    <button type="submit" name="submit" class="btn btn-primary">Resubmit</button>
+                    <!-- <button type="submit" name="submit" class="btn btn-primary">Resubmit</button> -->
+                    <div class="score">
+                        <p><b>Score:</b> &nbsp; {{ score }}</p>
+                        <p><b>Feedback:</b> &nbsp; {{ feedback }}</p>
+                    </div>
                 {% else %}
-                    <button type="submit" name="submit" class="btn btn-primary">Submit</button>
-                    <button type="save" class="btn btn-warning" >Save</button>
+                        <button type="submit" name="submit" class="btn btn-primary">Submit</button>
+                        <button type="save" class="btn btn-warning" >Save</button>
                 {% endif %}
 
                 <!-- IF ALREADY SUBMITTED    <button type="button" class="btn btn-primary" disabled>Submit</button>  -->
