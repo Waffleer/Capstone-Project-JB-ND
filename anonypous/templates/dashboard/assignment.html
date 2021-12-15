@@ -83,15 +83,21 @@ Assignment
             {% else %}
                 <form action='' method='POST'>{% csrf_token %}
                 <!-- IF NOT SUBMITTED -->
-                {% if submitted == True %}
-                    <!-- <button type="submit" name="submit" class="btn btn-primary">Resubmit</button> -->
-                    <div class="score">
-                        <p><b>Score:</b> &nbsp; {{ score }}</p>
-                        <p><b>Feedback:</b> &nbsp; {{ feedback }}</p>
-                    </div>
+                {% if assignmentSubmitted != True %}
+                    {% if submitted == True %}
+                        <!-- <button type="submit" name="submit" class="btn btn-primary">Resubmit</button> -->
+                        <div class="score">
+                            <p><b>Score:</b> &nbsp; {{ score }}</p>
+                            <p><b>Feedback:</b> &nbsp; {{ feedback }}</p>
+                        </div>
+                    {% else %}
+                            <button type="submit" name="submit" class="btn btn-primary">Submit</button>
+                            <button type="save" class="btn btn-warning" >Save</button>
+                    {% endif %}
                 {% else %}
-                        <button type="submit" name="submit" class="btn btn-primary">Submit</button>
-                        <button type="save" class="btn btn-warning" >Save</button>
+                        This assignment has been Graded, Talk to your Teacher you dumb ... <br><br>
+
+                        // Jake please disable text box.
                 {% endif %}
 
                 <!-- IF ALREADY SUBMITTED    <button type="button" class="btn btn-primary" disabled>Submit</button>  -->

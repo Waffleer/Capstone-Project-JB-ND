@@ -12,7 +12,6 @@ from datetime import datetime
 def forms(request):
     return render(request, 'dashboard/forms.html')
 
-
 def stats(request):
     if request.user.profile.teacher == False:
         return redirect('/invalid')
@@ -535,6 +534,7 @@ def assignment(request, classCode, assignmentCode):
         instructions = assignment.instructions
         pointValue = assignment.pointValue
         assignmentDueDate = assignment.dueDate
+        assignmentSubmitted = assignment.submitted
         if user.profile.teacher == True:
             if str(owner) != str(user):
                 return redirect("/invalid")
@@ -548,6 +548,7 @@ def assignment(request, classCode, assignmentCode):
             instructions = assignment.instructions
             pointValue = assignment.pointValue
             assignmentDueDate = assignment.dueDate
+            feedback = ''
 
             #configure submission array
             text = ''
@@ -590,6 +591,8 @@ def assignment(request, classCode, assignmentCode):
                 'classList': classlist,
             }
         else:
+            feedback = ''
+            score = ''
             passed = False
             late = False
             for x in students:
@@ -611,8 +614,10 @@ def assignment(request, classCode, assignmentCode):
             if passed == False:
                 submitted = False
                 text = ''
+            
             currentDate = datetime.utcnow()
             context = {
+                'assignmentSubmitted': assignmentSubmitted,
                 'feedback': feedback,
                 'score': score,
                 'assignmentName': name,
@@ -630,46 +635,48 @@ def assignment(request, classCode, assignmentCode):
         if user.profile.teacher == False:
             #If Student
             if request.method == 'POST':
-                text = request.POST.get('text')
-                currentTime = datetime.now()
                 assignment = assignmentObj.objects.get(codestr=str(assignmentCode))
-                docName = 'Name TBD'
-                
-                assignmentCreate = True
-                for x in assignment.submissions.all():
-                    if str(x.owner) == str(user):
-                        assignmentCreate = False
-                        x.submissionDate = currentTime
-                        x.text = text
-                        text = x.text
-                        x.save()
-                        currentdoc = x
-                code = genCodeDoc()
-                docCode = documentcode.objects.create(code=str(code))
-                date = currentTime
-                if assignmentCreate == True:
-                    currentdoc = doc.objects.create(name=str(docName), owner=user, code=docCode, text=text, codestr=str(docCode), submissionDate=date, submitted=False)
-                    assignment.submissions.add(currentdoc)
-                    user.profile.submissions.add(docCode)
-                context = {
-                'assignmentName': name,
-                'assignmentCode': code,
-                'assignmentInstructions': instructions,
-                'pointValue': pointValue,
-                'text': text,
-                'dueDate': assignmentDueDate,
-                'currentDate': currentDate,
-                'classList': classlist,
-                }
-                
-                if 'resubmit' in request.POST:
-                    return redirect(f'/class/{classCode}')
-                if 'submit' in request.POST:
-                    currentdoc.submitted = True
-                    currentdoc.save()
-                    return redirect(f'/class/{classCode}')
-                else:
-                    return redirect(f'/class/{classCode}/{assignmentCode}')
+                print2(assignment.submitted)
+                if assignment.submitted != True:
+                    text = request.POST.get('text')
+                    currentTime = datetime.now()
+                    docName = 'Name TBD'
+                    
+                    assignmentCreate = True
+                    for x in assignment.submissions.all():
+                        if str(x.owner) == str(user):
+                            assignmentCreate = False
+                            x.submissionDate = currentTime
+                            x.text = text
+                            text = x.text
+                            x.save()
+                            currentdoc = x
+                    code = genCodeDoc()
+                    docCode = documentcode.objects.create(code=str(code))
+                    date = currentTime
+                    if assignmentCreate == True:
+                        currentdoc = doc.objects.create(name=str(docName), owner=user, code=docCode, text=text, codestr=str(docCode), submissionDate=date, submitted=False)
+                        assignment.submissions.add(currentdoc)
+                        user.profile.submissions.add(docCode)
+                    context = {
+                    'assignmentName': name,
+                    'assignmentCode': code,
+                    'assignmentInstructions': instructions,
+                    'pointValue': pointValue,
+                    'text': text,
+                    'dueDate': assignmentDueDate,
+                    'currentDate': currentDate,
+                    'classList': classlist,
+                    }
+                    
+                    if 'resubmit' in request.POST:
+                        return redirect(f'/class/{classCode}')
+                    if 'submit' in request.POST:
+                        currentdoc.submitted = True
+                        currentdoc.save()
+                        return redirect(f'/class/{classCode}')
+                    else:
+                        return redirect(f'/class/{classCode}/{assignmentCode}')
         else:
             #If Teacher
             if request.method == 'POST':

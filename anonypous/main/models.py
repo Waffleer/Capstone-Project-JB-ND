@@ -68,7 +68,6 @@ class doc(models.Model):
     def __str__(self):
         return f'''Doc - {self.code}'''
 
-
 class assignmentcode(models.Model):
     code = models.CharField(max_length=17)
 
