@@ -708,7 +708,6 @@ def classpage(request, classCode):
     except:
         return redirect('/invalid')
 
-
     classlist = getClassList(request)
 
     name = classs.name
@@ -716,16 +715,19 @@ def classpage(request, classCode):
     owner = classs.owner
     year = classs.year
     description = classs.description
-    students = classs.students.all()
+    studentsList = classs.students.all()
+    students = []
+    for x in studentsList:
+        list = []
+        nameS = x.firstname
+        nameSL = x.lastname
+        emailS = x.email
+        list.append(nameS)
+        list.append(nameSL)
+        list.append(emailS)
+        students.append(list)
+
     rawAssignments = classs.assignments.all()
-    print('\n\n')
-    print(f'name-{name}')
-    print(f'code-{code}')
-    print(f'owner-{owner}')
-    print(f'description-{description}')
-    print(f'students-{students}')
-    print(f'assignments-{rawAssignments}')
-    print('\n\n')
     
     assignments = []
     for x in rawAssignments:

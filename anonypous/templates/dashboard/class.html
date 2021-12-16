@@ -190,7 +190,7 @@ Class
             <div class="modal-body">
                 <ul>
                     {% for i in students %}
-                        <li>{{ i }}</li>
+                        <li>{{ i.0 }} {{ i.1 }} - {{ i.2 }}</li>
                     {% empty %}
                         <p>No students have joined yet :(</p>
                     {% endfor %}
