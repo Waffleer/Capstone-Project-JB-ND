@@ -415,16 +415,24 @@ def results(request, classCode, assignmentCode):
         submissionList = []
         for x in submissions:
             list = []
+            list2 = []
             name = f"{x.owner.profile.firstname} {x.owner.profile.lastname}"
             code = str(x.code)
             code = code.replace('-', ' ')
             score = f"{x.score} / {pointValue}"
             feedback = x.comment
+            list.append(x.owner.profile.lastname)
+            list.append(x.owner.profile.firstname)
             list.append(name)
             list.append(code)
             list.append(score)
             list.append(feedback)
             submissionList.append(list)
+
+        submissionList = sorted(submissionList)
+        for x in submissionList:
+            x.pop(0)
+            x.pop(0)
         context = {
             'assignmentName': assignmentName,
             'submissions': submissionList,
