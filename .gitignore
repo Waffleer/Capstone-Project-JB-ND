@@ -1,2 +1,5 @@
 
 anonypous/.DS_Store
+
+anonypous/anonypous/__pycache__/*
+anonypous/main/__pycache__/*
