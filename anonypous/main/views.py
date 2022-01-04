@@ -706,6 +706,7 @@ def classpage(request, classCode):
     try:
         classs = classes.objects.get(codestr=classCode)    
     except:
+        print2("Failed classs find")
         return redirect('/invalid')
 
     classlist = getClassList(request)
@@ -814,10 +815,10 @@ def classpage(request, classCode):
  
     else:
         for x in students:
-            print2(x)
+            x = x[2]
             print(request.user)
-            x = str(x)
-            if str(request.user) == x:
+            print(x)
+            if str(request.user) == str(x):
                 return render(request, 'dashboard/class.html', context)
         return redirect('/invalid')
 
