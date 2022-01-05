@@ -1,3 +1,3 @@
 cd anonypous_enviorment/Capstone-Project-JB-ND
 cd anonypous
-python3 manage.py runserver 172.16.0.8:8000
+python3 manage.py runserver 172.16.0.11:8000
