@@ -9,6 +9,8 @@ import smtplib, ssl
 import random
 from datetime import datetime
 
+emailBoolean = True
+
 def forms(request):
     return render(request, 'dashboard/forms.html')
 
@@ -469,52 +471,53 @@ def results(request, classCode, assignmentCode):
 
 
         if request.method == 'POST':
-            if 'submit' in request.POST:
-                print2("kfdsjlkdsflkdfsjkl;dfskljdfsjklfsdlkdfsl;k")
-                #Popup window saying plz wait would be nice
-                assignment = assignmentObj.objects.get(codestr=str(assignmentCode))
-                submissions_ = assignment.submissions.all()
+            if emailBoolean == True:
+                if 'submit' in request.POST:
+                    print2("kfdsjlkdsflkdfsjkl;dfskljdfsjklfsdlkdfsl;k")
+                    #Popup window saying plz wait would be nice
+                    assignment = assignmentObj.objects.get(codestr=str(assignmentCode))
+                    submissions_ = assignment.submissions.all()
 
-                reciverList = []
-                nameList = []
-                docInfo = []
-                for x in submissions_:
-                    reciverList.append(str(x.owner))
-                    nameList.append(str(x.owner.profile.firstname))
-                    nameList.append(str(x.owner.profile.lastname))
-                    docInfo.append(f"{str(x.score)}/{assignment.pointValue}")
-                    docInfo.append(str(x.comment))
-                print(reciverList)
-                print("\n\n")
-                smtp_server = "smtp.gmail.com"
-                port = 587  # For starttls
-                sender = "noreply.anonypous@gmail.com"
-                password = "loginOctopus"
-                context1 = ssl.create_default_context()
-                server = smtplib.SMTP(smtp_server,port)
-                server.starttls(context=context1) # Secure the connection
-                server.login(sender, password)
-                y = 0
-                for x in reciverList:   
-                    pass
-                    email = f"""
-                    From : Anonypous Student Security Site <noreply.anonypous@gmail.com>
-                    To : {nameList[y]} {nameList[y+1]} <{x}>
-                    Subject: Returning Results on {assignment.name}.
+                    reciverList = []
+                    nameList = []
+                    docInfo = []
+                    for x in submissions_:
+                        reciverList.append(str(x.owner))
+                        nameList.append(str(x.owner.profile.firstname))
+                        nameList.append(str(x.owner.profile.lastname))
+                        docInfo.append(f"{str(x.score)}/{assignment.pointValue}")
+                        docInfo.append(str(x.comment))
+                    print(reciverList)
+                    print("\n\n")
+                    smtp_server = "smtp.gmail.com"
+                    port = 587  # For starttls
+                    sender = "noreply.anonypous@gmail.com"
+                    password = "loginOctopus"
+                    context1 = ssl.create_default_context()
+                    server = smtplib.SMTP(smtp_server,port)
+                    server.starttls(context=context1) # Secure the connection
+                    server.login(sender, password)
+                    y = 0
+                    for x in reciverList:   
+                        pass
+                        email = f"""
+                        From : Anonypous Student Security Site <noreply.anonypous@gmail.com>
+                        To : {nameList[y]} {nameList[y+1]} <{x}>
+                        Subject: Returning Results on {assignment.name}.
 
-                    Results are :     {docInfo[y]}.
-                    Feedback :  
-                    {docInfo[y+1]}
-                    
-                    """
-                    server.sendmail(sender, x, email)
-                    y += 2
-                server.quit()
-                assignment.submitted = True
-                assignment.save()
+                        Results are :     {docInfo[y]}.
+                        Feedback :  
+                        {docInfo[y+1]}
 
-                print2("kfdsjlkdsflkdfsjkl;dfskljdfsjklfsdlkdfsl;k")
-                return redirect(f'/class/{classCode}/{assignmentCode}/r/result')
+                        """
+                        server.sendmail(sender, x, email)
+                        y += 2
+                    server.quit()
+                    assignment.submitted = True
+                    assignment.save()
+
+                    print2("kfdsjlkdsflkdfsjkl;dfskljdfsjklfsdlkdfsl;k")
+                    return redirect(f'/class/{classCode}/{assignmentCode}/r/result')
     return render(request, 'dashboard/results.html', context)
 
 def assignment(request, classCode, assignmentCode):
