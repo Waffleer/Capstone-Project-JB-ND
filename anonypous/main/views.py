@@ -471,8 +471,9 @@ def results(request, classCode, assignmentCode):
 
 
         if request.method == 'POST':
-            if emailBoolean == True:
-                if 'submit' in request.POST:
+            if 'submit' in request.POST:
+                if emailBoolean == True:
+                    
                     print2("kfdsjlkdsflkdfsjkl;dfskljdfsjklfsdlkdfsl;k")
                     #Popup window saying plz wait would be nice
                     assignment = assignmentObj.objects.get(codestr=str(assignmentCode))
@@ -517,7 +518,7 @@ def results(request, classCode, assignmentCode):
                     assignment.save()
 
                     print2("kfdsjlkdsflkdfsjkl;dfskljdfsjklfsdlkdfsl;k")
-                    return redirect(f'/class/{classCode}/{assignmentCode}/r/result')
+                return redirect(f'/class/{classCode}/{assignmentCode}/r/result')
     return render(request, 'dashboard/results.html', context)
 
 def assignment(request, classCode, assignmentCode):
