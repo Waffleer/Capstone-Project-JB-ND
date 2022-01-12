@@ -7,6 +7,7 @@ Download and install a copy of python 3.9 (https://www.python.org/downloads/rele
 Make sure to add python to your path, this is a non default option in the installer
 
 Once you are done you, you need to add django using pip, the python package installer
+
  
 pip install django
 
@@ -16,6 +17,8 @@ pip3 install django
 
 for windows if pip does not work, use
 py -m pip install django
+
+
 
 if there are any errors running the code that has a missing library error, you will likely have to use pip to install that package
 
