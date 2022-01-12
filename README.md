@@ -20,7 +20,8 @@ py -m pip install django
 
 
 
-if there are any errors running the code that has a missing library error, you will likely have to use pip to install that package
+if there are any missing library errors, you will likely have to use pip to install that package
+  Please tell me if any exist and I will update the list
 
 Download the zip of this repository and extract it somewhere on on your computer.
 
