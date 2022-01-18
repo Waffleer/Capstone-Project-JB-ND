@@ -34,11 +34,6 @@ example :
   cd /Desktop/Capstone-Project-JB-ND
   
   
-  
- # Known Bugs
- 
- If you go to results page in teacher side of website and get a ssl certificate error, this is due to the email ssl not matching with the computer we set it up for. You can fix this bug by going to anonypous/main/view.py and making the variable emailBoolean = False. This will disable the emailing of students fixing the bug. DO NOT PUT THIS AS FALSE IN MAIN BRANCH
-  
 then cd to the anonypous folder
  cd /anonypous
  
@@ -57,4 +52,8 @@ then cd to the anonypous folder
    
    
  If you need any help, feel free to email me
+  
+ # Known Bugs
+ 
+ If you go to results page in teacher side of website and get a ssl certificate error, this is due to the email ssl not matching with the computer we set it up for. You can fix this bug by going to anonypous/main/view.py and making the variable emailBoolean = False. This will disable the emailing of students fixing the bug. DO NOT PUT THIS AS FALSE IN MAIN BRANCH
   
